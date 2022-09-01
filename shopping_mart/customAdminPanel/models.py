@@ -48,8 +48,11 @@ class Banners(models.Model):
 
 
     class Meta:
+        db_table = "customAdminPanel_banners"
         verbose_name = "Banners"
         verbose_name_plural = "Banners" 
+
+
 
 
 class EmailTemplate(models.Model):

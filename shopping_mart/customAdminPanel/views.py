@@ -1,11 +1,10 @@
-from re import template
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
 from django.contrib.auth import login , logout
 from django.shortcuts import render ,redirect
 from django.contrib.auth import authenticate
 from django.contrib import messages
-
+from customAdminPanel.form import *  
+from django.views import View
 
 
 def adminLogin(request):
@@ -16,7 +15,6 @@ def adminLogin(request):
 
         username = request.POST.get('username')
         password = request.POST.get('password')
-        # print("user","pass",username,password)
         if username and password:
             user = authenticate(username=username, password=password)
 
@@ -38,12 +36,30 @@ def logoutUser(request):
     logout(request)
     return render(request,'login.html',{})
 
+# Forms 
 
 
+class Banner_field(View):
+      def get(self,request):
+            obj=BannersForm()
+            return render(request,"model_form/banner_form.html",{'form':obj})
 
+      def post(self,request):
+            obj=BannersForm(request.POST,request.FILES)
+            if obj.is_valid():
+                  instance=obj.save()
+                  print(instance.banner_path.path)
+                  return redirect('customAdminPanel:banner')
+            else:
+                  return render(request,"model_form/banner_form.html",{'form':obj})
 
+def banner_check(request): 
+    fm = Banners.objects.all() 
+    context = {'form':fm}
+    return render(request,"banner.html",context)
+ 
 
-
+    
 
 
 

@@ -1,0 +1,48 @@
+{% extends 'starter.html' %}
+
+{% block content %}
+
+ <!-- <div>
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            
+            <th>Image</th>
+            <th>Status</th>
+            <th>Image_view</th>
+          </tr>
+        </thead> -->
+        <div class="card-body" style="margin: 350px; position: relative; bottom: 260px;left: 150px;">
+          <form action="{% url 'customAdminPanel:banner_form' %}" >
+            <!-- <button  type="submit" class="btn btn-primary btn-block">Sign Out</button> -->
+              <button type="submit" class="btn btn-block btn-danger">Add Form</button>
+          </form>
+          <table id="example2" class="table table-bordered table-hover">
+            <thead>
+            <tr>
+              <th>Image</th>
+              <th>Status</th>
+              <th>Image_views</th>
+            </tr>
+            </thead>
+        <tbody>
+        {% for ban in form %}  
+          <tr>
+            <!-- <td>{{ban.id}}</td> -->
+            <td>{{ban.banner_path}}</td>
+            <td>{{ban.status}}</td>
+            {% if ban.banner_path %}
+            <td>
+              <img src="{{ ban.banner_path.url }}" alt="" style="height: 50px" width="50px">
+            </td>
+            {% else %}
+            <td>
+              <img src="/shop_mart/shopping_mart/media/shop_mart" style="height: 50px" width="50px"; >
+            </td>
+            {% endif %}
+          </tr>
+          {% endfor %} 
+        </tbody>
+    </table>
+</div>
+{% endblock %}
