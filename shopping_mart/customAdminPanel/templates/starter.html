@@ -1,18 +1,24 @@
 <!DOCTYPE html>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Starter</title>
+  <title>E-SHOPPER</title>
   {% load static %}
-  <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <link rel="stylesheet" href="/static/plugins/fontawesome-free/css/all.min.css">
   <link rel="stylesheet" href="/static/dist/css/adminlte.min.css">
+  <style>
+    .footer {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      background-color: red;
+      color: white;
+      text-align: center;
+    }
+    </style>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -31,7 +37,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   </nav>
   
 
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <aside style="height: 100vh;" class="main-sidebar sidebar-dark-primary elevation-4">
     <a href="index3.html" class="brand-link">
       <img src="/static/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">E-SHOPPER</span>
@@ -45,10 +51,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <div class="info">
           <a href="#" class="d-block">Abhishek Sapkal</a>
         </div> 
-      
-        
       </div>
-
       <div class="form-inline">
         <div class="input-group" data-widget="sidebar-search">
           <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
@@ -59,7 +62,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
           </div>
         </div>
       </div>
-
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item menu-open">
@@ -69,8 +71,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 Starter Pages
                 <i class="right fas fa-angle-left"></i>
               </p>
-            </a>
-            
+            </a>      
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="#" class="nav-link active">
@@ -79,15 +80,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   </form>
                 </a>
               </li>
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Inactive Page</p>
                 </a>
-              </li>
+              </li> -->
             </ul>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
@@ -95,25 +96,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <span class="right badge badge-danger">New</span>
               </p>
             </a>
-          </li>
+          </li> -->
         </ul>
       </nav>
     </div>
   </aside>
+{% block content %}
 
 
-  {% block content %}
-
-
-
-
-
-
-  {% endblock %}
-
-  
-
-  <footer class="main-footer">
+{% endblock %}
+  <footer  class="main-footer">
     <div class="float-right d-none d-sm-inline">
       Anything you want
     </div>

@@ -2,21 +2,12 @@
 
 {% block content %}
 
- <!-- <div>
-    <table class="table table-striped">
-        <thead>
-          <tr>
-            
-            <th>Image</th>
-            <th>Status</th>
-            <th>Image_view</th>
-          </tr>
-        </thead> -->
+        <form action="{% url 'customAdminPanel:banner_form' %}" >
+          <!-- <button  type="submit" class="btn btn-primary btn-block">Sign Out</button> -->
+            <button style="width: 100px; height : 40px; position: relative; left: 900px; top: 60px;" type="submit" class="btn btn-block btn-danger">Add Form</button>
+        </form>
         <div class="card-body" style="margin: 350px; position: relative; bottom: 260px;left: 150px;">
-          <form action="{% url 'customAdminPanel:banner_form' %}" >
-            <!-- <button  type="submit" class="btn btn-primary btn-block">Sign Out</button> -->
-              <button type="submit" class="btn btn-block btn-danger">Add Form</button>
-          </form>
+          
           <table id="example2" class="table table-bordered table-hover">
             <thead>
             <tr>
