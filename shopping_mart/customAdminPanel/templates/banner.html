@@ -54,17 +54,18 @@
                   </td> -->
                   
                     <td>
-                      <button  class="btn btn-danger" type="submit" value="Delete">
+                      <!-- <button  class="btn btn-danger" type="submit" value="Delete">
               <input type="hidden" name="id" value={{i.id}}><i class="fas fa-trash"></i>
             
             <a href="{% url 'customAdminPanel:Delete' %}"></a>
-            </button>
-                      <!-- <form action="{% url 'customAdminPanel:Delete' %}" method="POST">
+            </button></td> -->
+
+                      <form action="{% url 'customAdminPanel:Delete' %}" method="POST">
                         {% csrf_token %}
                         <input type="hidden" name="id" value={{ban.id}}>
                         <input type="submit" value="Delete" class="btn btn-danger btn-sm">
                       </form>
-                    </td> -->
+                    </td>
 
                   </tr>
                   {% endfor %}

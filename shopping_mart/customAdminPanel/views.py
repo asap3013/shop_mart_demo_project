@@ -65,12 +65,12 @@ def banner_check(request):
 
     
 class DeleteBanner(View):
-      def post(self,request):
-            data=request.POST
-            id=data.get('id')
-            fm=Banners.objects.get(id=id)
-            fm.delete()
-            return redirect('customAdminPanel:banner')    
+    def post(self,request):
+        data=request.POST
+        id=data.get('id')
+        fm=Banners.objects.get(id=id)
+        fm.delete()
+        return redirect('customAdminPanel:banner')    
 
 
 class EditBanner(View):
