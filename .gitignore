@@ -10,5 +10,6 @@ __pycache__/
 
 
 # #for migration
+migrations/*
 # **/**/migrations
 # !_migrations/__init__.py
