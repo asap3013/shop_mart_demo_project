@@ -46,3 +46,12 @@
         print("world")
         form = BannersForm()
     context['form']= form
+
+
+
+
+
+    <td>
+                      <button class="btn btn-default" type="submit"><i class="fas fa-edit"></i> <a
+                          href="{% url 'customAdminPanel:Edit' ban.id %}"></a></button>
+                    </td>

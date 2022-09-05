@@ -13,7 +13,7 @@ class CmsAdmin(admin.ModelAdmin):
 admin.site.register(Cms,CmsAdmin)
 
 class BannersAdmin(admin.ModelAdmin):
-    list_display =('banner_path','status')
+    list_display =('banner_name','banner_path','status')
 admin.site.register(Banners,BannersAdmin)
 
 

@@ -6,11 +6,6 @@ from django.contrib.auth import authenticate
 from django.contrib import messages
 from customAdminPanel.form import *  
 from django.views import View
-from django.utils.decorators import method_decorator
-
-
-
-
 
 
 def adminLogin(request):
@@ -50,15 +45,15 @@ class BannerField(LoginRequiredMixin,View):
     def get(self,request):
         obj=BannersForm()
         return render(request,"model_form/banner_form.html",{'form':obj})
-    @login_required
+    # @login_required
     def post(self,request):
         obj=BannersForm(request.POST,request.FILES)
         if obj.is_valid():
-                instance=obj.save()
-                print(instance.banner_path.path)
-                return redirect('customAdminPanel:banner')
+            instance=obj.save()
+            print(instance.banner_path.path)
+            return redirect('customAdminPanel:banner')
         else:
-                return render(request,"model_form/banner_form.html",{'form':obj})
+            return render(request,"model_form/banner_form.html",{'form':obj})
 
 
 @login_required(redirect_field_name='login', login_url='/adminpanel/login')
@@ -69,13 +64,28 @@ def banner_check(request):
  
 
     
+class DeleteBanner(View):
+      def post(self,request):
+            data=request.POST
+            id=data.get('id')
+            fm=Banners.objects.get(id=id)
+            fm.delete()
+            return redirect('customAdminPanel:banner')    
 
 
+class EditBanner(View):
+    def get (self,request,id):
+        print(id)
+        obj=Banners.objects.get(id=id)
+        fm=BannersForm(instance=obj)
+        return render(request,"model_form/editBanner.html",{'form':fm})
 
-
-
-
-
+    def post(self,request, id):
+        ban = Banners.objects.get(id=id)
+        fm = BannersForm(request.POST,request.FILES,instance=ban)
+        if fm.is_valid():
+            fm.save()
+            return redirect('customAdminPanel:banner',{})
 
 
 

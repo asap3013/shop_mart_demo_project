@@ -2,38 +2,79 @@
 
 {% block content %}
 
-        <form action="{% url 'customAdminPanel:banner_form' %}" >
-          <!-- <button  type="submit" class="btn btn-primary btn-block">Sign Out</button> -->
-            <button style="width: 100px; height : 40px; position: relative; left: 900px; top: 60px;" type="submit" class="btn btn-block btn-danger">Add Form</button>
-        </form>
-        <div class="card-body" style="margin: 350px; position: relative; bottom: 260px;left: 150px;">
-          
-          <table id="example2" class="table table-bordered table-hover">
-            <thead>
-            <tr>
-              <th>Image</th>
-              <th>Status</th>
-              <th>Image_views</th>
-            </tr>
-            </thead>
-        <tbody>
-        {% for ban in form %}  
-          <tr>
-            <!-- <td>{{ban.id}}</td> -->
-            <td>{{ban.banner_path}}</td>
-            <td>{{ban.status}}</td>
-            {% if ban.banner_path %}
-            <td>
-              <img src="{{ ban.banner_path.url }}" alt="" style="height: 50px" width="50px">
-            </td>
-            {% else %}
-            <td>
-              <img src="/shop_mart/shopping_mart/media/shop_mart" style="height: 50px" width="50px"; >
-            </td>
-            {% endif %}
-          </tr>
-          {% endfor %} 
-        </tbody>
-    </table>
-</div>
+<!-- <form action="{% url 'customAdminPanel:banner_form' %}" >
+            <button style="width: 150px; height : 40px; position: relative; left: 1120px; top: 15px;" type="submit" class="btn btn-block btn-primary">Add Banner</button> -->
+
+</form>
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <form action="{% url 'customAdminPanel:banner_form' %}">
+            <!-- <button  type="submit" class="btn btn-primary btn-block">Sign Out</button> -->
+            <button style="width: 150px; height : 40px; position: relative; left: 1120px; top: 15px;" type="submit" class="btn btn-block btn-primary">Add Banner</button>
+            <div class="card-body" >
+
+              <table id="example2" class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>category</th>
+                    <th>Image Name</th>
+                    <th>Status</th>
+                    <th>Image_views</th>
+                    <th scope="col" colspan="2">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for ban in form %}
+                  <tr>
+                    <!-- <td>{{ban.id}}</td> -->
+                    <td>{{ban.banner_name}}</td>
+                    <td>{{ban.banner_path}}</td>
+                    <td>{{ban.status}}</td>
+                    {% if ban.banner_path %}
+                    <td>
+                      <img src="{{ ban.banner_path.url }}" alt="" style="height: 50px" width="50px">
+                    </td>
+                    {% else %}
+                    <td>
+                      <img src="/shop_mart/shopping_mart/media/shop_mart" style="height: 50px" width="50px" ;>
+                    </td>
+                    {% endif %}
+                    <td>
+                      <button class="btn btn-default" type="submit"><i class="fas fa-edit"></i> <a href="{% url 'customAdminPanel:Edit' ban.id %}"></a></button>
+                    </td>
+                    <!-- <td>
+                      <form action="{% url 'customAdminPanel:Edit' ban.id %}" method="POST">
+                      {% csrf_token %}
+                      <input type="hidden" name="id" value={{ban.id}}>
+                      <input type="submit" value="Edit" class="btn btn-default btn-sm">
+                    </form>
+                  </td> -->
+                  
+                    <td>
+                      <button  class="btn btn-danger" type="submit" value="Delete">
+              <input type="hidden" name="id" value={{i.id}}><i class="fas fa-trash"></i>
+            
+            <a href="{% url 'customAdminPanel:Delete' %}"></a>
+            </button>
+                      <!-- <form action="{% url 'customAdminPanel:Delete' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="id" value={{ban.id}}>
+                        <input type="submit" value="Delete" class="btn btn-danger btn-sm">
+                      </form>
+                    </td> -->
+
+                  </tr>
+                  {% endfor %}
+
+                </tbody>
+              </table>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 {% endblock %}

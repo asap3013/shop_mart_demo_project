@@ -12,8 +12,21 @@ urlpatterns = [
     path('',views.index,name='index'),
     path('logout/',views.logoutUser,name='logoutuser'),
     path('banner/',views.banner_check, name='banner'),
-    path('banner_form/',views.BannerField.as_view(),name='banner_form')
+    path('banner_form/',views.BannerField.as_view(),name='banner_form'),
+    path("delete/",views.DeleteBanner.as_view(),name="Delete"),
+    path("edit/<id>" ,views.EditBanner.as_view(),name="Edit")
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)
+
+
+
+
+
+
+
+#   <form action="{% url 'custom_admin:Delete' %}" method="POST">
+#                          {% csrf_token %}
+#                              <input type="hidden" name="id" value={{i.id}}>
+#                              <input type="submit" value="Delete" class="btn btn-danger btn-sm">
+#                          </form>
+#                      </td>

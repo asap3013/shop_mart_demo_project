@@ -43,6 +43,7 @@ class Cms(models.Model):
         verbose_name_plural = "Cms" 
 
 class Banners(models.Model):
+    banner_name = models.CharField(max_length=50)
     banner_path = models.ImageField(upload_to='shop_mart/images',default="")
     status = models.BooleanField()
 
