@@ -2,7 +2,7 @@
 
 {% block content %}
 <div align="center">
-    <form  action="{% url 'customAdminPanel:Edit' ban.id%}" method="POST" enctype="multipart/form-data">  
+    <form  action="" method="POST" enctype="multipart/form-data">  
         {% csrf_token %}  
         {{ form.as_p }}  
         <button type="submit" class="save btn btn-default" value="Submit">Save</button>  

@@ -75,7 +75,6 @@ class DeleteBanner(View):
 
 class EditBanner(View):
     def get (self,request,id):
-        print(id)
         obj=Banners.objects.get(id=id)
         fm=BannersForm(instance=obj)
         return render(request,"model_form/editBanner.html",{'form':fm})

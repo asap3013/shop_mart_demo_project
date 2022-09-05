@@ -14,7 +14,7 @@ urlpatterns = [
     path('banner/',views.banner_check, name='banner'),
     path('banner_form/',views.BannerField.as_view(),name='banner_form'),
     path("delete/",views.DeleteBanner.as_view(),name="Delete"),
-    path("edit/<id>" ,views.EditBanner.as_view(),name="Edit")
+    path("edit/<int:id>" ,views.EditBanner.as_view(),name="Edit")
 ]
 
 
