@@ -6,14 +6,15 @@
             <button style="width: 150px; height : 40px; position: relative; left: 1120px; top: 15px;" type="submit" class="btn btn-block btn-primary">Add Banner</button> -->
 
 </form>
+<div class="content-wrapper">
 <section class="content">
   <div class="container-fluid">
-    <div class="row">
-      <div class="col-12">
+    <div class="row mb-2">
+      <div class="col-sm-12">
         <div class="card">
           <form action="{% url 'customAdminPanel:banner_form' %}">
             <!-- <button  type="submit" class="btn btn-primary btn-block">Sign Out</button> -->
-            <button style="width: 150px; height : 40px; position: relative; left: 1120px; top: 15px;" type="submit"
+            <button style="width: 150px; height : 40px; position: relative; left: 850px; top: 15px;" type="submit"
               class="btn btn-block btn-primary">Add Banner</button>
           </form>
           <div class="card-body">
@@ -48,31 +49,26 @@
                     <a href="{% url 'customAdminPanel:Edit' ban.id %}"><button class="btn btn-default"><i
                           class="fas fa-edit"></i></button></a>
                   </td>
-                  <!-- <td>
-                      <form action="{% url 'customAdminPanel:Edit' ban.id %}" method="POST">
-                      {% csrf_token %}
-                      <input type="hidden" name="id" value={{ban.id}}>
-                      <input type="submit" value="Edit" class="btn btn-default btn-sm">
-                    </form>
-                  </td> -->
-
-                  
-                  <!-- <button  class="btn btn-danger" type="submit" value="Delete">
-              <input type="hidden" name="id" value={{i.id}}><i class="fas fa-trash"></i>
-            
-            <a href="{% url 'customAdminPanel:Delete' %}"></a>
-            </button></td> -->
-                  <!-- <td>
-                    <a href="{% url 'customAdminPanel:Delete' %}"><button class="btn btn-danger"><i
-                          class="fas fa-trash"></i></button></a>
-                  </td> -->
                   <td>
                   <form action="{% url 'customAdminPanel:Delete' %}" method="POST">
                       {% csrf_token %}
                       <input type="hidden" name="id" value={{ban.id}}>
-                      <input type="submit" value="Delete" class="btn btn-danger btn-sm">
+                      <input type="submit" value="Delete" class="btn btn-danger btn-sm" onclick="myFunction()">
                     </form>
                   </td>
+                  <script>
+                    function myFunction() {
+                      var txt;
+                      if (confirm("Do you want to delete!")) {
+                        
+                       //go to your delete path
+                      } else {
+                      //don't do anything
+                      }
+                    
+                    }
+                    </script>
+                    
 
                 </tr>
                 {% endfor %}
@@ -85,4 +81,5 @@
     </div>
   </div>
 </section>
+</div>
 {% endblock %}

@@ -19,14 +19,3 @@ urlpatterns = [
 
 
 
-
-
-
-
-
-#   <form action="{% url 'custom_admin:Delete' %}" method="POST">
-#                          {% csrf_token %}
-#                              <input type="hidden" name="id" value={{i.id}}>
-#                              <input type="submit" value="Delete" class="btn btn-danger btn-sm">
-#                          </form>
-#                      </td>
