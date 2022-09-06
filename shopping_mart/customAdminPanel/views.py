@@ -77,7 +77,7 @@ class EditBanner(View):
     def get (self,request,id):
         obj=Banners.objects.get(id=id)
         fm=BannersForm(instance=obj)
-        return render(request,"model_form/editBanner.html",{'form':fm})
+        return render(request,"model_form/editBanner.html",{'obj':fm})
 
     def post(self,request, id):
         ban = Banners.objects.get(id=id)

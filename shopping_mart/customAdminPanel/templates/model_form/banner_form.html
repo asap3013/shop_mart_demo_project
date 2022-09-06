@@ -2,12 +2,44 @@
 
 {% block content %}
 <div align="center">
-    <form  action="{% url 'customAdminPanel:banner_form'%}" method="POST" enctype="multipart/form-data">  
-        {% csrf_token %}  
-        {{ form.as_p }}  
-        <button type="submit" class="save btn btn-default" value="Submit">Save</button>  
-    </form>  
-    
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Banner Form</h1>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+        <form action="{% url 'customAdminPanel:banner_form'%}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="card-body">
+                <div class="form-group">
+                    <section class="content">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <!-- left column -->
+                                <div class="col-md-6">
+                                    <!-- general form elements -->
+                                    <div class="card card-primary">
+                                        <div class="card-header">
+                                            {{ form.as_p }}
+                                            <div class="card-footer">
+                                                <button type="submit" class="save btn btn-default"
+                                                    value="Submit">Save</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>  
+        </form>
+    </div>
 </div>
 
 {% endblock %}
