@@ -5,176 +5,167 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>E-SHOPPER</title>
   {% load static %}
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <link rel="stylesheet" href="/static/plugins/fontawesome-free/css/all.min.css">
   <link rel="stylesheet" href="/static/dist/css/adminlte.min.css">
   <link rel="stylesheet" href="/static/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="/static/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="/static/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 </head>
+
 <body class="hold-transition sidebar-mini">
-<div class="wrapper">
-  <aside class="main-sidebar sidebar-dark-primary elevation-4"></aside>
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-      </li>
+  <div class="wrapper">
+    <aside class="main-sidebar sidebar-dark-primary elevation-4"></aside>
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
       </ul>
 
-    <ul class="navbar-nav ml-auto">
-    <form action="{% url 'customAdminPanel:logoutuser' %}" >
-        <button type="submit" class="btn btn-block btn-default btn-flat">Sign Out</button>
-    </form>
-  </nav>
-  
+      <ul class="navbar-nav ml-auto">
+        <form action="{% url 'customAdminPanel:logoutuser' %}">
+          <button type="submit" class="btn btn-block btn-default btn-flat">Sign Out</button>
+        </form>
+    </nav>
 
-  <aside style="height: 100vh;" class="main-sidebar sidebar-dark-primary elevation-4">
-    <a href="index3.html" class="brand-link">
-      <img src="/static/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">E-SHOPPER</span>
-    </a>
 
-    <div class="hold-transition sidebar">
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="/static/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-        </div>
-        <div class="info">
-          <a href="#" class="d-block">Abhishek Sapkal</a>
-        </div> 
-      </div>
-      <div class="form-inline">
-        <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-          <div class="input-group-append">
-            <button class="btn btn-sidebar">
-              <i class="fas fa-search fa-fw"></i>
-            </button>
+    <aside style="height: 100vh;" class="main-sidebar sidebar-dark-primary elevation-4">
+      <a href="index3.html" class="brand-link">
+        <img src="/static/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+          style="opacity: .8">
+        <span class="brand-text font-weight-light">E-SHOPPER</span>
+      </a>
+
+      <div class="hold-transition sidebar">
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+          <div class="image">
+            <img src="/static/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          </div>
+          <div class="info">
+            <a href="#" class="d-block">Abhishek Sapkal</a>
           </div>
         </div>
-      </div>
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- <li class="nav-item menu-open"> -->
-            <!-- <li class="nav-item menu-open"> -->
-            <a  class="nav-link active">
-              <!-- <i class="nav-icon fas fa-tachometer-alt"></i> -->
-              <!-- <i class="nav-icon fas fa-copy"></i> -->
-              <p>
-                Dashboard
-                <!-- <i class="right fas fa-angle-left"></i> -->
-                <!-- <i class="fas fa-angle-left right"></i> -->
-              </p>
-              
-            </a>      
-            <ul class="nav nav-treeview">
+
+        <nav>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+            <a class="nav-link dashboard-menu" href="{% url 'customAdminPanel:index' %}">Dashboard</a>
+            <!-- <ul class="nav nav-treeview"> -->
+              <!-- <li class="nav-item" > -->
+
               <li class="nav-item">
-                <!-- <button class = "btn btn-default"> -->
-                <a href="{% url 'customAdminPanel:banner'%}" class="nav-link">Banner</a> 
-              </button>
+                <!-- <button class = "btn btn-default btn-sm"> -->
+                <a href="{% url 'customAdminPanel:banner'%}" class="nav-link banner-menu" >Banner</a>
+                <!-- </button> -->
               </li>
               <li class="nav-item">
                 <!-- <button  class="nav-link"> -->
-                <a href="" class="nav-link">Category</a> 
-              </button>
+                <a href="" name="category" class="nav-link">Category</a>
+                <!-- </button> -->
               </li>
               <li class="nav-item">
                 <!-- <button class="nav-link"> -->
-                <a href="" class="nav-link">Cms</a> 
-              </button>
+                <a href="" name="cms" class="nav-link">Cms</a>
+                <!-- </button> -->
               </li>
               <li class="nav-item">
                 <!-- <button class="nav-link" > -->
-                <a href="" class="nav-link">Category</a> 
-              </button>
+                <a href="" class="nav-link">Category</a>
+                <!-- </button> -->
               </li>
               <li class="nav-item">
                 <!-- <button class="nav-link"> -->
-                <a href="" class="nav-link">Configuration</a> 
-              </button>
+                <a href="" class="nav-link">Configuration</a>
+                <!-- </button> -->
               </li>
               <li class="nav-item">
                 <!-- <button class="nav-link"> -->
-                <a href="" class="nav-link">Category</a> 
-              </button>
+                <a href="" class="nav-link">Category</a>
+                <!-- </button> -->
               </li>
               <li class="nav-item">
                 <!-- <button class="nav-link"> -->
-                <a href="" class="nav-link">Contact us</a> 
-              </button>
+                <a href="" class="nav-link">Contact us</a>
+                <!-- </button> -->
               </li>
               <li class="nav-item">
                 <!-- <button class="nav-link"> -->
-                <a href="" class="nav-link">Coupon</a> 
-              </button>
+                <a href="" class="nav-link">Coupon</a>
+                <!-- </button> -->
               </li>
               <li class="nav-item">
                 <!-- <button class="nav-link"> -->
-                <a href="" class="nav-link">Email Template</a> 
-              </button>
+                <a href="" class="nav-link">Email Template</a>
+                <!-- </button> -->
               </li>
               <li class="nav-item">
                 <!-- <button class="nav-link"> -->
-                <a href="" class="nav-link">Order Details</a> 
-              </button>
+                <a href="" class="nav-link">Order Details</a>
+                <!-- </button> -->
               </li>
               <li class="nav-item">
                 <!-- <button class="nav-link"> -->
-                <a href="" class="nav-link">Payment Gateway</a> 
-              </button>
+                <a href="" class="nav-link">Payment Gateway</a>
+                <!-- </button> -->
               </li>
               <li class="nav-item">
                 <!-- <button class="nav-link"> -->
-                <a href="" class="nav-link">Product</a> 
-              </button>
+                <a href="" class="nav-link">Product</a>
+                <!-- </button> -->
               </li>
               <li class="nav-item">
                 <!-- <button class="nav-link"> -->
-                <a href="" class="nav-link">Product Attributes</a> 
-              </button>
+                <a href="" class="nav-link">Product Attributes</a>
+                <!-- </button> -->
               </li>
               <li class="nav-item">
                 <!-- <button class="nav-link"> -->
-                <a href="" class="nav-link">Product Attributes Assoc</a> 
-              </button>
+                <a href="" class="nav-link">Product Attributes Assoc</a>
+                <!-- </button> -->
               </li>
               <li class="nav-item">
                 <!-- <button class="nav-link"> -->
-                <a href="" class="nav-link">Product Attributes Values</a> 
-              </button>
+                <a href="" class="nav-link">Product Attributes Values</a>
+                <!-- </button> -->
               </li>
               <li class="nav-item">
                 <!-- <button class="nav-link"> -->
-                <a href="" class="nav-link">Product Categories</a> 
-              </button>
+                <a href="" class="nav-link">Product Categories</a>
+                <!-- </button> -->
               </li>
               <li class="nav-item">
                 <!-- <button class="nav-link"> -->
-                <a href="" class="nav-link">Product Images</a> 
-              </button>
+                <a href="" class="nav-link">Product Images</a>
+                <!-- </button> -->
               </li>
               <li class="nav-item">
                 <!-- <button class="nav-link"> -->
-                <a href="" class="nav-link">Used Coupons</a> 
-              </button>
+                <a href="" class="nav-link">Used Coupons</a>
+                <!-- </button> -->
               </li>
               <li class="nav-item">
                 <!-- <button class="nav-link"  > -->
-                <a href="" class="nav-link">User</a> 
-              </button>
+                <a href="" class="nav-link">User</a>
+                <!-- </button> -->
               </li>
               <li class="nav-item">
                 <!-- <button class="nav-link"> -->
-                <a href="" class="nav-link">UserAddress</a> 
-              </button>
+                <a href="" class="nav-link">UserAddress</a>
+                <!-- </button> -->
               </li>
             </ul>
-        </ul>
-      </nav>
-    </div>
-  </aside>
+          </ul>
+        </nav>
+      </div>
+    </aside>
+  </div>
+</body>
 {% block content %}
 
 
@@ -186,7 +177,7 @@
   <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
 </footer>
 </div>
-</div>
+
 <script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="/static/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="/static/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
@@ -202,6 +193,17 @@
 <script src="/static/plugins/jquery/jquery.min.js"></script>
 <script src="/static/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="/static/dist/js/adminlte.min.js"></script>
+{% block script %} 
+<script>
+  $(document).ready(function(){
+      setNavBar()
+  });
 
-</body>
+  // set navebar
+  function setNavBar(){ 
+      $(".nav-link").removeClass("active")
+      $(".dashboard-menu").addClass("active")
+  }
+</script>
+{% endblock %}
 </html>

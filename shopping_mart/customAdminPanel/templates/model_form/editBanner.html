@@ -27,11 +27,11 @@
                 <div class="container-fluid">
                     <div class="row">
                         <!-- left column -->
-                        <div class="col-md-6">
+                        <div class="col-md-6" style="position: relative; left: 250px;">
                             <!-- general form elements -->
                             <div class="card card-primary">
                                 <div class="card-header">
-                                    <h3 class="card-title">Banner Form</h3>
+                                    <h3 class="card-title">Add Banner</h3>
                                 </div>
                                 <!-- /.card-header -->
                                 <!-- form start -->
@@ -61,10 +61,28 @@
                                 <div class="card-footer">
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
     </form>
 </div>
-</form>
 
-</div>
 
+
+{% endblock %}
+{% block script %}
+<script>
+    $(document).ready(function () {
+        setNavBar()
+    });
+
+    // set navebar
+    function setNavBar() {
+        $(".nav-link").removeClass("active")
+        $(".banner-menu").addClass("active")
+    }
+</script>
 {% endblock %}

@@ -88,4 +88,28 @@
     </div>
   </section>
 </div>
+<!-- <script type="text/javascript">
+  $(document).ready(function () {
+    $("ul li a").click(function(){  
+      // $('a.active').each(function(){
+      $('li a').find(".active").removeClass('active');
+      $(this).parent().addClass('active');
+    });
+  });
+</script> -->
 {% endblock %}
+
+{% block script %}
+<script>
+  $(document).ready(function(){
+      setNavBar()
+  });
+
+  // set navebar
+  function setNavBar(){ 
+      $(".nav-link").removeClass("active")
+      $(".banner-menu").addClass("active")
+  }
+</script>
+{% endblock %}
+
