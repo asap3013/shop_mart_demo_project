@@ -12,7 +12,7 @@
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">Add Banner</li>
+            <li class="breadcrumb-item active">Add Category</li>
           </ol>
         </div>
       </div>
@@ -23,32 +23,30 @@
   <section class="content">
     <div class="container-fluid">
       <div class="row">
-        <!-- left column -->
         <div class="col-md-6" style="position: relative; left: 300px;">
-          <!-- general form elements -->
           <div class="card card-primary">
             <div class="card-header">
-              <h3 class="card-title">Add Banner</h3>
+              <h3 class="card-title">Add Category</h3>
             </div>
-            <!-- /.card-header -->
-            <!-- form start -->
             <form action="{% url 'customAdminPanel:category_form' %}" method="post" enctype="multipart/form-data">
               {% csrf_token %}
               <div class="card-body">
                 <div class="form-group">
-                  <label for="banner_name">Banner name</label>
-                  {{ form.banner_name }}
+                  <label for="name">category name</label>
+                  {{ form.name }}
                 </div>
                 <div class="form-group">
-                  <label for="banner_path">Banner Path</label>
-                  {{ form.banner_path }}
-                  <!-- <div class="input-group">
-                      <div class="custom-file">
-                        <label class="custom-file-label" for="banner_path">Choose file</label>
-                        {{ form.banner_path }}
-                      </div>
-                    </div> -->
+                  <label for="parent_id">Parent Id</label>
+                  {{ form.parent_id }}
                 </div>
+                <div class="form-group">
+                    <label for="parent_id">created by</label>
+                    {{ form.created_by }}
+                  </div>
+                  <div class="form-group">
+                    <label for="parent_id">modify by</label>
+                    {{ form.modify_by }}
+                  </div>
                 <div class="form-check">
                   <label class="form-check-label" for="status">Check me out</label>
                   {{ form.status }}

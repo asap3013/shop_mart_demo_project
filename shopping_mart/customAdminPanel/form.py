@@ -14,8 +14,6 @@ class CategoryForm(forms.ModelForm):
     class Meta:  
         model = Category  
         fields = '__all__'
-        # labels = {'banner_path': "banner", "status": "status",}
-        # exclude = ('banner_path','status')
 
 class CmsForm(forms.ModelForm):  
     class Meta:  

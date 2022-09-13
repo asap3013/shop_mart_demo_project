@@ -23,15 +23,11 @@
   <section class="content">
     <div class="container-fluid">
       <div class="row">
-        <!-- left column -->
         <div class="col-md-6" style="position: relative; left: 300px;">
-          <!-- general form elements -->
           <div class="card card-primary">
             <div class="card-header">
               <h3 class="card-title">Add Banner</h3>
             </div>
-            <!-- /.card-header -->
-            <!-- form start -->
             <form action="{% url 'customAdminPanel:banner_form' %}" method="post" enctype="multipart/form-data">
               {% csrf_token %}
               <div class="card-body">
@@ -42,12 +38,6 @@
                 <div class="form-group">
                   <label for="banner_path">Banner Path</label>
                   {{ form.banner_path }}
-                  <!-- <div class="input-group">
-                      <div class="custom-file">
-                        <label class="custom-file-label" for="banner_path">Choose file</label>
-                        {{ form.banner_path }}
-                      </div>
-                    </div> -->
                 </div>
                 <div class="form-check">
                   <label class="form-check-label" for="status">Check me out</label>

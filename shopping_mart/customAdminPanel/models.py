@@ -99,9 +99,6 @@ class Category(models.Model):
     modify_date = models.DateTimeField(auto_now=True)
     status = models.BooleanField()
 
-    def __str__(self):
-        return self.Category
-
     class Meta:
         verbose_name = "Category"
         verbose_name_plural = "Category"

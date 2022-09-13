@@ -11,32 +11,23 @@
             <div class="col-sm-12">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active">Banner</li>
+                <li class="breadcrumb-item active">Profile</li>
               </ol>
             </div>
-            <form action="{% url 'customAdminPanel:banner_form' %}">
-              <!-- <button  type="submit" class="btn btn-primary btn-block">Sign Out</button> -->
-              <button style="float: right; width: 150px; height: 40px;" type="submit"
-                class="btn btn-block btn-primary">Add Banner</button>
-            </form>
-
             <div class="card-body">
-              <table id="example2" class="table table-bordered table-hover">
+              <!-- <table id="example2" class="table table-bordered table-hover">
                 <thead>
                   <tr>
                     <th>category</th>
-                    <!-- <th>Image Name</th> -->
                     <th>Status</th>
                     <th>Image_views</th>
                     <th scope="col" colspan="2">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {% for ban in form %}
+                  {% for ban in obj %}
                   <tr>
-                    <!-- <td>{{ban.id}}</td> -->
                     <td>{{ban.banner_name}}</td>
-                    <!-- <td>{{ban.banner_path}}</td> -->
                     <td>{{ban.status}}</td>
                     {% if ban.banner_path %}
                     <td>
@@ -52,7 +43,8 @@
                             class="fas fa-edit"></i></button></a>
                     </td>
                     <td>
-                      <button type="submit" value="Delete" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deletemodal">
+                      <button type="submit" value="Delete" class="btn btn-danger btn-sm" data-toggle="modal"
+                        data-target="#deletemodal">
                         Delete
                       </button>
                       <div class="modal fade" id="deletemodal">
@@ -84,7 +76,7 @@
                   {% endfor %}
 
                 </tbody>
-              </table>
+              </table> -->
             </div>
           </div>
         </div>
@@ -103,16 +95,3 @@
 </script> -->
 {% endblock %}
 
-{% block script %}
-<script>
-  $(document).ready(function () {
-    setNavBar()
-  });
-
-  // set navebar
-  function setNavBar() {
-    $(".nav-link").removeClass("active")
-    $(".banner-menu").addClass("active")
-  }
-</script>
-{% endblock %}

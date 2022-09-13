@@ -78,15 +78,8 @@ def banner_check(request):
     fm = Banners.objects.all() 
     context = {'form':fm}
     return render(request,"banner.html",context)
- 
-
     
 class DeleteBanner(View):
-    """_summary_
-
-    Args:
-        View (_type_): _description_
-    """
     def post(self,request):
         data=request.POST
         id=data.get('id')
@@ -113,36 +106,44 @@ class EditBanner(View):
             fm.save()
             return redirect('customAdminPanel:banner',{})
 
+# class CategoryField(LoginRequiredMixin,View):
+#     login_url = '/adminpanel/login'
+#     def get(self,request):
+#         obj=CategoryForm()
+#         return render(request,"model_form/category_form.html",{'form':obj})
+#     # @login_required
+#     def post(self,request):
+#         obj=CategoryForm(request.POST)
+#         if obj.is_valid():
+#             obj.save()
+#             # print(instance.name)
+#             return redirect('customAdminPanel:category')
+#         else:
+#             return render(request,"model_form/category_form.html",{'form':obj})
 
-class CategoryField(LoginRequiredMixin,View):
-    """_summary_
+# @login_required(redirect_field_name='login', login_url='/adminpanel/login')
+# def category_check(request): 
+#     fm = Category.objects.all() 
+#     context = {'form':fm}
+#     return render(request,"category.html",context)
 
-    Args:
-        LoginRequiredMixin (_type_): _description_
-        View (_type_): _description_
 
-    Returns:
-        _type_: _description_
-    """
-    login_url = '/adminpanel/login'
+class CategoryField(View):   
     def get(self,request):
         obj=CategoryForm()
         return render(request,"model_form/category_form.html",{'form':obj})
-    # @login_required
     def post(self,request):
-        obj=CategoryForm(request.POST,request.FILES)
+        obj=CategoryForm(request.POST)
         if obj.is_valid():
-            instance=obj.save()
-            print(instance.banner_path.path)
+            obj.save()
             return redirect('customAdminPanel:category')
         else:
             return render(request,"model_form/category_form.html",{'form':obj})
-
-@login_required(redirect_field_name='login', login_url='/adminpanel/login')
-def category_check(request): 
-    fm = Category.objects.all() 
-    context = {'form':fm}
-    return render(request,"category.html",context)
+@login_required(redirect_field_name='login',login_url='/adminpanel/login')
+def category_check(request):
+      obj=Category.objects.all()
+      keys={"obj":obj}
+      return render(request,"category.html",keys)
 
 
 
