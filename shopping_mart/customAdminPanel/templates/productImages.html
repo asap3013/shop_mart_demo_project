@@ -1,0 +1,53 @@
+{% extends 'starter.html' %}
+
+{% block content %}
+
+<div class="content-wrapper">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="col-sm-12">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active">productImages</li>
+                            </ol>
+                        </div>
+                        <form action="{% url 'customAdminPanel:productImages_form' %}">
+                            <!-- <button  type="submit" class="btn btn-primary btn-block">Sign Out</button> -->
+                            <button style="float: right; width: 150px; height: 40px;" type="submit"
+                                class="btn btn-block btn-primary">Add</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+<!-- <script type="text/javascript">
+  $(document).ready(function () {
+    $("ul li a").click(function(){  
+      // $('a.active').each(function(){
+      $('li a').find(".active").removeClass('active');
+      $(this).parent().addClass('active');
+    });
+  });
+</script> -->
+{% endblock %}
+
+{% block script %}
+<script>
+    $(document).ready(function () {
+        setNavBar()
+    });
+
+    // set navebar
+    function setNavBar() {
+        $(".nav-link").removeClass("active")
+        $(".productImages-menu").addClass("active")
+    }
+</script>
+{% endblock %}

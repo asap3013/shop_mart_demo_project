@@ -1,0 +1,120 @@
+{% extends 'starter.html' %}
+
+{% block content %}
+
+<div class="content-wrapper">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="col-sm-12">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active">Category</li>
+                            </ol>
+                        </div>
+                        <form action="{% url 'customAdminPanel:category_form' %}">
+                            <!-- <button  type="submit" class="btn btn-primary btn-block">Sign Out</button> -->
+                            <button style="float: right; width: 150px; height: 40px;" type="submit"
+                                class="btn btn-block btn-primary">Add Category</button>
+                        </form>
+                        <div class="card-body">
+                            <table id="example2" class="table table-bordered table-hover">
+                              <thead>
+                                <tr>
+                                  <th>category</th>
+                                  <!-- <th>Image Name</th> -->
+                                  <th>Status</th>
+                                  <th>Image_views</th>
+                                  <th scope="col" colspan="2">Action</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {% for cat in form %}
+                                <tr>
+                                  <!-- <td>{{ban.id}}</td> -->
+                                  <td>{{cat._name}}</td>
+                                  <!-- <td>{{ban.banner_path}}</td> -->
+                                  <td>{{cat.status}}</td>
+                                  {% if ban.banner_path %}
+                                  <td>
+                                    <img src="{{ ban.banner_path.url }}" alt="" style="height: 30px" width="30px">
+                                  </td>
+                                  {% else %}
+                                  <td>
+                                    <img src="/shop_mart/shopping_mart/media/shop_mart" style="height: 30px" width="30px" ;>
+                                  </td>
+                                  {% endif %}
+                                  <td>
+                                    <a href="{% url 'customAdminPanel:Edit' ban.id %}"><button class="btn btn-default btn-sm"><i
+                                          class="fas fa-edit"></i></button></a>
+                                  </td>
+                                  <td>
+                                    <button type="submit" value="Delete" class="btn btn-danger btn-sm" data-toggle="modal"
+                                      data-target="#deletemodal">
+                                      Delete
+                                    </button>
+                                    <div class="modal fade" id="deletemodal">
+                                      <div class="modal-dialog">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h4 class="modal-title">Delete</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
+                                          </div>
+                                          <form action="{% url 'customAdminPanel:Delete' %}" method="POST">
+                                            {% csrf_token %}
+                                            <div class="modal6-body">
+                                              <input type="hidden" name="id" value={{ban.id}}>
+                                              <h4>Do you want to delete this data??</h4>
+                                            </div>
+                                            <div class="modal-footer justify-content-between">
+                                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                              <button type="submit" class="btn btn-danger">Ok
+                                              </button>
+                                            </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    </form>
+                                  </td>
+                                </tr>
+                                {% endfor %}
+              
+                              </tbody>
+                            </table>
+                          </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+<!-- <script type="text/javascript">
+  $(document).ready(function () {
+    $("ul li a").click(function(){  
+      // $('a.active').each(function(){
+      $('li a').find(".active").removeClass('active');
+      $(this).parent().addClass('active');
+    });
+  });
+</script> -->
+{% endblock %}
+
+{% block script %}
+<script>
+    $(document).ready(function () {
+        setNavBar()
+    });
+
+    // set navebar
+    function setNavBar() {
+        $(".nav-link").removeClass("active")
+        $(".category-menu").addClass("active")
+    }
+</script>
+{% endblock %}

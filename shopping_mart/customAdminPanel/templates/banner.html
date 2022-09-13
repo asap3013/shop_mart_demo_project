@@ -2,20 +2,25 @@
 
 {% block content %}
 
-
 <div class="content-wrapper">
   <section class="content">
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-12">
           <div class="card">
+            <div class="col-sm-12">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Banner</li>
+              </ol>
+            </div>
             <form action="{% url 'customAdminPanel:banner_form' %}">
               <!-- <button  type="submit" class="btn btn-primary btn-block">Sign Out</button> -->
               <button style="float: right; width: 150px; height: 40px;" type="submit"
                 class="btn btn-block btn-primary">Add Banner</button>
             </form>
-            
-            <div class="card-body"> 
+
+            <div class="card-body">
               <table id="example2" class="table table-bordered table-hover">
                 <thead>
                   <tr>
@@ -62,7 +67,7 @@
                             </div>
                             <form action="{% url 'customAdminPanel:Delete' %}" method="POST">
                               {% csrf_token %}
-                              <div class="modal-body">
+                              <div class="modal6-body">
                                 <input type="hidden" name="id" value={{ban.id}}>
                                 <h4>Do you want to delete this data??</h4>
                               </div>
@@ -101,15 +106,14 @@
 
 {% block script %}
 <script>
-  $(document).ready(function(){
-      setNavBar()
+  $(document).ready(function () {
+    setNavBar()
   });
 
   // set navebar
-  function setNavBar(){ 
-      $(".nav-link").removeClass("active")
-      $(".banner-menu").addClass("active")
+  function setNavBar() {
+    $(".nav-link").removeClass("active")
+    $(".banner-menu").addClass("active")
   }
 </script>
 {% endblock %}
-

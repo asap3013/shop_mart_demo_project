@@ -321,7 +321,7 @@ class OrderDetails(models.Model):
         verbose_name_plural = "OrderDetails"
 
 
-class userOrder(models.Model):
+class UserOrder(models.Model):
     user_id = models.ForeignKey(User,on_delete=models.CASCADE)
     shipping_method = models.IntegerField()
     AWB_NO =models.CharField(max_length=100)

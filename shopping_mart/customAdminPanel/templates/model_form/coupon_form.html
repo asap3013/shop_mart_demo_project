@@ -1,0 +1,82 @@
+{% extends 'starter.html' %}
+
+{% block content %}
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <!-- <h1>General Form</h1> -->
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Add coupon</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-6" style="position: relative; left: 300px;">
+          <!-- general form elements -->
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Add coupon</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form action="{% url 'customAdminPanel:coupon_form' %}" method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="banner_name">Banner name</label>
+                  {{ form.banner_name }}
+                </div>
+                <div class="form-group">
+                  <label for="banner_path">Banner Path</label>
+                  {{ form.banner_path }}
+                  <!-- <div class="input-group">
+                      <div class="custom-file">
+                        <label class="custom-file-label" for="banner_path">Choose file</label>
+                        {{ form.banner_path }}
+                      </div>
+                    </div> -->
+                </div>
+                <div class="form-check">
+                  <label class="form-check-label" for="status">Check me out</label>
+                  {{ form.status }}
+                </div>
+              </div>
+              <!-- /.card-body -->
+
+              <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}
+{% block script %}
+<script>
+  $(document).ready(function(){
+      setNavBar()
+  });
+
+  // set navebar
+  function setNavBar(){ 
+      $(".nav-link").removeClass("active")
+      $(".coupon-menu").addClass("active")
+  }
+</script>
+{% endblock %}
