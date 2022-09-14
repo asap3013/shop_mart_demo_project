@@ -18,6 +18,8 @@ urlpatterns = [
     path("edit/<int:id>" ,views.EditBanner.as_view(),name="Edit"),
     path('category/',views.category_check, name='category'),
     path('category_form',views.CategoryField.as_view(),name='category_form'),
+    path("categorydelete/",views.DeleteCategory.as_view(),name="Delete_category"),
+    path("editCategory/<int:id>" ,views.EditCategory.as_view(),name="EditCategory"),
     path('cms/',views.cms_check, name='cms'),
     path('cms_form/',views.CmsField.as_view(),name='cms_form'),
     path('configuration/',views.configuration_check, name='configuration'),
@@ -54,6 +56,7 @@ urlpatterns = [
     path('userOrder_form/',views.UserOrderField.as_view(),name='userOrder_form'),
     path('userWishlist/',views.userWishlist_check, name='userWishlist'),
     path('userWishlist_form/',views.UserWishlistField.as_view(),name='userWishlist_form')
+
 ]
 
 

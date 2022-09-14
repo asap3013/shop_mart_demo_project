@@ -1,10 +1,7 @@
-import email
 from django.contrib.auth.models import Group
-from email import message
-from email.policy import default
-from itertools import product
-from unicodedata import category, decimal, name
 from django.db import models
+from django.contrib.auth.models import User
+
 
 class Configuration(models.Model):
     conf_key = models.CharField(max_length=45)
@@ -55,7 +52,6 @@ class Banners(models.Model):
 
 
 
-
 class EmailTemplate(models.Model):
     title = models.CharField(max_length=45)
     subject = models.CharField(max_length=255)
@@ -92,13 +88,15 @@ class ContactUs(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
-    parent_id = models.IntegerField()
-    created_by = models.IntegerField()
+    parent_id = models.IntegerField(default=1)
+    created_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='Category_created_by')
     created_date = models.DateTimeField(auto_now_add=True)
-    modify_by = models.IntegerField()
+    modify_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='Category_modified_by')
     modify_date = models.DateTimeField(auto_now=True)
     status = models.BooleanField()
 
+    def __str__(self):
+            return self.name
     class Meta:
         verbose_name = "Category"
         verbose_name_plural = "Category"
@@ -110,8 +108,8 @@ class Product(models.Model):
     short_description = models.CharField(max_length=100)
     long_description = models.TextField()
     price = models.FloatField()
-    special_price_from = models.DateTimeField()
-    special_price_to = models.DateTimeField()
+    special_price_from = models.DateTimeField(auto_now_add=True)
+    special_price_to = models.DateTimeField(auto_now_add=True)
     status = models.BooleanField()
     quantity = models.IntegerField()
     meta_title = models.TextField()
@@ -120,7 +118,7 @@ class Product(models.Model):
     created_by = models.IntegerField()
     created_date = models.DateTimeField(auto_now_add=True)
     modify_by = models.IntegerField()
-    modify_date = models.DateTimeField(auto_now=True)
+    modify_date = models.DateTimeField(auto_now_add=True)
     is_featured = models.BooleanField()
 
     def __str__(self):

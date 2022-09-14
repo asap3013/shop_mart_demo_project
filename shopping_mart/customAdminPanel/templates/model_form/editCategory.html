@@ -1,6 +1,7 @@
 {% extends 'starter.html' %}
 
 {% block content %}
+<form action="" method="post" enctype="multipart/form-data">
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <section class="content-header">
@@ -28,7 +29,6 @@
             <div class="card-header">
               <h3 class="card-title">Add Category</h3>
             </div>
-            <form action="{% url 'customAdminPanel:category_form' %}" method="post" enctype="multipart/form-data">
               {% csrf_token %}
               <div class="card-body">
                 <div class="form-group">
@@ -39,14 +39,14 @@
                   <label for="parent_id">Parent Id</label>
                   {{ form.parent_id }}
                 </div>
-                <!-- <div class="form-group">
+                <div class="form-group">
                     <label for="parent_id">created by</label>
                     {{ form.created_by }}
-                  </div> -->
-                  <!-- <div class="form-group">
+                  </div>
+                  <div class="form-group">
                     <label for="parent_id">modify by</label>
                     {{ form.modify_by }}
-                  </div> -->
+                  </div>
                 <div class="form-check">
                   <label class="form-check-label" for="status">Check me out</label>
                   {{ form.status }}
@@ -57,13 +57,13 @@
               <div class="card-footer">
                 <button type="submit" class="btn btn-primary">Submit</button>
               </div>
-            </form>
           </div>
         </div>
       </div>
     </div>
   </section>
 </div>
+</form>
 {% endblock %}
 {% block script %}
 <script>

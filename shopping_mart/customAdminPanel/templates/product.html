@@ -19,6 +19,53 @@
                             <button style="float: right; width: 150px; height: 40px;" type="submit"
                                 class="btn btn-block btn-primary">Add</button>
                         </form>
+                        <div class="card-body">
+                            <table id="example2" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>sku</th>
+                                        <th>short_description</th>
+                                        <th>long_description</th>
+                                        <th>special_price_from</th>
+                                        <th>special_price_to</th>
+                                        <th>Status</th>
+                                        <!-- <th>quantity</th>
+                                        <th>meta_title</th>
+                                        <th>meta_description</th>
+                                        <th>meta_keywords</th>
+                                        <th>created_by</th>
+                                        <th>created_date</th>
+                                        <th>modify_by</th>
+                                        <th>modify_date</th>
+                                        <th>is_featured</th> -->
+                                        <!-- <th scope="col" colspan="2">Action</th> -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in obj %}
+                                    <tr>
+                                        <td>{{i.name}}</td>
+                                        <td>{{i.sku}}</td>
+                                        <td>{{i.short_description}}</td>
+                                        <td>{{i.long_description}}</td>
+                                        <td>{{i.special_price_from}}</td>
+                                        <td>{{i.special_price_to}}</td>
+                                        <td>{{i.status}}</td>
+                                        <td>{{i.quantity}}</td>
+                                        <td>{{i.meta_title}}</td>
+                                        <td>{{i.meta_description}}</td>
+                                        <td>{{i.meta_keywords}}</td>
+                                        <td>{{i.created_by}}</td>
+                                        <td>{{i.created_date}}</td>
+                                        <td>{{i.modify_by}}</td>
+                                        <td>{{i.modify_date}}</td>
+                                        <td>{{i.is_featured}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

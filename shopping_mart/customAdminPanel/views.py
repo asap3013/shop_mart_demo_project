@@ -6,6 +6,8 @@ from django.contrib.auth import authenticate
 from django.contrib import messages
 from customAdminPanel.form import *  
 from django.views import View
+from django.contrib.auth.models import User
+
 
 
 def adminLogin(request):
@@ -106,27 +108,6 @@ class EditBanner(View):
             fm.save()
             return redirect('customAdminPanel:banner',{})
 
-# class CategoryField(LoginRequiredMixin,View):
-#     login_url = '/adminpanel/login'
-#     def get(self,request):
-#         obj=CategoryForm()
-#         return render(request,"model_form/category_form.html",{'form':obj})
-#     # @login_required
-#     def post(self,request):
-#         obj=CategoryForm(request.POST)
-#         if obj.is_valid():
-#             obj.save()
-#             # print(instance.name)
-#             return redirect('customAdminPanel:category')
-#         else:
-#             return render(request,"model_form/category_form.html",{'form':obj})
-
-# @login_required(redirect_field_name='login', login_url='/adminpanel/login')
-# def category_check(request): 
-#     fm = Category.objects.all() 
-#     context = {'form':fm}
-#     return render(request,"category.html",context)
-
 
 class CategoryField(View):   
     def get(self,request):
@@ -135,7 +116,10 @@ class CategoryField(View):
     def post(self,request):
         obj=CategoryForm(request.POST)
         if obj.is_valid():
-            obj.save()
+            instance = obj.save()
+            instance.created_by = request.user
+            instance.modify_by = request.user
+            instance.save()
             return redirect('customAdminPanel:category')
         else:
             return render(request,"model_form/category_form.html",{'form':obj})
@@ -145,7 +129,31 @@ def category_check(request):
       keys={"obj":obj}
       return render(request,"category.html",keys)
 
+class DeleteCategory(View):
+    def post(self,request):
+        data=request.POST
+        id=data.get('id')
+        fm=Category.objects.get(id=id)
+        fm.delete()
+        return redirect('customAdminPanel:category')
+class EditCategory(View):
+    """_summary_
 
+    Args:
+        View (_type_): _description_
+    """
+    def get(self,request,id):
+        obj=Category.objects.get(id=id)
+        fm=CategoryForm(instance=obj)
+        return render(request,"model_form/editCategory.html",{'form':fm})
+
+    def post(self,request, id):
+        cat = Category.objects.get(id=id)
+        fm = CategoryForm(request.POST,instance=cat)
+        if fm.is_valid():
+            fm.save()
+            return redirect('customAdminPanel:category')
+        
 
 class CmsField(LoginRequiredMixin,View):
     """_summary_
@@ -397,8 +405,7 @@ class ProductField(LoginRequiredMixin,View):
     def post(self,request):
         obj=ProductForm(request.POST,request.FILES)
         if obj.is_valid():
-            instance=obj.save()
-            print(instance.banner_path.path)
+            obj.save()
             return redirect('customAdminPanel:product')
         else:
             return render(request,"model_form/product_form.html",{'form':obj})
@@ -406,7 +413,7 @@ class ProductField(LoginRequiredMixin,View):
 @login_required(redirect_field_name='login', login_url='/adminpanel/login')
 def product_check(request): 
     fm = Product.objects.all() 
-    context = {'form':fm}
+    context = {'obj':fm}
     return render(request,"product.html",context)
 
 
