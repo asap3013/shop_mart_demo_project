@@ -88,7 +88,7 @@ class ContactUs(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
-    parent_id = models.IntegerField(default=1)
+    parent_id = models.ForeignKey("self", null=True,blank=True,on_delete=models.CASCADE)
     created_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='Category_created_by')
     created_date = models.DateTimeField(auto_now_add=True)
     modify_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='Category_modified_by')

@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'shopping_mart.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'shopMartAdminData',
+        'NAME': 'adminshopping_mart',
         'HOST': 'localhost',
         'USER': 'root',
         'PASSWORD': 'p@ssw0rd',
