@@ -416,6 +416,31 @@ def product_check(request):
     context = {'obj':fm}
     return render(request,"product.html",context)
 
+class DeleteProduct(View):
+    def post(self,request):
+        data=request.POST
+        id=data.get('id')
+        fm=Product.objects.get(id=id)
+        fm.delete()
+        return redirect('customAdminPanel:product')
+class EditProduct(View):
+    """_summary_
+
+    Args:
+        View (_type_): _description_
+    """
+    def get(self,request,id):
+        obj=Product.objects.get(id=id)
+        fm=ProductForm(instance=obj)
+        return render(request,"model_form/editProduct.html",{'form':fm})
+
+    def post(self,request, id):
+        cat = Product.objects.get(id=id)
+        fm = ProductForm(request.POST,instance=cat)
+        if fm.is_valid():
+            fm.save()
+            return redirect('customAdminPanel:product')
+
 
 
 class ProductAttributesField(LoginRequiredMixin,View):

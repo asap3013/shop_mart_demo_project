@@ -1,6 +1,7 @@
 {% extends 'starter.html' %}
 
 {% block content %}
+<form action="" method="post" enctype="multipart/form-data">
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <section class="content-header">
@@ -32,7 +33,7 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form action="{% url 'customAdminPanel:product_form' %}" method="post" enctype="multipart/form-data">
+            
               {% csrf_token %}
               <div class="card-body">
                 <div class="form-group">
@@ -56,6 +57,14 @@
                   {{ form.price }}
                 </div>
                 <div class="form-group">
+                  <label for="special_price_from">product special_price_from</label>
+                  {{ form.special_price_from }}
+                </div>
+                <div class="form-group">
+                  <label for="special_price_to">product special_price_to</label>
+                  {{ form.special_price_to }}
+                </div>
+                <div class="form-group">
                   <label for="status">product status</label>
                   {{ form.status }}
                 </div>
@@ -76,18 +85,11 @@
                   {{ form.meta_keywords }}
                 </div>
                 <div class="form-group">
-                  <label for="created_by">product created_by</label>
-                  {{ form.created_by }}
-                </div>
-                <div class="form-group">
-                  <label for="modify_by">product modify_by</label>
-                  {{ form.modify_by }}
-                </div>
-                <div class="form-group">
                   <label for="is_featured">product is_featured</label>
                   {{ form.is_featured }}
                 </div>
               </div>
+
               <div class="card-footer">
                 <button type="submit" class="btn btn-primary">Submit</button>
               </div>

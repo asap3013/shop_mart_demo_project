@@ -88,7 +88,7 @@ class ContactUs(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
-    parent_id = models.ForeignKey("self", null=True,blank=True,on_delete=models.CASCADE)
+    parent_id = models.ForeignKey("self", null=True,on_delete=models.CASCADE)
     created_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='Category_created_by')
     created_date = models.DateTimeField(auto_now_add=True)
     modify_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='Category_modified_by')
@@ -105,7 +105,7 @@ class Category(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=100)
     sku = models.CharField(max_length=45)
-    short_description = models.CharField(max_length=100)
+    short_description = models.TextField()
     long_description = models.TextField()
     price = models.FloatField()
     special_price_from = models.DateTimeField(auto_now_add=True)
@@ -122,7 +122,7 @@ class Product(models.Model):
     is_featured = models.BooleanField()
 
     def __str__(self):
-        return self.Product
+        return self.name
 
     class Meta:
         verbose_name = "Product"
