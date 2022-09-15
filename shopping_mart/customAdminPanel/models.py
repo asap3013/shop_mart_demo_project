@@ -150,7 +150,7 @@ class ProductImages(models.Model):
     product_id = models.ForeignKey(Product,on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.ProductImages
+        return self.image_name
 
     class Meta:
         verbose_name = "ProductImages"

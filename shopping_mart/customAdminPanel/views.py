@@ -605,6 +605,32 @@ def productImages_check(request):
     return render(request,"productImages.html",context)
 
 
+class DeleteProductImage(View):
+    def post(self,request):
+        data=request.POST
+        id=data.get('id')
+        fm=ProductImages.objects.get(id=id)
+        fm.delete()
+        return redirect('customAdminPanel:productImages')
+class EditProductImage(View):
+    """_summary_
+
+    Args:
+        View (_type_): _description_
+    """
+    def get(self,request,id):
+        obj=ProductImages.objects.get(id=id)
+        fm=ProductImagesForm(instance=obj)
+        return render(request,"model_form/editProductImage.html",{'form':fm})
+
+    def post(self,request, id):
+        cat = ProductImages.objects.get(id=id)
+        fm = ProductImagesForm(request.POST,instance=cat)
+        if fm.is_valid():
+            fm.save()
+            return redirect('customAdminPanel:productImages')
+
+
 
 class UsedCouponField(LoginRequiredMixin,View):
     """_summary_
