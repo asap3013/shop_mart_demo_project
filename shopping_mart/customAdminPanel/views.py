@@ -560,8 +560,7 @@ class ProductCategoryField(LoginRequiredMixin,View):
     def post(self,request):
         obj=ProductCategoryForm(request.POST,request.FILES)
         if obj.is_valid():
-            instance=obj.save()
-            print(instance.banner_path.path)
+            obj.save()
             return redirect('customAdminPanel:productCategory')
         else:
             return render(request,"model_form/productCategory_form.html",{'form':obj})
@@ -571,6 +570,32 @@ def productCategory_check(request):
     fm = ProductCategories.objects.all() 
     context = {'form':fm}
     return render(request,"productCategory.html",context)
+
+class DeleteProductCategory(View):
+    def post(self,request):
+        data=request.POST
+        id=data.get('id')
+        fm=ProductCategories.objects.get(id=id)
+        fm.delete()
+        return redirect('customAdminPanel:productCategory')
+class EditProductCategory(View):
+    """_summary_
+
+    Args:
+        View (_type_): _description_
+    """
+    def get(self,request,id):
+        obj=ProductCategories.objects.get(id=id)
+        fm=ProductCategoryForm(instance=obj)
+        return render(request,"model_form/editProductCategory.html",{'form':fm})
+
+    def post(self,request, id):
+        cat = ProductCategories.objects.get(id=id)
+        fm = ProductCategoryForm(request.POST,instance=cat)
+        if fm.is_valid():
+            fm.save()
+            return redirect('customAdminPanel:productCategory')
+
 
 
 class ProductImagesField(LoginRequiredMixin,View):
@@ -592,8 +617,7 @@ class ProductImagesField(LoginRequiredMixin,View):
     def post(self,request):
         obj=ProductImagesForm(request.POST,request.FILES)
         if obj.is_valid():
-            instance=obj.save()
-            print(instance.banner_path.path)
+            obj.save()
             return redirect('customAdminPanel:productImages')
         else:
             return render(request,"model_form/productImages_form.html",{'form':obj})

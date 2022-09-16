@@ -104,6 +104,7 @@ class Category(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
+    product_image = models.ImageField(upload_to='shop_mart/product_images',default="")
     sku = models.CharField(max_length=45)
     short_description = models.TextField()
     long_description = models.TextField()
