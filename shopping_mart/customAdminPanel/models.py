@@ -104,7 +104,6 @@ class Category(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
-    product_image = models.ImageField(upload_to='shop_mart/product_images',default="")
     sku = models.CharField(max_length=45)
     short_description = models.TextField()
     long_description = models.TextField()
@@ -116,11 +115,12 @@ class Product(models.Model):
     meta_title = models.TextField()
     meta_description = models.TextField()
     meta_keywords = models.TextField()
-    created_by = models.IntegerField()
+    created_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='Product_created_by')
     created_date = models.DateTimeField(auto_now_add=True)
-    modify_by = models.IntegerField()
+    modify_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='Product_modified_by')
     modify_date = models.DateTimeField(auto_now_add=True)
     is_featured = models.BooleanField()
+    # image = models.ImageField(upload_to='shop_mart/product_images',default="")
 
     def __str__(self):
         return self.name
@@ -144,9 +144,9 @@ class ProductCategories(models.Model):
 class ProductImages(models.Model):
     image_name = models.CharField(max_length=100)
     status = models.BooleanField()
-    created_by = models.IntegerField()
+    created_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='ProductImages_created_by')
     created_date = models.DateTimeField(auto_now_add=True)
-    modify_by = models.IntegerField()
+    modify_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='ProductImages_modified_by')
     modify_date = models.DateTimeField(auto_now=True)   
     product_id = models.ForeignKey(Product,on_delete=models.CASCADE)
 
@@ -259,9 +259,9 @@ class PaymentGateway(models.Model):
 
 class ProductAttributes(models.Model):
     name = models.CharField(max_length=45)
-    created_by = models.IntegerField()
+    created_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='ProductAttributes_created_by')
     created_date = models.DateTimeField(auto_now_add=True)
-    modify_by = models.IntegerField()
+    modify_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='ProductAttributes_modified_by')
     modify_date = models.DateTimeField(auto_now=True) 
 
 

@@ -24,7 +24,7 @@
                                 <thead>
                                     <tr>
                                         <th>Name</th>
-                                        <th>Product image</th>
+                                        <!-- <th>Image</th> -->
                                         <th>sku</th>
                                         <th>short_description</th>
                                         <th>long_description</th>
@@ -47,17 +47,16 @@
                                     {% for i in obj %}
                                     <tr>
                                         <td>{{i.name}}</td>
-                                        {% if i.product_image %}
+                                        <!-- {% if i.image %}
                                         <td>
-                                            <img src="{{ i.product_image.url }}" alt="" style="height: 30px"
-                                                width="30px">
+                                            <img src="{{ i.image.url }}" alt="" style="height: 30px" width="30px">
                                         </td>
                                         {% else %}
                                         <td>
-                                            <img src="/shop_mart/shopping_mart/media/shop_mart/product_image"
-                                                style="height: 30px" width="30px" ;>
+                                            <img src="/shop_mart/shopping_mart/media/shop_mart" style="height: 30px"
+                                                width="30px" ;>
                                         </td>
-                                        {% endif %}
+                                        {% endif %} -->
                                         <td>{{i.sku}}</td>
                                         <td>{{i.short_description}}</td>
                                         <td>{{i.long_description}}</td>

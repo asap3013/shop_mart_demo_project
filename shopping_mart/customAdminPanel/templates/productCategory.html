@@ -11,7 +11,7 @@
                         <div class="col-sm-12">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">productCategory</li>
+                                <li class="breadcrumb-item active">product category</li>
                             </ol>
                         </div>
                         <form action="{% url 'customAdminPanel:productCategory_form' %}">
@@ -19,12 +19,12 @@
                             <button style="float: right; width: 150px; height: 40px;" type="submit"
                                 class="btn btn-block btn-primary">Add</button>
                         </form>
-                        <div class="card-body">
-                            <table id="example2" class="table table-bordered table-hover">
+                        <div class="card-body" style="width:100%; overflow: scroll;">
+                            <table id="example2" class="table table-bordered table-hover" style="width:2000px;">
                                 <thead>
                                     <tr>
                                         <th>product id</th>
-                                        <th>category id</th>
+                                        <th>Product category id</th>
                                         <th scope="col" colspan="2">Action</th>
                                     </tr>
                                 </thead>
@@ -67,10 +67,10 @@
                                                                 <button type="submit" class="btn btn-danger">Ok
                                                                 </button>
                                                             </div>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
-                                            </form>
                                         </td>
                                     </tr>
                                     {% endfor %}
@@ -83,6 +83,7 @@
         </div>
     </section>
 </div>
+
 
 
 <!-- <script type="text/javascript">
