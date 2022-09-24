@@ -43,7 +43,7 @@ admin.site.register(ProductCategories,ProductCategoriesAdmin)
 
 
 class ProductImagesAdmin(admin.ModelAdmin):
-    list_display = ('image_name','status','created_by','created_date','modify_by','modify_date','product_id')
+    list_display = ('image_path','status','created_by','created_date','modify_by','modify_date','product_id')
 admin.site.register(ProductImages,ProductImagesAdmin)
 
 class UserAdmin(admin.ModelAdmin):

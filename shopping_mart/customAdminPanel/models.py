@@ -1,6 +1,7 @@
 from django.contrib.auth.models import Group
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 
 
 class Configuration(models.Model):
@@ -142,13 +143,13 @@ class ProductCategories(models.Model):
         verbose_name_plural = "ProductCategories"
 
 class ProductImages(models.Model):
-    image_name = models.CharField(max_length=100)
+    image_path = models.ImageField(upload_to='shop_mart/product_images',default="")
     status = models.BooleanField()
     created_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='ProductImages_created_by')
     created_date = models.DateTimeField(auto_now_add=True)
     modify_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='ProductImages_modified_by')
     modify_date = models.DateTimeField(auto_now=True)   
-    product_id = models.ForeignKey(Product,on_delete=models.CASCADE)
+    product_id = models.ForeignKey(Product,on_delete=models.CASCADE,blank=True)
 
     def __str__(self):
         return self.image_name
@@ -266,7 +267,7 @@ class ProductAttributes(models.Model):
 
 
     def __str__(self):
-        return self.ProductAttributesName
+        return self.name
 
     class Meta:
         verbose_name = "ProductAttributes"
@@ -277,13 +278,11 @@ class ProductAttributes(models.Model):
 class ProductAttributesValues(models.Model):
     product_attribute_id = models.ForeignKey(ProductAttributes,on_delete=models.CASCADE)
     attribute_value = models.CharField(max_length=45)
-    created_by = models.IntegerField()
+    created_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='ProductAttributesValues_created_by')
     created_date = models.DateTimeField(auto_now_add=True)
-    modify_by = models.IntegerField()
+    modify_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='ProductAttributesValues_modified_by')
     modify_date = models.DateTimeField(auto_now=True) 
 
-    def __str__(self):
-        return self.ProductAttributesValues
 
     class Meta:
         verbose_name = "ProductAttributesValues"
@@ -291,12 +290,10 @@ class ProductAttributesValues(models.Model):
 
 
 class ProductAttributesAssoc(models.Model):
-    product_id = models.ForeignKey(Product,on_delete=models.CASCADE)
+    product_id = models.ForeignKey(Product,on_delete=models.CASCADE,blank=True)
     product_attribute_id = models.ForeignKey(ProductAttributes,on_delete=models.CASCADE)
-    product_attribute_value = models.ForeignKey('ProductAttributesAssoc',on_delete=models.CASCADE)
+    product_attribute_value = models.ForeignKey('self',on_delete=models.CASCADE,blank=True)
 
-    def __str__(self):
-        return self.ProductAttributesAssoc
 
     class Meta:
         verbose_name = "ProductAttributesAssoc"

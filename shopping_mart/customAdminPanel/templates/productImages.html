@@ -23,7 +23,7 @@
                             <table id="example2" class="table table-bordered table-hover" style="width:2000px;">
                                 <thead>
                                     <tr>
-                                        <th>image_name</th>
+                                        <th>image_path</th>
                                         <th>status</th>
                                         <th>created_by</th>
                                         <th>created_date</th>
@@ -36,7 +36,7 @@
                                 <tbody>
                                     {% for i in obj %}
                                     <tr>
-                                        <td>{{i.image_name}}</td>
+                                        <td>{{i.image_path}}</td>
                                         <td>{{i.status}}</td>
                                         <td>{{i.created_by}}</td>
                                         <td>{{i.created_date}}</td>

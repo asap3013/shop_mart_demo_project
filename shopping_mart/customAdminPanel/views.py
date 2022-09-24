@@ -1,3 +1,4 @@
+from urllib import response
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login, logout
@@ -7,6 +8,10 @@ from django.contrib import messages
 from customAdminPanel.form import *
 from django.views import View
 from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+
+
 
 
 def adminLogin(request):
@@ -71,8 +76,7 @@ class BannerField(LoginRequiredMixin, View):
     def post(self, request):
         obj = BannersForm(request.POST, request.FILES)
         if obj.is_valid():
-            instance = obj.save()
-            print(instance.banner_path.path)
+            obj.save()
             return redirect('customAdminPanel:banner')
         else:
             return render(request, "model_form/banner_form.html", {'form': obj})
@@ -427,34 +431,44 @@ class ProductField(LoginRequiredMixin, View):
 
     def get(self, request):
         prod_form = ProductForm()
-        prod_attr_form = ProductAttributesForm()
         prod_img_form = ProductImagesForm()
-        return render(request, "model_form/product_form.html", {'form': prod_form,'form1':prod_attr_form,'form2':prod_img_form})
+        prod_attrAssoc_form = ProductAttributesAssocForm()
+        return render(request, "model_form/product_form.html", {'form': prod_form, 'form1':prod_img_form,'form2': prod_attrAssoc_form})
     # @login_required
 
     def post(self, request):
         # obj = ProductForm(request.POST, request.FILES)
         breakpoint()
         prod_form = ProductForm(request.POST)
-        prod_attr_form = ProductAttributesForm(request.POST)
         prod_img_form = ProductImagesForm(request.POST, request.FILES)
-        if prod_form.is_valid():
-            if prod_attr_form.is_valid():
-                if prod_img_form.is_valid():
-                    instance = prod_form.save()
-                    instance1 = prod_attr_form.save()
-                    instance2 = prod_img_form.save()
-                    instance.created_by = request.user
-                    instance.modify_by = request.user
-                    instance.save()
-                    instance1.save()
-                    instance2.save()
+        prod_attrAssoc_form = ProductAttributesAssocForm(request.POST)
+
+        if prod_form.is_valid() and prod_attrAssoc_form.is_valid() and prod_img_form.is_valid():
+            instance = prod_form.save()
+            instance.created_by = request.user
+            instance.modify_by = request.user
+            instance.save()
+            for file, stat in zip(request.FILES.getlist('prod_img_form-image_path'), request.POST.getlist('prod_img_form-status')):
+                name = file
+                image = ProductImages(product_id=prod_form, image_path=name, status=stat,
+                                    created_by=request.user, modify_by=request.user)
+                image.save()
+
+            for prod_attr, val in zip( request.POST.getlist('prod_attrAssoc_form-product_attribute_id'),request.POST.getlist('prod_attrAssoc_form-product_attribute_value')):
+                prod_attr = ProductAttributes.objects.get(id=prod_attr)
+                val = ProductAttributesValues.objects.get(id=val)
+                attr_assoc = ProductAttributesAssoc(product_id=prod_form,
+                                                    product_attribute_id=prod_attr,
+                                                    product_attribute_value=val)
+                attr_assoc.save()
             return redirect('customAdminPanel:product')
-            
+
         else:
-            return render(request, "model_form/product_form.html", {'form': prod_form,'form1':prod_attr_form,'form2':prod_img_form})
-            # return render(request, "model_form/product_form.html", {'form2': obj2})
-            # return render(request, "model_form/product_form.html", {'form3': obj3}
+            prod_form = ProductForm()
+            prod_img_form = ProductImagesForm()
+            prod_attrAssoc_form = ProductAttributesAssocForm()
+        return render(request, "model_form/product_form.html", {'form': prod_form},{'form1':prod_img_form},{'form2':prod_attrAssoc_form})
+
 
 
 @login_required(redirect_field_name='login', login_url='/adminpanel/login')
@@ -514,8 +528,7 @@ class ProductAttributesField(LoginRequiredMixin, View):
     def post(self, request):
         obj = ProductAttributesForm(request.POST, request.FILES)
         if obj.is_valid():
-            instance = obj.save()
-            print(instance.banner_path.path)
+            obj.save()
             return redirect('customAdminPanel:productAttributes')
         else:
             return render(request, "model_form/productAttributes_form.html", {'form': obj})
@@ -524,8 +537,35 @@ class ProductAttributesField(LoginRequiredMixin, View):
 @login_required(redirect_field_name='login', login_url='/adminpanel/login')
 def productAttributes_check(request):
     fm = ProductAttributes.objects.all()
-    context = {'form': fm}
+    context = {'obj': fm}
     return render(request, "productAttributes.html", context)
+
+class DeleteProductAttributes(View):
+    def post(self, request):
+        data = request.POST
+        id = data.get('id')
+        fm = ProductAttributes.objects.get(id=id)
+        fm.delete()
+        return redirect('customAdminPanel:productAttributes')
+
+class EditProductAttributes(View):
+    """_summary_
+
+    Args:
+        View (_type_): _description_
+    """
+
+    def get(self, request, id):
+        obj = ProductAttributes.objects.get(id=id)
+        fm = ProductAttributesForm(instance=obj)
+        return render(request, "model_form/editProductAttributes.html", {'form': fm})
+
+    def post(self, request, id):
+        cat = ProductAttributes.objects.get(id=id)
+        fm = ProductAttributesForm(request.POST, request.FILES, instance=cat)
+        if fm.is_valid():
+            fm.save()
+            return redirect('customAdminPanel:productAttributes')
 
 
 class ProductAttributesAssocField(LoginRequiredMixin, View):
@@ -550,7 +590,9 @@ class ProductAttributesAssocField(LoginRequiredMixin, View):
         obj = ProductAttributesAssocForm(request.POST, request.FILES)
         if obj.is_valid():
             instance = obj.save()
-            print(instance.banner_path.path)
+            instance.created_by = request.user.id
+            instance.modify_by = request.user.id
+            instance.save()
             return redirect('customAdminPanel:productAttributesAssoc')
         else:
             return render(request, "model_form/productAttributesAssoc_form.html", {'form': obj})
@@ -559,7 +601,7 @@ class ProductAttributesAssocField(LoginRequiredMixin, View):
 @login_required(redirect_field_name='login', login_url='/adminpanel/login')
 def productAttributesAssoc_check(request):
     fm = ProductAttributesAssoc.objects.all()
-    context = {'form': fm}
+    context = {'obj': fm}
     return render(request, "productAttributesAssoc.html", context)
 
 
@@ -585,7 +627,9 @@ class ProductAttributesValuesField(LoginRequiredMixin, View):
         obj = ProductAttributesValuesForm(request.POST, request.FILES)
         if obj.is_valid():
             instance = obj.save()
-            print(instance.banner_path.path)
+            instance.created_by = request.user
+            instance.modify_by = request.user
+            instance.save()
             return redirect('customAdminPanel:productAttributesValues')
         else:
             return render(request, "model_form/productAttributesValues_form.html", {'form': obj})
@@ -594,7 +638,7 @@ class ProductAttributesValuesField(LoginRequiredMixin, View):
 @login_required(redirect_field_name='login', login_url='/adminpanel/login')
 def productAttributesValues_check(request):
     fm = ProductAttributesValues.objects.all()
-    context = {'form': fm}
+    context = {'obj': fm}
     return render(request, "productAttributesValues.html", context)
 
 

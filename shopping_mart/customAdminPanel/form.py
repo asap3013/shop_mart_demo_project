@@ -73,7 +73,7 @@ class CouponForm(forms.ModelForm):
 class ProductForm(forms.ModelForm):  
     class Meta:  
         model = Product 
-        fields = '__all__'
+        fields = ['name','sku','short_description','long_description','price','status','quantity','meta_title','meta_description','meta_keywords','is_featured']
         # labels = {'banner_path': "banner", "status": "status",}
         # exclude = ('banner_path','status')
 

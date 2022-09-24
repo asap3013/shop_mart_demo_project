@@ -19,6 +19,32 @@
                             <button style="float: right; width: 150px; height: 40px;" type="submit"
                                 class="btn btn-block btn-primary">Add</button>
                         </form>
+                        <div class="card-body">
+                            <table id="example2" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>product attribute id</th>
+                                        <th>attribute_value</th>
+                                        <th>created_by</th>
+                                        <th>created_date</th>
+                                        <th>modify_by</th>
+                                        <th>modify_date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in obj %}
+                                    <tr>
+                                        <td>{{i.product_attribute_id}}</td>
+                                        <td>{{i.attribute_value}}</td>
+                                        <td>{{i.created_by}}</td>
+                                        <td>{{i.created_date}}</td>
+                                        <td>{{i.modify_by}}</td>
+                                        <td>{{i.modify_date}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -27,15 +53,6 @@
 </div>
 
 
-<!-- <script type="text/javascript">
-  $(document).ready(function () {
-    $("ul li a").click(function(){  
-      // $('a.active').each(function(){
-      $('li a').find(".active").removeClass('active');
-      $(this).parent().addClass('active');
-    });
-  });
-</script> -->
 {% endblock %}
 
 {% block script %}

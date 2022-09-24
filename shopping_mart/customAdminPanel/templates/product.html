@@ -40,6 +40,9 @@
                                         <th>modify_by</th>
                                         <th>modify_date</th>
                                         <th>is_featured</th>
+                                        <th>image</th>
+                                        <th>product_attribute_id</th>
+                                        <th>product_attribute_value</th>
                                         <th scope="col" colspan="2">Action</th>
                                     </tr>
                                 </thead>
@@ -47,16 +50,6 @@
                                     {% for i in obj %}
                                     <tr>
                                         <td>{{i.name}}</td>
-                                        <!-- {% if i.image %}
-                                        <td>
-                                            <img src="{{ i.image.url }}" alt="" style="height: 30px" width="30px">
-                                        </td>
-                                        {% else %}
-                                        <td>
-                                            <img src="/shop_mart/shopping_mart/media/shop_mart" style="height: 30px"
-                                                width="30px" ;>
-                                        </td>
-                                        {% endif %} -->
                                         <td>{{i.sku}}</td>
                                         <td>{{i.short_description}}</td>
                                         <td>{{i.long_description}}</td>
@@ -72,6 +65,18 @@
                                         <td>{{i.modify_by}}</td>
                                         <td>{{i.modify_date}}</td>
                                         <td>{{i.is_featured}}</td>
+                                        {% if i.image_path %}
+                                        <td>
+                                            <img src="{{ i.image_path.url }}" alt="" style="height: 30px" width="30px">
+                                        </td>
+                                        {% else %}
+                                        <td>
+                                            <img src="/shop_mart/shopping_mart/media/shop_mart" style="height: 30px"
+                                                width="30px" ;>
+                                        </td>
+                                        {% endif %}
+                                        <td>{{i.product_attribute_id}}</td>
+                                        <td>{{i.product_attribute_value}}</td>
                                         <td>
                                             <a href="{% url 'customAdminPanel:EditProduct' i.id %}"><button
                                                     class="btn btn-default btn-sm"><i

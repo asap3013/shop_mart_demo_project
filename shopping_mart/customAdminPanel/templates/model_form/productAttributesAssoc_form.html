@@ -36,22 +36,16 @@
               {% csrf_token %}
               <div class="card-body">
                 <div class="form-group">
-                  <label for="banner_name">Banner name</label>
-                  {{ form.banner_name }}
+                  <label for="product id">product id</label>
+                  {{ form.product_id }}
                 </div>
                 <div class="form-group">
-                  <label for="banner_path">Banner Path</label>
-                  {{ form.banner_path }}
-                  <!-- <div class="input-group">
-                      <div class="custom-file">
-                        <label class="custom-file-label" for="banner_path">Choose file</label>
-                        {{ form.banner_path }}
-                      </div>
-                    </div> -->
+                  <label for="product_attribute_id">product_attribute_id</label>
+                  {{ form.product_attribute_id }}
                 </div>
                 <div class="form-check">
-                  <label class="form-check-label" for="status">Check me out</label>
-                  {{ form.status }}
+                  <label class="form-check-label" for="product_attribute_value">product attribute value</label>
+                  {{ form.product_attribute_value }}
                 </div>
               </div>
               <!-- /.card-body -->
