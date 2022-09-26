@@ -1,4 +1,3 @@
-from urllib import response
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login, logout
@@ -7,10 +6,9 @@ from django.contrib.auth import authenticate
 from django.contrib import messages
 from customAdminPanel.form import *
 from django.views import View
-from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-
+# from django.contrib.auth.models import User
+from django.conf import settings
+User = settings.AUTH_USER_MODEL
 
 
 
@@ -263,18 +261,47 @@ class CouponField(LoginRequiredMixin, View):
         obj = CouponForm(request.POST, request.FILES)
         if obj.is_valid():
             instance = obj.save()
-            print(instance.banner_path.path)
-            return redirect('customAdminPanel:coupon')
+            instance.created_by = request.user
+            instance.modify_by = request.user
+            instance.save()
+            return redirect('customAdminPanel:coupon_form')
         else:
-            return render(request, "model_form/coupon_form.html", {'form': obj})
+            return render(request, "coupon.html", {'form': obj})
 
 
 @login_required(redirect_field_name='login', login_url='/adminpanel/login')
 def coupon_check(request):
     fm = Coupon.objects.all()
-    context = {'form': fm}
+    context = {'obj': fm}
     return render(request, "coupon.html", context)
 
+class DeleteCoupon(View):
+    def post(self, request):
+        data = request.POST
+        id = data.get('id')
+        fm = Coupon.objects.get(id=id)
+        fm.delete()
+        return redirect('customAdminPanel:coupon')
+
+
+class EditCoupon(View):
+    """_summary_
+
+    Args:
+        View (_type_): _description_
+    """
+
+    def get(self, request, id):
+        obj = Coupon.objects.get(id=id)
+        fm = CouponForm(instance=obj)
+        return render(request, "model_form/editCoupon.html", {'form': fm})
+
+    def post(self, request, id):
+        cat = Coupon.objects.get(id=id)
+        fm = CouponForm(request.POST, instance=cat)
+        if fm.is_valid():
+            fm.save()
+            return redirect('customAdminPanel:coupon')
 
 class ConfigurationField(LoginRequiredMixin, View):
     """_summary_
@@ -396,23 +423,25 @@ class PaymentGatewayField(LoginRequiredMixin, View):
 
     def get(self, request):
         obj = PaymentGatewayForm()
-        return render(request, "model_form/paymentGateway_form.html", {'form': obj})
+        return render(request, "paymentGateway.html", {'form': obj})
     # @login_required
 
     def post(self, request):
-        obj = PaymentGatewayForm(request.POST, request.FILES)
+        obj = PaymentGatewayForm(request.POST)
         if obj.is_valid():
             instance = obj.save()
-            print(instance.banner_path.path)
+            instance.created_by = request.user
+            instance.modify_by = request.user
+            instance.save()
             return redirect('customAdminPanel:paymentGateway')
         else:
-            return render(request, "model_form/paymentGateway_form.html", {'form': obj})
+            return render(request, "paymentGateway.html", {'form': obj})
 
 
 @login_required(redirect_field_name='login', login_url='/adminpanel/login')
 def paymentGateway_check(request):
     fm = PaymentGateway.objects.all()
-    context = {'form': fm}
+    context = {'obj': fm}
     return render(request, "paymentGateway.html", context)
 
 
@@ -450,14 +479,14 @@ class ProductField(LoginRequiredMixin, View):
             instance.save()
             for file, stat in zip(request.FILES.getlist('prod_img_form-image_path'), request.POST.getlist('prod_img_form-status')):
                 name = file
-                image = ProductImages(product_id=prod_form, image_path=name, status=stat,
+                image = ProductImages(product_id=instance, image_path=name, status=stat,
                                     created_by=request.user, modify_by=request.user)
                 image.save()
 
             for prod_attr, val in zip( request.POST.getlist('prod_attrAssoc_form-product_attribute_id'),request.POST.getlist('prod_attrAssoc_form-product_attribute_value')):
                 prod_attr = ProductAttributes.objects.get(id=prod_attr)
                 val = ProductAttributesValues.objects.get(id=val)
-                attr_assoc = ProductAttributesAssoc(product_id=prod_form,
+                attr_assoc = ProductAttributesAssoc(product_id=instance,
                                                     product_attribute_id=prod_attr,
                                                     product_attribute_value=val)
                 attr_assoc.save()
@@ -528,7 +557,10 @@ class ProductAttributesField(LoginRequiredMixin, View):
     def post(self, request):
         obj = ProductAttributesForm(request.POST, request.FILES)
         if obj.is_valid():
-            obj.save()
+            instance=obj.save()
+            instance.created_by = request.user
+            instance.modify_by = request.user
+            instance.save()
             return redirect('customAdminPanel:productAttributes')
         else:
             return render(request, "model_form/productAttributes_form.html", {'form': obj})
@@ -672,7 +704,7 @@ class ProductCategoryField(LoginRequiredMixin, View):
 @login_required(redirect_field_name='login', login_url='/adminpanel/login')
 def productCategory_check(request):
     fm = ProductCategories.objects.all()
-    context = {'form': fm}
+    context = {'obj': fm}
     return render(request, "productCategory.html", context)
 
 
@@ -705,67 +737,67 @@ class EditProductCategory(View):
             return redirect('customAdminPanel:productCategory')
 
 
-class ProductImagesField(LoginRequiredMixin, View):
-    """_summary_
+# class ProductImagesField(LoginRequiredMixin, View):
+#     """_summary_
 
-    Args:
-        LoginRequiredMixin (_type_): _description_
-        View (_type_): _description_
+#     Args:
+#         LoginRequiredMixin (_type_): _description_
+#         View (_type_): _description_
 
-    Returns:
-        _type_: _description_
-    """
+#     Returns:
+#         _type_: _description_
+#     """
 
-    login_url = '/adminpanel/login'
+#     login_url = '/adminpanel/login'
 
-    def get(self, request):
-        obj = ProductImagesForm()
-        return render(request, "model_form/productImages_form.html", {'form': obj})
-    # @login_required
+#     def get(self, request):
+#         obj = ProductImagesForm()
+#         return render(request, "model_form/productImages_form.html", {'form': obj})
+#     # @login_required
 
-    def post(self, request):
-        obj = ProductImagesForm(request.POST, request.FILES)
-        if obj.is_valid():
-            obj.save()
-            return redirect('customAdminPanel:productImages')
-        else:
-            return render(request, "model_form/productImages_form.html", {'form': obj})
-
-
-@login_required(redirect_field_name='login', login_url='/adminpanel/login')
-def productImages_check(request):
-    fm = ProductImages.objects.all()
-    context = {'obj': fm}
-    return render(request, "productImages.html", context)
+#     def post(self, request):
+#         obj = ProductImagesForm(request.POST, request.FILES)
+#         if obj.is_valid():
+#             obj.save()
+#             return redirect('customAdminPanel:productImages')
+#         else:
+#             return render(request, "model_form/productImages_form.html", {'form': obj})
 
 
-class DeleteProductImage(View):
-    def post(self, request):
-        data = request.POST
-        id = data.get('id')
-        fm = ProductImages.objects.get(id=id)
-        fm.delete()
-        return redirect('customAdminPanel:productImages')
+# @login_required(redirect_field_name='login', login_url='/adminpanel/login')
+# def productImages_check(request):
+#     fm = ProductImages.objects.all()
+#     context = {'obj': fm}
+#     return render(request, "productImages.html", context)
 
 
-class EditProductImage(View):
-    """_summary_
+# class DeleteProductImage(View):
+#     def post(self, request):
+#         data = request.POST
+#         id = data.get('id')
+#         fm = ProductImages.objects.get(id=id)
+#         fm.delete()
+#         return redirect('customAdminPanel:productImages')
 
-    Args:
-        View (_type_): _description_
-    """
 
-    def get(self, request, id):
-        obj = ProductImages.objects.get(id=id)
-        fm = ProductImagesForm(instance=obj)
-        return render(request, "model_form/editProductImage.html", {'form': fm})
+# class EditProductImage(View):
+#     """_summary_
 
-    def post(self, request, id):
-        cat = Product.objects.get(id=id)
-        fm = ProductImagesForm(request.POST, request.FILES, instance=cat)
-        if fm.is_valid():
-            fm.save()
-            return redirect('customAdminPanel:productImages')
+#     Args:
+#         View (_type_): _description_
+#     """
+
+#     def get(self, request, id):
+#         obj = ProductImages.objects.get(id=id)
+#         fm = ProductImagesForm(instance=obj)
+#         return render(request, "model_form/editProductImage.html", {'form': fm})
+
+#     def post(self, request, id):
+#         cat = Product.objects.get(id=id)
+#         fm = ProductImagesForm(request.POST, request.FILES, instance=cat)
+#         if fm.is_valid():
+#             fm.save()
+#             return redirect('customAdminPanel:productImages')
 
 
 class UsedCouponField(LoginRequiredMixin, View):
@@ -817,15 +849,14 @@ class UserField(LoginRequiredMixin, View):
     login_url = '/adminpanel/login'
 
     def get(self, request):
-        obj = UserForm()
+        obj = UserCreationForm()
         return render(request, "model_form/user_form.html", {'form': obj})
     # @login_required
 
     def post(self, request):
-        obj = UserForm(request.POST, request.FILES)
+        obj = UserCreationForm(request.POST, request.FILES)
         if obj.is_valid():
-            instance = obj.save()
-            print(instance.banner_path.path)
+            obj.save()
             return redirect('customAdminPanel:user')
         else:
             return render(request, "model_form/user_form.html", {'form': obj})

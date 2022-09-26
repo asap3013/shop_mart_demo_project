@@ -1,8 +1,29 @@
 from django.contrib.auth.models import Group
 from django.db import models
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractUser
 
+
+class User(AbstractUser):
+    pass
+    # first_name = models.CharField(max_length=45)
+    # last_name = models.CharField(max_length=45)
+    # email = models.CharField(max_length=45)
+    # password = models.CharField(max_length=45)
+    # created_date = models.DateTimeField(auto_now_add=True)
+    # # to_token = models.CharField(max_length=100)
+    # # twitter_token = models.CharField(max_length=100)
+    # # google_token = models.CharField(max_length=100)
+    # group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='user_group')
+    # specify_role = [('M','manager'),('C','customer'),('A','admin')]
+    # role = models.CharField(max_length=10, choices=specify_role,default='')
+    
+    def __str__(self):
+        return self.username
+
+    class Meta:
+        verbose_name = "User"
+        verbose_name_plural = "User"
 
 class Configuration(models.Model):
     conf_key = models.CharField(max_length=45)
@@ -89,7 +110,7 @@ class ContactUs(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
-    parent_id = models.ForeignKey("self", null=True,on_delete=models.CASCADE)
+    parent_id = models.ForeignKey("self", null=True,blank=True,on_delete=models.CASCADE)
     created_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='Category_created_by')
     created_date = models.DateTimeField(auto_now_add=True)
     modify_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='Category_modified_by')
@@ -151,34 +172,12 @@ class ProductImages(models.Model):
     modify_date = models.DateTimeField(auto_now=True)   
     product_id = models.ForeignKey(Product,on_delete=models.CASCADE,blank=True)
 
-    def __str__(self):
-        return self.image_name
+    # def __str__(self):
+    #     return self.image_path
 
     class Meta:
         verbose_name = "ProductImages"
         verbose_name_plural = "ProductImages"
-
-
-class User(models.Model):
-    first_name = models.CharField(max_length=45)
-    last_name = models.CharField(max_length=45)
-    email = models.CharField(max_length=45)
-    password = models.CharField(max_length=45)
-    created_date = models.DateTimeField(auto_now_add=True)
-    # to_token = models.CharField(max_length=100)
-    # twitter_token = models.CharField(max_length=100)
-    # google_token = models.CharField(max_length=100)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='user_group')
-    specify_role = [('M','manager'),('C','customer'),('A','admin')]
-    role = models.CharField(max_length=10, choices=specify_role,default='')
-    
-    # def __str__(self):
-    #     return self.User
-
-    class Meta:
-        verbose_name = "User"
-        verbose_name_plural = "User"
-
 
 
 class UserWishList(models.Model):
@@ -213,14 +212,14 @@ class UserAddress(models.Model):
 class Coupon(models.Model):
     code = models.CharField(max_length=45)
     percent_off = models.FloatField()
-    created_by = models.IntegerField()
+    created_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='Coupon_created_by')
     created_date = models.DateTimeField(auto_now_add=True)
-    modify_by = models.IntegerField()
+    modify_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='Coupon_modified_by')
     modify_date = models.DateTimeField(auto_now=True) 
     no_of_user = models.IntegerField()
 
     def __str__(self):
-        return self.Coupon
+        return self.code
 
     class Meta:
         verbose_name = "Coupon"
@@ -244,9 +243,9 @@ class CouponsUsed(models.Model):
 
 class PaymentGateway(models.Model):
     name = models.CharField(max_length=45)
-    created_by = models.IntegerField()
+    created_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='PaymentGateway_created_by')
     created_date = models.DateTimeField(auto_now_add=True)
-    modify_by = models.IntegerField()
+    modify_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='PaymentGateway_modified_by')
     modify_date = models.DateTimeField(auto_now=True) 
 
     def __str__(self):
@@ -290,8 +289,8 @@ class ProductAttributesValues(models.Model):
 
 
 class ProductAttributesAssoc(models.Model):
-    product_id = models.ForeignKey(Product,on_delete=models.CASCADE,blank=True)
-    product_attribute_id = models.ForeignKey(ProductAttributes,on_delete=models.CASCADE)
+    product_id = models.ForeignKey(Product,on_delete=models.CASCADE,null=True,blank=True)
+    product_attribute_id = models.ForeignKey(ProductAttributes,on_delete=models.CASCADE,null=True,blank=True)
     product_attribute_value = models.ForeignKey('self',on_delete=models.CASCADE,blank=True)
 
 

@@ -1,6 +1,25 @@
 from django import forms  
 from customAdminPanel.models import *
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
+# class UserForm(forms.ModelForm):  
+#     class Meta:  
+#         model = User
+#         fields = '__all__'
+        # labels = {'banner_path': "banner", "status": "status",}
+        # exclude = ('banner_path','status')
+
+class UserCreationForm(UserCreationForm):
+
+    class Meta:
+        model = User
+        fields = ("username", "email")
+
+class UserChangeForm(UserChangeForm):
+
+    class Meta:
+        model = User
+        fields = ("username", "email")
 
 class BannersForm(forms.ModelForm):  
     class Meta:  
@@ -125,12 +144,6 @@ class UsedCouponForm(forms.ModelForm):
         # exclude = ('banner_path','status')
 
 
-class UserForm(forms.ModelForm):  
-    class Meta:  
-        model = User
-        fields = '__all__'
-        # labels = {'banner_path': "banner", "status": "status",}
-        # exclude = ('banner_path','status')
 
 
 class UserAddressForm(forms.ModelForm):  

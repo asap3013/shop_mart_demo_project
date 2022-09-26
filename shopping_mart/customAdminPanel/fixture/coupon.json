@@ -1,0 +1,31 @@
+[
+    {
+        "model":"customAdminPanel.Coupon",
+        "pk":1,
+        "fields":{
+            "code":"AABBCF43ERT",
+            "percent_off":10.00,
+            "created_by":1,
+            "created_date":	"2022-01-11 13:23:04",
+            "modify_by":1,
+            "modify_date":"2022-01-11 13:23:04",
+            "no_of_user":1
+         }
+
+    },
+    {
+        "model":"customAdminPanel.Coupon",
+        "pk":2,
+        "fields":{
+            "code":"AABBCF43ERT",
+            "percent_off":10.00,
+            "created_by":1,
+            "created_date":	"2022-02-11 13:23:04",
+            "modify_by":1,
+            "modify_date":"2022-02-11 13:23:04",
+            "no_of_user":1
+         }
+
+    }
+    
+] 

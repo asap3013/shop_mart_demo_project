@@ -1,0 +1,28 @@
+[
+    {
+       "model":"customAdminPanel.PaymentGateway",
+       "pk":1,
+       "fields":{
+           "name": "Paypal",
+           "created_by":1,
+           "created_date":	"2022-01-11 15:23:04",
+           "modify_by":1,
+           "modify_date":"2022-02-11 14:23:04"
+
+
+       }
+    },
+    {
+        "model":"customAdminPanel.PaymentGateway",
+        "pk":2,
+        "fields":{
+            "name": "Cash On Delivery",
+            "created_by":1,
+            "created_date":	"2022-03-11 13:22:04",
+            "modify_by":1,
+            "modify_date":"2022-04-11 13:19:04"
+        
+        }
+
+    }
+]

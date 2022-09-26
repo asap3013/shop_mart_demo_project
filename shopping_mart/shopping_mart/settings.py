@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'customAdminPanel'
 ]
+AUTH_USER_MODEL = 'customAdminPanel.User'
 
 
 MIDDLEWARE = [
@@ -85,14 +86,14 @@ WSGI_APPLICATION = 'shopping_mart.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'adminshopping_mart',
+        'NAME': 'shop_mart_Admindata',
         'HOST': 'localhost',
         'USER': 'root',
         'PASSWORD': 'p@ssw0rd',
         'PORT': '3306'
     }
 }
-# AUTH_USER_MODEL="customAdminPanel.User"
+AUTH_USER_MODEL="customAdminPanel.User"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -111,7 +112,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/

@@ -23,7 +23,7 @@
                             <table id="example2" class="table table-bordered table-hover" style="width:2000px;">
                                 <thead>
                                     <tr>
-                                        <th>image_path</th>
+                                        <th>image</th>
                                         <th>status</th>
                                         <th>created_by</th>
                                         <th>created_date</th>
@@ -36,7 +36,15 @@
                                 <tbody>
                                     {% for i in obj %}
                                     <tr>
-                                        <td>{{i.image_path}}</td>
+                                        {% if i.image_path %}
+                    <td>
+                      <img src="{{ i.image_path.url }}" alt="" style="height: 30px" width="30px">
+                    </td>
+                    {% else %}
+                    <td>
+                      <img src="/shop_mart/shopping_mart/media/shop_mart/productImages" style="height: 30px" width="30px" ;>
+                    </td>
+                    {% endif %}
                                         <td>{{i.status}}</td>
                                         <td>{{i.created_by}}</td>
                                         <td>{{i.created_date}}</td>

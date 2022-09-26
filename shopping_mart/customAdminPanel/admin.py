@@ -1,8 +1,25 @@
 from unicodedata import category
 from django.contrib import admin
 from customAdminPanel.models import *
+from django.contrib.auth.admin import UserAdmin 
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+
 
 # Register your models here.
+# class UserAdmin(UserAdmin):
+# admin.site.register(User,UserAdmin)
+
+
+
+class UserAdmin(UserAdmin):
+    add_form = UserCreationForm
+    form = UserChangeForm
+    model = User
+    list_display = ["email", "username",]
+
+admin.site.register(User, UserAdmin)
+
+
 class ConfigurationAdmin(admin.ModelAdmin):
     list_display=('conf_key','conf_value','created_by','created_date','modify_by','modify_date','modify_status')
 admin.site.register(Configuration,ConfigurationAdmin)
@@ -45,10 +62,6 @@ admin.site.register(ProductCategories,ProductCategoriesAdmin)
 class ProductImagesAdmin(admin.ModelAdmin):
     list_display = ('image_path','status','created_by','created_date','modify_by','modify_date','product_id')
 admin.site.register(ProductImages,ProductImagesAdmin)
-
-class UserAdmin(admin.ModelAdmin):
-    list_display = ('first_name','last_name','email','password','created_date','role')
-admin.site.register(User,UserAdmin)
 
 
 class UserWishlistAdmin(admin.ModelAdmin):
