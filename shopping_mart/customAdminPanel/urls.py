@@ -52,10 +52,10 @@ urlpatterns = [
     path('productCategory_form/',views.ProductCategoryField.as_view(),name='productCategory_form'),
     path("productCategorydelete/",views.DeleteProductCategory.as_view(),name="Delete_productCategory"),
     path("editProductCategory/<int:id>" ,views.EditProductCategory.as_view(),name="EditProductCategory"),
-    # path('productImages/',views.productImages_check, name='productImages'),
-    # path('productImages_form/',views.ProductImagesField.as_view(),name='productImages_form'),
-    # path("productImagesdelete/",views.DeleteProductImage.as_view(),name="Delete_productImage"),
-    # path("editProductImage/<int:id>" ,views.EditProductImage.as_view(),name="EditProductImage"),
+    path('productImages/',views.productImages_check, name='productImages'),
+    path('productImages_form/',views.ProductImagesField.as_view(),name='productImages_form'),
+    path("productImagesdelete/",views.DeleteProductImage.as_view(),name="Delete_productImage"),
+    path("editProductImage/<int:id>" ,views.EditProductImage.as_view(),name="EditProductImage"),
     path('usedCoupon/',views.usedCoupon_check, name='usedCoupon'),
     path('usedCoupon_form/',views.UsedCouponField.as_view(),name='usedCoupon_form'),
     path('user/',views.user_check, name='user'),
@@ -67,7 +67,8 @@ urlpatterns = [
     path('userWishlist/',views.userWishlist_check, name='userWishlist'),
     path('userWishlist_form/',views.UserWishlistField.as_view(),name='userWishlist_form')
 
-]
+]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+
 
 
 

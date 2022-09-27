@@ -249,7 +249,7 @@ class PaymentGateway(models.Model):
     modify_date = models.DateTimeField(auto_now=True) 
 
     def __str__(self):
-        return self.PaymentGateway
+        return self.name
 
     class Meta:
         verbose_name = "PaymentGateway"

@@ -467,36 +467,40 @@ class ProductField(LoginRequiredMixin, View):
 
     def post(self, request):
         # obj = ProductForm(request.POST, request.FILES)
-        breakpoint()
-        prod_form = ProductForm(request.POST)
-        prod_img_form = ProductImagesForm(request.POST, request.FILES)
-        prod_attrAssoc_form = ProductAttributesAssocForm(request.POST)
+        # breakpoint()
+        if request.method == "POST":
+            prod_form = ProductForm(request.POST)
+            prod_img_form = ProductImagesForm(request.POST, request.FILES)
+            prod_attrAssoc_form = ProductAttributesAssocForm(request.POST)
 
-        if prod_form.is_valid() and prod_attrAssoc_form.is_valid() and prod_img_form.is_valid():
-            instance = prod_form.save()
-            instance.created_by = request.user
-            instance.modify_by = request.user
-            instance.save()
-            for file, stat in zip(request.FILES.getlist('prod_img_form-image_path'), request.POST.getlist('prod_img_form-status')):
-                name = file
-                image = ProductImages(product_id=instance, image_path=name, status=stat,
-                                    created_by=request.user, modify_by=request.user)
-                image.save()
+            if prod_form.is_valid() and prod_img_form.is_valid() and prod_attrAssoc_form.is_valid():
+                instance = prod_form.save(commit=False)
+                instance.created_by = request.user
+                instance.modify_by = request.user
+                instance.save()
+                breakpoint()
+                for file in request.FILES.getlist('image_path'):
+                    name = file
+                    image = ProductImages(product_id=instance, image_path=name,
+                                        created_by=request.user, modify_by=request.user, status=True)
+                    image.save()
 
-            for prod_attr, val in zip( request.POST.getlist('prod_attrAssoc_form-product_attribute_id'),request.POST.getlist('prod_attrAssoc_form-product_attribute_value')):
-                prod_attr = ProductAttributes.objects.get(id=prod_attr)
-                val = ProductAttributesValues.objects.get(id=val)
-                attr_assoc = ProductAttributesAssoc(product_id=instance,
-                                                    product_attribute_id=prod_attr,
-                                                    product_attribute_value=val)
-                attr_assoc.save()
-            return redirect('customAdminPanel:product')
+                for prod_attr, val in zip( request.POST.getlist('prod_attrAssoc_form-product_attribute_id'),request.POST.getlist('prod_attrAssoc_form-product_attribute_value')):
+                    prod_attr = ProductAttributes.objects.get(id=prod_attr)
+                    val = ProductAttributesValues.objects.get(id=val)
+                    attr_assoc = ProductAttributesAssoc(product_id=instance,
+                                                        product_attribute_id=prod_attr,
+                                                        product_attribute_value=val)
+                    attr_assoc.save()
+                return redirect('customAdminPanel:product')
 
+            else:
+                prod_form = ProductForm()
+                prod_img_form = ProductImagesForm()
+                prod_attrAssoc_form = ProductAttributesAssocForm()
+            return render(request, "model_form/product_form.html", {'form': prod_form},{'form1':prod_img_form},{'form2':prod_attrAssoc_form})
         else:
-            prod_form = ProductForm()
-            prod_img_form = ProductImagesForm()
-            prod_attrAssoc_form = ProductAttributesAssocForm()
-        return render(request, "model_form/product_form.html", {'form': prod_form},{'form1':prod_img_form},{'form2':prod_attrAssoc_form})
+            return render(request, "model_form/product_form.html", {'form': prod_form},{'form1':prod_img_form},{'form2':prod_attrAssoc_form})
 
 
 
@@ -737,67 +741,70 @@ class EditProductCategory(View):
             return redirect('customAdminPanel:productCategory')
 
 
-# class ProductImagesField(LoginRequiredMixin, View):
-#     """_summary_
+class ProductImagesField(LoginRequiredMixin, View):
+    """_summary_
 
-#     Args:
-#         LoginRequiredMixin (_type_): _description_
-#         View (_type_): _description_
+    Args:
+        LoginRequiredMixin (_type_): _description_
+        View (_type_): _description_
 
-#     Returns:
-#         _type_: _description_
-#     """
+    Returns:
+        _type_: _description_
+    """
 
-#     login_url = '/adminpanel/login'
+    login_url = '/adminpanel/login'
 
-#     def get(self, request):
-#         obj = ProductImagesForm()
-#         return render(request, "model_form/productImages_form.html", {'form': obj})
-#     # @login_required
+    def get(self, request):
+        obj = ProductImagesForm()
+        return render(request, "model_form/productImages_form.html", {'form': obj})
+    # @login_required
 
-#     def post(self, request):
-#         obj = ProductImagesForm(request.POST, request.FILES)
-#         if obj.is_valid():
-#             obj.save()
-#             return redirect('customAdminPanel:productImages')
-#         else:
-#             return render(request, "model_form/productImages_form.html", {'form': obj})
-
-
-# @login_required(redirect_field_name='login', login_url='/adminpanel/login')
-# def productImages_check(request):
-#     fm = ProductImages.objects.all()
-#     context = {'obj': fm}
-#     return render(request, "productImages.html", context)
+    def post(self, request):
+        obj = ProductImagesForm(request.POST, request.FILES)
+        if obj.is_valid():
+            instance = obj.save()
+            instance.created_by = request.user
+            instance.modify_by = request.user
+            instance.save()
+            return redirect('customAdminPanel:productImages')
+        else:
+            return render(request, "model_form/productImages_form.html", {'form': obj})
 
 
-# class DeleteProductImage(View):
-#     def post(self, request):
-#         data = request.POST
-#         id = data.get('id')
-#         fm = ProductImages.objects.get(id=id)
-#         fm.delete()
-#         return redirect('customAdminPanel:productImages')
+@login_required(redirect_field_name='login', login_url='/adminpanel/login')
+def productImages_check(request):
+    fm = ProductImages.objects.all()
+    context = {'obj': fm}
+    return render(request, "productImages.html", context)
 
 
-# class EditProductImage(View):
-#     """_summary_
+class DeleteProductImage(View):
+    def post(self, request):
+        data = request.POST
+        id = data.get('id')
+        fm = ProductImages.objects.get(id=id)
+        fm.delete()
+        return redirect('customAdminPanel:productImages')
 
-#     Args:
-#         View (_type_): _description_
-#     """
 
-#     def get(self, request, id):
-#         obj = ProductImages.objects.get(id=id)
-#         fm = ProductImagesForm(instance=obj)
-#         return render(request, "model_form/editProductImage.html", {'form': fm})
+class EditProductImage(View):
+    """_summary_
 
-#     def post(self, request, id):
-#         cat = Product.objects.get(id=id)
-#         fm = ProductImagesForm(request.POST, request.FILES, instance=cat)
-#         if fm.is_valid():
-#             fm.save()
-#             return redirect('customAdminPanel:productImages')
+    Args:
+        View (_type_): _description_
+    """
+
+    def get(self, request, id):
+        obj = ProductImages.objects.get(id=id)
+        fm = ProductImagesForm(instance=obj)
+        return render(request, "model_form/editProductImage.html", {'form': fm})
+
+    def post(self, request, id):
+        cat = Product.objects.get(id=id)
+        fm = ProductImagesForm(request.POST, request.FILES, instance=cat)
+        if fm.is_valid():
+            fm.save()
+            return redirect('customAdminPanel:productImages')
 
 
 class UsedCouponField(LoginRequiredMixin, View):

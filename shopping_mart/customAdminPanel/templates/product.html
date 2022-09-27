@@ -65,13 +65,9 @@
                                         <td>{{i.modify_by}}</td>
                                         <td>{{i.modify_date}}</td>
                                         <td>{{i.is_featured}}</td>
-
-
-                                        {% if i.productimages_set.first.image_path.url %}
                                             <td>
-                                                <img src="{{ i.productimages_set.first.image_path.url }}" alt="" style="height: 30px" width="30px">
+                                            <img src="{{ i.productimages_set.all.image_path.url }}" alt="" style="height: 30px" width="30px">
                                             </td>
-                                        {% endif %}
                                         <td>{{i.product_attribute_id}}</td>
                                         <td>{{i.product_attribute_value}}</td>
                                         <td>

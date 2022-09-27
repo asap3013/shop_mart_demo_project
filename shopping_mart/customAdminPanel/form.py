@@ -107,7 +107,7 @@ class ProductAttributesForm(forms.ModelForm):
 class ProductAttributesAssocForm(forms.ModelForm):  
     class Meta:  
         model = ProductAttributesAssoc
-        fields = '__all__'
+        fields = ['product_attribute_id','product_attribute_value']
         # labels = {'banner_path': "banner", "status": "status",}
         # exclude = ('banner_path','status')
 
@@ -130,7 +130,7 @@ class ProductCategoryForm(forms.ModelForm):
 class ProductImagesForm(forms.ModelForm):  
     class Meta:  
         model = ProductImages 
-        fields = '__all__'
+        fields = ['image_path']
         # labels = {'banner_path': "banner", "status": "status",}
         # exclude = ('banner_path','status')
 

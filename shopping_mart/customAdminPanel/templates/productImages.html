@@ -42,9 +42,13 @@
                     </td>
                     {% else %}
                     <td>
-                      <img src="/shop_mart/shopping_mart/media/shop_mart/productImages" style="height: 30px" width="30px" ;>
+                      <img src="/shop_mart/shopping_mart/media/shop_mart/productImages" style="height: 30px" width="30px";>
                     </td>
                     {% endif %}
+                    {% for pi in image_path.productimages_set.all %}
+                        <img src="{{ pi.image_path.url }}" alt="">
+
+                    {% endfor %}
                                         <td>{{i.status}}</td>
                                         <td>{{i.created_by}}</td>
                                         <td>{{i.created_date}}</td>
