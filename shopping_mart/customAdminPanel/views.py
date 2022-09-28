@@ -485,7 +485,7 @@ class ProductField(LoginRequiredMixin, View):
                                         created_by=request.user, modify_by=request.user, status=True)
                     image.save()
 
-                for prod_attr, val in zip( request.POST.getlist('prod_attrAssoc_form-product_attribute_id'),request.POST.getlist('prod_attrAssoc_form-product_attribute_value')):
+                for prod_attr, val in zip( request.POST.getlist('product_attribute_id'),request.POST.getlist('product_attribute_value')):
                     prod_attr = ProductAttributes.objects.get(id=prod_attr)
                     val = ProductAttributesValues.objects.get(id=val)
                     attr_assoc = ProductAttributesAssoc(product_id=instance,
@@ -529,14 +529,24 @@ class EditProduct(View):
 
     def get(self, request, id):
         obj = Product.objects.get(id=id)
+        obj1 = ProductImages.objects.get(id=id)
+        obj2 = ProductAttributesAssoc.objects.get(id=id)
         fm = ProductForm(instance=obj)
-        return render(request, "model_form/editProduct.html", {'form': fm})
+        fn = ProductImagesForm(instance1=obj1)
+        fo = ProductAttributesAssocForm(instance2=obj2)
+        return render(request, "model_form/editProduct.html", {'form': fm},{'form1':fn},{'form2':fo})
 
     def post(self, request, id):
         cat = Product.objects.get(id=id)
+        cat1 = ProductImages.objects.get(id=id)
+        cat2 = ProductAttributesAssoc.objects.get(id=id)
         fm = ProductForm(request.POST, request.FILES, instance=cat)
-        if fm.is_valid():
+        fn = ProductImagesForm(request.POST, request.FILES, instance1=cat1)
+        fo = ProductAttributesAssocForm(request.POST, request.FILES, instance2=cat2)
+        if fm.is_valid() and fn.is_valid() and fo.is_valid():
             fm.save()
+            fn.save()
+            fo.save()
             return redirect('customAdminPanel:product')
 
 
@@ -626,8 +636,6 @@ class ProductAttributesAssocField(LoginRequiredMixin, View):
         obj = ProductAttributesAssocForm(request.POST, request.FILES)
         if obj.is_valid():
             instance = obj.save()
-            instance.created_by = request.user.id
-            instance.modify_by = request.user.id
             instance.save()
             return redirect('customAdminPanel:productAttributesAssoc')
         else:

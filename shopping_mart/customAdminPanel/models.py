@@ -282,6 +282,8 @@ class ProductAttributesValues(models.Model):
     modify_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='ProductAttributesValues_modified_by')
     modify_date = models.DateTimeField(auto_now=True) 
 
+    def __str__(self):
+        return self.attribute_value
 
     class Meta:
         verbose_name = "ProductAttributesValues"
@@ -289,10 +291,10 @@ class ProductAttributesValues(models.Model):
 
 
 class ProductAttributesAssoc(models.Model):
-    product_id = models.ForeignKey(Product,on_delete=models.CASCADE,null=True,blank=True)
-    product_attribute_id = models.ForeignKey(ProductAttributes,on_delete=models.CASCADE,null=True,blank=True)
-    product_attribute_value = models.ForeignKey('self',on_delete=models.CASCADE,blank=True)
-
+    product_id=models.ForeignKey(Product,on_delete=models.CASCADE,null=True,blank=True)
+    product_attribute_id=models.ForeignKey(ProductAttributes,on_delete=models.CASCADE,null=True,blank=True)
+    product_attribute_value =models.ForeignKey(ProductAttributesValues,on_delete=models.CASCADE,blank=True)
+    
 
     class Meta:
         verbose_name = "ProductAttributesAssoc"

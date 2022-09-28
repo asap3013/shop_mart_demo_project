@@ -40,9 +40,9 @@
                                         <th>modify_by</th>
                                         <th>modify_date</th>
                                         <th>is_featured</th>
-                                        <th>image</th>
+                                        <!-- <th>image</th>
                                         <th>product_attribute_id</th>
-                                        <th>product_attribute_value</th>
+                                        <th>product_attribute_value</th> -->
                                         <th scope="col" colspan="2">Action</th>
                                     </tr>
                                 </thead>
@@ -65,11 +65,11 @@
                                         <td>{{i.modify_by}}</td>
                                         <td>{{i.modify_date}}</td>
                                         <td>{{i.is_featured}}</td>
-                                            <td>
+                                            <!-- <td>
                                             <img src="{{ i.productimages_set.all.image_path.url }}" alt="" style="height: 30px" width="30px">
                                             </td>
                                         <td>{{i.product_attribute_id}}</td>
-                                        <td>{{i.product_attribute_value}}</td>
+                                        <td>{{i.product_attribute_value}}</td> -->
                                         <td>
                                             <a href="{% url 'customAdminPanel:EditProduct' i.id %}"><button
                                                     class="btn btn-default btn-sm"><i

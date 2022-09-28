@@ -19,6 +19,26 @@
                             <button style="float: right; width: 150px; height: 40px;" type="submit"
                                 class="btn btn-block btn-primary">Add</button>
                         </form>
+                        <div class="card-body" style="width:100%; overflow: scroll;">
+                            <table id="example2" class="table table-bordered table-hover" style="width:2000px;">
+                                <thead>
+                                    <tr>
+                                        <th>product_id</th>
+                                        <th>product_attribute_id</th>
+                                        <th>product_attribute_value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in obj %}
+                                    <tr>
+                                        <td>{{i.product_id}}</td>
+                                        <td>{{i.product_attribute_id}}</td>
+                                        <td>{{i.product_attribute_value}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
