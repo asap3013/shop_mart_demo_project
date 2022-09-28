@@ -119,16 +119,14 @@
 <script>
   $("#addMoreImage").click(function(){
           $('.prod_img').append(
-              '<div class="form-group prod_img">'+
-                  
-                  '<input name="image_path"  type="file">'+
+              '<div class="form-group prod">'+  
+                  '<input name="image_path"  type="file" class="undo">'+
                   '<button type="button" class="removeQuatationBtn"><i class="fa fa-trash"></i></button>'+
               '</div>'
           );
       });
-      $(".prod_img").on("click", ".removeQuatationBtn", function (e) {
-          $(this).parents("#imageField").remove();
-          // no--;
+      $(".prod_img").on("click", ".removeQuatationBtn", function () {
+          $(this).parents(".prod").remove();
       });
   </script>
 {% endblock %}
