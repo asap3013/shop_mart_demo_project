@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate
 from django.contrib import messages
 from customAdminPanel.form import *
 from django.views import View
+from django.http import JsonResponse
 # from django.contrib.auth.models import User
 from django.conf import settings
 User = settings.AUTH_USER_MODEL
@@ -529,24 +530,22 @@ class EditProduct(View):
 
     def get(self, request, id):
         obj = Product.objects.get(id=id)
-        obj1 = ProductImages.objects.get(id=id)
-        obj2 = ProductAttributesAssoc.objects.get(id=id)
+        # obj1 = ProductImages.objects.get(id=id)
+        # obj2 = ProductAttributesAssoc.objects.get(id=id)
         fm = ProductForm(instance=obj)
-        fn = ProductImagesForm(instance1=obj1)
-        fo = ProductAttributesAssocForm(instance2=obj2)
-        return render(request, "model_form/editProduct.html", {'form': fm},{'form1':fn},{'form2':fo})
+        # fn = ProductImagesForm(instance1=obj1)
+        # fo = ProductAttributesAssocForm(instance2=obj2)
+        return render(request, "model_form/editProduct.html", {'form': fm})
 
     def post(self, request, id):
         cat = Product.objects.get(id=id)
-        cat1 = ProductImages.objects.get(id=id)
-        cat2 = ProductAttributesAssoc.objects.get(id=id)
+        # cat1 = ProductImages.objects.get(id=id)
+        # cat2 = ProductAttributesAssoc.objects.get(id=id)
         fm = ProductForm(request.POST, request.FILES, instance=cat)
-        fn = ProductImagesForm(request.POST, request.FILES, instance1=cat1)
-        fo = ProductAttributesAssocForm(request.POST, request.FILES, instance2=cat2)
-        if fm.is_valid() and fn.is_valid() and fo.is_valid():
+        # fn = ProductImagesForm(request.POST, request.FILES, instance1=cat1)
+        # fo = ProductAttributesAssocForm(request.POST, request.FILES, instance2=cat2)
+        if fm.is_valid() :
             fm.save()
-            fn.save()
-            fo.save()
             return redirect('customAdminPanel:product')
 
 
@@ -648,6 +647,12 @@ def productAttributesAssoc_check(request):
     context = {'obj': fm}
     return render(request, "productAttributesAssoc.html", context)
 
+def getAttributeValues(request):
+    product_attribute_id = request.GET.get('product_attribute_id')
+    product_attribute_value = ProductAttributesValues.objects.filter(product_attribute_id=product_attribute_id).all()
+    # return render(request, 'productAttributesAssoc.html', {'product_attribute_value': product_attribute_value})
+    return JsonResponse(list(product_attribute_value.values('id', 'attribute_value')), safe=False)
+
 
 class ProductAttributesValuesField(LoginRequiredMixin, View):
     """_summary_
@@ -684,6 +689,7 @@ def productAttributesValues_check(request):
     fm = ProductAttributesValues.objects.all()
     context = {'obj': fm}
     return render(request, "productAttributesValues.html", context)
+
 
 
 class ProductCategoryField(LoginRequiredMixin, View):
