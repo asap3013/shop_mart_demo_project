@@ -108,25 +108,24 @@ class ProductAttributesAssocForm(forms.ModelForm):
     class Meta:  
         model = ProductAttributesAssoc
         fields = ['product_attribute_id','product_attribute_value']
+    
+
+class ProductAttributesValuesForm(forms.ModelForm):  
+    class Meta:  
+        model = ProductAttributesValues
+        fields = '__all__'
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['product_attribute_value'].queryset = ProductAttributesValues.objects.none()
 
         if 'product_attribute_id' in self.data:
             try:
-                product_attribute_id = int(self.data.get('product_attribute_id'))
-                self.fields['product_attribute_value'].queryset = ProductAttributesValues.objects.filter(product_attribute_id=product_attribute_id).order_by('name')
+                product_attribute_id_id = int(self.data.get('product_attribute_id'))
+                self.fields['product_attribute_value'].queryset = ProductAttributesValues.objects.filter(product_attribute_id_id=product_attribute_id_id).order_by('name')
             except (ValueError, TypeError):
                 pass 
         elif self.instance.pk:
-            self.fields['product_attribute_value'].queryset = self.instance.country.product_attribute_value_set.order_by('name')
-
-class ProductAttributesValuesForm(forms.ModelForm):  
-    class Meta:  
-        model = ProductAttributesValues
-        fields = '__all__'
-        # labels = {'banner_path': "banner", "status": "status",}
-# exclude = ('banner_path','status')
+            self.fields['product_attribute_value'].queryset = self.instance.product_attribute_id.product_attribute_value.order_by('name')
 
 
 class ProductCategoryForm(forms.ModelForm):  

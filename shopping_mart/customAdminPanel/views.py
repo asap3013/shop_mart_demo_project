@@ -1,3 +1,4 @@
+from multiprocessing import context
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login, logout
@@ -479,7 +480,6 @@ class ProductField(LoginRequiredMixin, View):
                 instance.created_by = request.user
                 instance.modify_by = request.user
                 instance.save()
-                breakpoint()
                 for file in request.FILES.getlist('image_path'):
                     name = file
                     image = ProductImages(product_id=instance, image_path=name,
@@ -522,31 +522,32 @@ class DeleteProduct(View):
 
 
 class EditProduct(View):
-    """_summary_
-
-    Args:
-        View (_type_): _description_
-    """
-
     def get(self, request, id):
+        breakpoint()
         obj = Product.objects.get(id=id)
-        # obj1 = ProductImages.objects.get(id=id)
-        # obj2 = ProductAttributesAssoc.objects.get(id=id)
+        prod_img = ProductImages.objects.filter(product_id=id).first()
+        prod_assc = ProductAttributesAssoc.objects.filter(product_id=id).first()
         fm = ProductForm(instance=obj)
-        # fn = ProductImagesForm(instance1=obj1)
-        # fo = ProductAttributesAssocForm(instance2=obj2)
-        return render(request, "model_form/editProduct.html", {'form': fm})
+        img = ProductImagesForm(instance=prod_img)
+        assc = ProductAttributesAssocForm(instance=prod_assc)
+        context={'form': fm,'form1':img,'form2':assc}
+        return render(request, "model_form/editProduct.html", context)
 
     def post(self, request, id):
-        cat = Product.objects.get(id=id)
-        # cat1 = ProductImages.objects.get(id=id)
-        # cat2 = ProductAttributesAssoc.objects.get(id=id)
-        fm = ProductForm(request.POST, request.FILES, instance=cat)
-        # fn = ProductImagesForm(request.POST, request.FILES, instance1=cat1)
-        # fo = ProductAttributesAssocForm(request.POST, request.FILES, instance2=cat2)
-        if fm.is_valid() :
+        # breakpoint()
+        prod = Product.objects.get(id=id)
+        prod1 = ProductImages.objects.get(product_id=id)
+        prod2 = ProductAttributesAssoc.objects.get(product_id=id)
+        fm = ProductForm(request.POST,instance=prod)
+        fn = ProductImagesForm(request.POST, request.FILES, instance1=prod1)
+        fo = ProductAttributesAssocForm(request.POST, instance2=prod2)
+        if fm.is_valid() and fn.is_valid() and fo.is_valid() :
             fm.save()
-            return redirect('customAdminPanel:product')
+            fn.save()
+            fo.save()
+            return redirect('customAdminPanel:product',{})
+
+    
 
 
 class ProductAttributesField(LoginRequiredMixin, View):
