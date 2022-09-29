@@ -12,7 +12,7 @@
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">Add product</li>
+            <li class="breadcrumb-item active">Edit product</li>
           </ol>
         </div>
       </div>
@@ -81,6 +81,7 @@
                 </div>
                 <div class="form-group prod_img">
                   <label for="image_path">image</label>
+                  <button type="button" class="fa fa-trash" id="deleteImage"></button>
                   {{ form1.image_path }}
                   <button type="button" class="fa fa-plus" id="addMoreImage">Add image</button>
                 </div>
@@ -116,21 +117,25 @@
   }
 </script>
 
-<!-- <script>
+<script>
   $("#addMoreImage").click(function(){
           $('.prod_img').append(
-              '<div class="form-group prod_img">'+
-                  
-                  '<input name="image_path"  type="file">'+
+
+              '<div class="form-group prod">'+  
+                  '<input name="image_path"  type="file" >'+
                   '<button type="button" class="removeQuatationBtn"><i class="fa fa-trash"></i></button>'+
               '</div>'
           );
       });
-      $(".prod_img").on("click", ".removeQuatationBtn", function (e) {
-          $(this).parents("#imageField").remove();
-          // no--;
+      $(".prod_img").on("click", ".removeQuatationBtn", function () {
+          $(this).parents(".prod").remove();
+      })
+  </script>
+  <script>
+    $(".prod_img").on("click", "#deleteImage", function () {
+          $(this).parents(".prod").remove();
       });
-  </script> -->
+  </script>
 {% endblock %}
 
 

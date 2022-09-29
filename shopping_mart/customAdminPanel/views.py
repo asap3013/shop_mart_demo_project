@@ -523,7 +523,7 @@ class DeleteProduct(View):
 
 class EditProduct(View):
     def get(self, request, id):
-        breakpoint()
+        # breakpoint()
         obj = Product.objects.get(id=id)
         prod_img = ProductImages.objects.filter(product_id=id).first()
         prod_assc = ProductAttributesAssoc.objects.filter(product_id=id).first()

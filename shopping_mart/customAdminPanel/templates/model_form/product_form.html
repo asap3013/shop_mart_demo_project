@@ -34,7 +34,7 @@
             <!-- /.card-header -->
             <!-- form start -->
             <form action="{% url 'customAdminPanel:product_form' %}" id="indexForm" 
-            data-cities-url="{% url 'customAdminPanel:productAttributesValue' %}" method="post" enctype="multipart/form-data">
+             method="post" enctype="multipart/form-data">
               {% csrf_token %}
               <div class="card-body">
                 <div class="form-group">
@@ -135,11 +135,11 @@
 <script>
 
   $("#id_product_attribute_id").change(function () {
-      const url = $("#indexForm").attr("data-cities-url");  
+      // const url = $("#indexForm").attr("productAttributesValue");  
       const product_Attribute_idId = $(this).val(); 
 
       $.ajax({                      
-          url: url,                   
+          url: "{% url 'customAdminPanel:productAttributesValue' %}",                   
           data: {
               'product_attribute_id': product_Attribute_idId      
           },
