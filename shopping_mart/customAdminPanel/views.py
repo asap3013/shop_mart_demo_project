@@ -27,7 +27,7 @@ def adminLogin(request):
         return redirect('/adminpanel/')
 
     if request.method == 'POST':
-
+        breakpoint()
         username = request.POST.get('username')
         password = request.POST.get('password')
         if username and password:
@@ -886,9 +886,9 @@ class UserField(LoginRequiredMixin, View):
 
 @login_required(redirect_field_name='login', login_url='/adminpanel/login')
 def user_check(request):
-    fm = User.objects.all()
-    context = {'form': fm}
-    return render(request, "user.html", context)
+    # username = User.objects.all()
+    # context = {'form': username}
+    return render(request, "user.html", {})
 
 
 class UserAddressField(LoginRequiredMixin, View):

@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'customAdminPanel'
+    'customAdminPanel',
+    'G_shopper'
 ]
 AUTH_USER_MODEL = 'customAdminPanel.User'
 
