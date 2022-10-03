@@ -8,7 +8,7 @@
 				<div class="col-sm-4 col-sm-offset-1">
 					<div class="login-form"><!--login form-->
 						<h2>Login to your account</h2>
-						<form action="{%url 'G_shopper:base' %}" method="post" name="Login",value="Login">
+						<form action="{%url 'G_shopper:user_login' %}" method="post" name="Login",value="Login">
 							{% csrf_token %}
 							<label for="usernameLogin" name="Login",value="Login">username</label>
 							{{ form.username }}

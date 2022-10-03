@@ -32,7 +32,7 @@ app_name = 'G_shopper'
 urlpatterns = [
     path('adminpanel/', include('customAdminPanel.urls')),
     path('admin/',admin.site.urls,name='django-admin'),
-    path('user/', include('G_shopper.urls'))
+    path('', include('G_shopper.urls'))
 ]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 
 
