@@ -499,9 +499,11 @@ class ProductField(LoginRequiredMixin, View):
                 prod_form = ProductForm()
                 prod_img_form = ProductImagesForm()
                 prod_attrAssoc_form = ProductAttributesAssocForm()
-            return render(request, "model_form/product_form.html", {'form': prod_form},{'form1':prod_img_form},{'form2':prod_attrAssoc_form})
+            cont={'form': prod_form,'form1':prod_img_form,'form2':prod_attrAssoc_form}
+            return render(request, "model_form/product_form.html", cont)
         else:
-            return render(request, "model_form/product_form.html", {'form': prod_form},{'form1':prod_img_form},{'form2':prod_attrAssoc_form})
+            content={'form': prod_form,'form1':prod_img_form,'form2':prod_attrAssoc_form}
+            return render(request, "model_form/product_form.html",content)
 
 
 
@@ -523,7 +525,6 @@ class DeleteProduct(View):
 
 class EditProduct(View):
     def get(self, request, id):
-        # breakpoint()
         obj = Product.objects.get(id=id)
         prod_img = ProductImages.objects.filter(product_id=id).first()
         prod_assc = ProductAttributesAssoc.objects.filter(product_id=id).first()
@@ -534,19 +535,19 @@ class EditProduct(View):
         return render(request, "model_form/editProduct.html", context)
 
     def post(self, request, id):
-        # breakpoint()
         prod = Product.objects.get(id=id)
         prod1 = ProductImages.objects.get(product_id=id)
         prod2 = ProductAttributesAssoc.objects.get(product_id=id)
         fm = ProductForm(request.POST,instance=prod)
-        fn = ProductImagesForm(request.POST, request.FILES, instance1=prod1)
-        fo = ProductAttributesAssocForm(request.POST, instance2=prod2)
+        fn = ProductImagesForm(request.POST, request.FILES, instance=prod1)
+        fo = ProductAttributesAssocForm(request.POST, instance=prod2)
         if fm.is_valid() and fn.is_valid() and fo.is_valid() :
             fm.save()
             fn.save()
             fo.save()
-            return redirect('customAdminPanel:product',{})
-
+        fz = Product.objects.all()
+        context = {'obj': fz}
+        return render(request, "product.html",context)
     
 
 

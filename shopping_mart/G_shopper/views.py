@@ -55,7 +55,3 @@ class UserRegister(View):
 
 
 
-# def products(request):
-#     products = Product.objects.all()
-#     print(f"\n\n\n\n\nproducts: {products}")
-#     return render(request, 'home.html', {'obj':products})

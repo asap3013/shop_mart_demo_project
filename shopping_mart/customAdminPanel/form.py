@@ -116,16 +116,16 @@ class ProductAttributesValuesForm(forms.ModelForm):
         fields = '__all__'
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['product_attribute_value'].queryset = ProductAttributesValues.objects.none()
+        self.fields['attribute_value'].queryset = ProductAttributesValues.objects.none()
 
         if 'product_attribute_id' in self.data:
             try:
                 product_attribute_id_id = int(self.data.get('product_attribute_id'))
-                self.fields['product_attribute_value'].queryset = ProductAttributesValues.objects.filter(product_attribute_id_id=product_attribute_id_id).order_by('name')
+                self.fields['attribute_value'].queryset = ProductAttributesValues.objects.filter(product_attribute_id_id=product_attribute_id_id).order_by('attribute_value')
             except (ValueError, TypeError):
                 pass 
         elif self.instance.pk:
-            self.fields['product_attribute_value'].queryset = self.instance.product_attribute_id.product_attribute_value.order_by('name')
+            self.fields['attribute_value'].queryset = self.instance.product_attribute_id.product_attribute_value.order_by('attribute_value')
 
 
 class ProductCategoryForm(forms.ModelForm):  
