@@ -2,11 +2,12 @@ from django.shortcuts import render
 from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
-from django.contrib.auth import login, logout
 from django.contrib import messages
 from .form import UserRegistraionForm 
 from django.shortcuts import render, redirect
 from customAdminPanel.models import *
+from django.contrib.auth import login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.conf import settings
 User = settings.AUTH_USER_MODEL
 
@@ -15,6 +16,8 @@ User = settings.AUTH_USER_MODEL
 #     return render(request, 'register/logged.html', {})
 
 def userLogin(request):
+    # if request.user.is_authenticated:
+    #     return redirect('/')
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password1')
@@ -31,13 +34,18 @@ def userLogin(request):
     obj = UserRegistraionForm()
     return render(request, "register/register_form.html", {'form': obj})
 
-def base_page(request):
-    return render(request, 'base.html', {})
+# def base_page(request):
+#     return render(request, 'base.html', {})
 
-@login_required(redirect_field_name='user_login', login_url='/userlogin')
+@login_required(redirect_field_name='register', login_url='/registration')
 def home_page(request):
     products = Product.objects.all()
     return render(request, 'register/home.html', {'obj':products})
+
+def logoutuser(request):
+    logout(request)
+    obj = UserRegistraionForm()
+    return render(request, 'register/register_form.html',{'form': obj} )
   
 
 class UserRegister(View):
@@ -49,7 +57,7 @@ class UserRegister(View):
         obj = UserRegistraionForm(request.POST)
         if obj.is_valid():
             obj.save()
-            return redirect('G_shopper:base')
+            return redirect('G_shopper:home')
         else: 
             return render(request, "register/register_form.html", {'form': obj})
 

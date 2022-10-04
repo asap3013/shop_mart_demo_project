@@ -19,6 +19,26 @@
                             <button style="float: right; width: 150px; height: 40px;" type="submit"
                                 class="btn btn-block btn-primary">Add</button>
                         </form>
+                        <div class="card-body">
+                            <table id="example2" class="table table-bordered table-hover">
+                              <thead>
+                                <tr>
+                                  <th>user_id</th>
+                                  <th>product_id</th>
+                                  <th scope="col" colspan="2">Action</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {% for i in form %}
+                                <tr>
+                                  <!-- <td>{{ban.id}}</td> -->
+                                  <td>{{i.user_id}}</td>
+                                  <td>{{i.product_id}}</td>                                  
+                                </tr>
+                                {% endfor %}
+                              </tbody>
+                            </table>
+                          </div>
                     </div>
                 </div>
             </div>

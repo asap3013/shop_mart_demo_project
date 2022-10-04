@@ -10,15 +10,18 @@
 						<h2>Login to your account</h2>
 						<form action="{%url 'G_shopper:user_login' %}" method="post" name="Login",value="Login">
 							{% csrf_token %}
-							<label for="usernameLogin" name="Login",value="Login">username</label>
+							<label for="usernameLogin" name="Login",value="Login" id="username">username</label>
 							{{ form.username }}
-							<label for="passwordlogin" name="Login",value="Login">password</label>
+							<label for="passwordlogin" name="Login",value="Login" id="password1">password</label>
 							{{ form.password1 }}
 
 							<span>
 								<input type="checkbox" class="checkbox"> 
 								Keep me signed in
 							</span>
+							{% for message in messages  %}
+								{{message}}
+							{% endfor %}
 							<button type="submit" class="btn btn-default" name="Login",value="Login">Login</button>
 						</form>
 					</div><!--/login form-->

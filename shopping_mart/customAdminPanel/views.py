@@ -27,7 +27,6 @@ def adminLogin(request):
         return redirect('/adminpanel/')
 
     if request.method == 'POST':
-        breakpoint()
         username = request.POST.get('username')
         password = request.POST.get('password')
         if username and password:
@@ -983,8 +982,7 @@ class UserWishlistField(LoginRequiredMixin, View):
     def post(self, request):
         obj = UserWishlistForm(request.POST, request.FILES)
         if obj.is_valid():
-            instance = obj.save()
-            print(instance.banner_path.path)
+            obj.save()
             return redirect('customAdminPanel:userWishlist')
         else:
             return render(request, "model_form/userWishlist_form.html", {'form': obj})
