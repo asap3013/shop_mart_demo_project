@@ -101,7 +101,7 @@
                                 <li><a href="#"><i class="fa fa-user"></i> Account</a></li>
                                 <li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
                                 <li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-                                <li><a href="/shopping_mart/G_shopper/templates/cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+								<li><a href="{% url 'G_shopper:addcart' %}"><i class="fa fa-shopping-cart"></i> Cart(<span class="cart-list">{{request.session.cartdata|length}}</span>)</a></li>
                                 <li><a href="{% url 'G_shopper:loggedout' %}"><i class="fa fa-lock"></i> Logout</a>
                                 </li>
                             </ul>
@@ -381,9 +381,7 @@
                     </div>
                 </div>
 
-
-
-                <div class="col-sm-9 padding-right">
+                <div class="col-sm-9 padding-right" id="cart_data">
                     <div class="features_items">
                         <!--features_items-->
                         <h2 class="title text-center">Featured Items</h2>
@@ -395,13 +393,25 @@
                                         <img src="{{prod.productimages_set.first.image_path.url}}" alt="" />
                                         <p>{{prod.name}}</p>
                                         <p>{{ prod.price }}</p>
-                                        <a href="#" class="btn btn-default add-to-cart"><i
-                                                class="fa fa-shopping-cart"></i>Add to cart</a>
+                                        <input type="number" value="0" class="form-control product-qty-{{prod.id}}" id="productQty" />
+
+                                        <input type="hidden" class="product_id" value="{{prod.id}}">
+									    <input type="hidden" class="meta_title" value="{{prod.meta_title}}">
+
+									<a href="#" class="btn btn-default add-to-cart" id="addtocart"><i
+											class="fa fa-shopping-cart"></i>Add to cart</a>
+                                            <!-- <div class="cart_quantity_button"> -->
+                                                <!-- <a class="cart_quantity_up" href=""> + </a>
+                                                <input class="cart_quantity_input" type="text" name="quantity" value=0
+                                                    autocomplete="off" size="17" id="productQty">
+                                                <a class="cart_quantity_down" href=""> - </a> -->
+                                
+                                            <!-- </div> -->
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    {% endfor %}
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -586,6 +596,39 @@
     <script src="/static/js/price-range.js"></script>
     <script src="/static/js/jquery.prettyPhoto.js"></script>
     <script src="/static/js/main.js"></script>
+    <!-- <script>
+        $(document).ready(function () {
+            console.log("ready!");
+        });
+    
+    </script> -->
+    <script>
+        $(document).on('click',".add-to-cart",function(){
+            var _vm=$(this);
+            var _qty = $("#productQty").val();
+            var _productid =$(".product_id").val();
+            var _title =$(".meta_title").val();
+            console.log(_qty, _productid,_title);
+    
+            $.ajax({
+                url:'/mycart',
+                data:{
+                    'id':_productid,
+                    'qty':_qty,
+                    'title':_title
+                },
+                dataType:'json',
+                beforeSend:function(){
+                    _vm.attr('disabled',true);
+                },
+                success:function(res){
+                    $(".cart-list").text(res.totalitems);
+                    _vm.attr('disabled',false);
+                }
+            });
+        });
+    
+    </script>
 </body>
 
 </html>

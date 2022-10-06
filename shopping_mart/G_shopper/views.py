@@ -6,6 +6,7 @@ from django.contrib import messages
 from .form import UserRegistraionForm 
 from django.shortcuts import render, redirect
 from customAdminPanel.models import *
+from django.http import JsonResponse
 from django.contrib.auth import login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.conf import settings
@@ -62,4 +63,33 @@ class UserRegister(View):
             return render(request, "register/register_form.html", {'form': obj})
 
 
+def add_cart(request):
+    cart_product = {}
+    cart_product[str(request.GET['id'])] = {
+        'title': request.GET['title'],
+        'qty': request.GET['qty'],
+    }
+    if 'cartdata' in request.session:
+        if str(request.GET['id']) in request.session['cartdata']:
+            cart_data = request.session['cartdata']
+            cart_data[str(request.GET['id'])]['qty'] = int(
+                cart_product[str(request.GET['id'])]['qty'])
+            cart_data.update(cart_data)
+            request.session['cartdata'] = cart_data
 
+        else:
+            cart_data = request.session['cartdata']
+            cart_data.update(cart_product)
+            request.session['cartdata']=cart_data
+    else:
+        request.session[cart_data]=cart_product
+    return JsonResponse({'data': request.session['cartdata'],'totalitems': len(request.session['cartdata'])})
+
+def cart_list(request):
+	# total_amt=0
+	# if 'cartdata' in request.session:
+	# 	for p_id,item in request.session['cartdata'].items():
+	# 		total_amt+=int(item['qty'])*float(item['price'])
+    return render(request, 'cart.html',{'cart_data':request.session['cartdata'],'totalitems':len(request.session['cartdata'])})
+	# else:
+	# 	return render(request, 'cart.html',{'cart_data':'','totalitems':0,'total_amt':total_amt})
