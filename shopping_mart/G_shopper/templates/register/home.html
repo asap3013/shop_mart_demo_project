@@ -606,6 +606,7 @@
         var _qty = $(".product-qty-"+_index).val();
         var _productid =$(".product_id-"+_index).val();
         var _title =$(".meta_title-"+_index).val();
+        var _price=$(".product-price-"+_index).text();
         console.log(_qty, _productid,_title);
     
 		$.ajax({
@@ -613,7 +614,8 @@
 			data:{
                 'id':_productid,
 				'qty':_qty,
-                'title':_title
+                'title':_title,
+                'price':_price
 			},
 			dataType:'json',
 			beforeSend:function(){
