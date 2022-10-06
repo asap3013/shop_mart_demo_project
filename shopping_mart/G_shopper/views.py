@@ -64,26 +64,28 @@ class UserRegister(View):
 
 
 def add_cart(request):
-    cart_product = {}
-    cart_product[str(request.GET['id'])] = {
-        'title': request.GET['title'],
-        'qty': request.GET['qty'],
-    }
-    if 'cartdata' in request.session:
-        if str(request.GET['id']) in request.session['cartdata']:
-            cart_data = request.session['cartdata']
-            cart_data[str(request.GET['id'])]['qty'] = int(
-                cart_product[str(request.GET['id'])]['qty'])
-            cart_data.update(cart_data)
-            request.session['cartdata'] = cart_data
+    # del request.session['cartdata']
+	cart_p={}
+	cart_p[str(request.GET['id'])]={
+		'image':request.GET['image'],
+		'title':request.GET['title'],
+		'qty':request.GET['qty'],
+		# 'price':request.GET['price'],
+	}
+	if 'cartdata' in request.session:
+		if str(request.GET['id']) in request.session['cartdata']:
+			cart_data=request.session['cartdata']
+			cart_data[str(request.GET['id'])]['qty']=int(cart_p[str(request.GET['id'])]['qty'])
+			cart_data.update(cart_data)
+			request.session['cartdata']=cart_data
+		else:
+			cart_data=request.session['cartdata']
+			cart_data.update(cart_p)
+			request.session['cartdata']=cart_data
+	else:
+		request.session['cartdata']=cart_p
+	return JsonResponse({'data':request.session['cartdata'],'totalitems':len(request.session['cartdata'])})
 
-        else:
-            cart_data = request.session['cartdata']
-            cart_data.update(cart_product)
-            request.session['cartdata']=cart_data
-    else:
-        request.session[cart_data]=cart_product
-    return JsonResponse({'data': request.session['cartdata'],'totalitems': len(request.session['cartdata'])})
 
 def cart_list(request):
 	# total_amt=0
@@ -93,3 +95,17 @@ def cart_list(request):
     return render(request, 'cart.html',{'cart_data':request.session['cartdata'],'totalitems':len(request.session['cartdata'])})
 	# else:
 	# 	return render(request, 'cart.html',{'cart_data':'','totalitems':0,'total_amt':total_amt})
+
+
+# def add_to_cart(request, product_id):
+#     cart = request.session.get('cart', {})
+#     product = Product.objects.get(id=product_id)
+#     cart[product_id] = product
+#     request.session['cart'] = cart
+#     return redirect(request("cart"))
+
+
+# # Cart View
+# def get_cart(request):
+#     cart = request.session.get('cart',{})
+#     return render(request, 'cart.html', cart)

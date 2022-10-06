@@ -392,14 +392,14 @@
                                     <div class="productinfo text-center">
                                         <img src="{{prod.productimages_set.first.image_path.url}}" alt="" />
                                         <p>{{prod.name}}</p>
-                                        <p>{{ prod.price }}</p>
-                                        <input type="number" value="0" class="form-control product-qty-{{prod.id}}" id="productQty" />
+                                        <!-- <p>{{ prod.price }}</p> -->
+                                        <th>$ <span class="product-price-{{prod.id}}">{{prod.price}}</span></th>
+                                        <input type="number" value="0" class="form-control product-qty-{{prod.id}}"  />
 
-                                        <input type="hidden" class="product_id" value="{{prod.id}}">
-									    <input type="hidden" class="meta_title" value="{{prod.meta_title}}">
+                                        <input type="hidden" class="product_id-{{prod.id}}" value="{{prod.id}}">
+									    <input type="hidden" class="meta_title-{{prod.id}}" value="{{prod.meta_title}}">
 
-									<a href="#" class="btn btn-default add-to-cart" id="addtocart"><i
-											class="fa fa-shopping-cart"></i>Add to cart</a>
+									<a href="#" class="btn btn-default add-to-cart"  data-index="{{prod.id}}"><i class="fa fa-shopping-cart"></i>Add to cart</a>
                                             <!-- <div class="cart_quantity_button"> -->
                                                 <!-- <a class="cart_quantity_up" href=""> + </a>
                                                 <input class="cart_quantity_input" type="text" name="quantity" value=0
@@ -418,9 +418,6 @@
         </div>
         </div>
     </section><br>
-
-
-
 
     {% block content %}
 
@@ -604,29 +601,31 @@
     </script> -->
     <script>
         $(document).on('click',".add-to-cart",function(){
-            var _vm=$(this);
-            var _qty = $("#productQty").val();
-            var _productid =$(".product_id").val();
-            var _title =$(".meta_title").val();
-            console.log(_qty, _productid,_title);
+		var _vm=$(this);
+        var _index=_vm.attr('data-index');
+        var _qty = $(".product-qty-"+_index).val();
+        var _productid =$(".product_id-"+_index).val();
+        var _title =$(".meta_title-"+_index).val();
+        console.log(_qty, _productid,_title);
     
-            $.ajax({
+		$.ajax({
                 url:'/mycart',
-                data:{
-                    'id':_productid,
-                    'qty':_qty,
-                    'title':_title
-                },
-                dataType:'json',
-                beforeSend:function(){
-                    _vm.attr('disabled',true);
-                },
-                success:function(res){
-                    $(".cart-list").text(res.totalitems);
-                    _vm.attr('disabled',false);
-                }
-            });
-        });
+			data:{
+                'id':_productid,
+				'qty':_qty,
+                'title':_title
+			},
+			dataType:'json',
+			beforeSend:function(){
+				_vm.attr('disabled',true);
+			},
+			success:function(res){
+				$(".cart-list").text(res.totalitems);
+				_vm.attr('disabled',false);
+			}
+		});
+		// End
+	});
     
     </script>
 </body>

@@ -17,7 +17,7 @@
 			{% for product_id,item in cart_data.items %}
 			<tr>
 				<td>
-					<img src="{{item.image}}" width="50" />
+					<img src="/media/{{item.image}}" width="50" />
 					<p><a href="/product/{{item.title|slugify}}/{{product_id}}">{{item.title}}</a></p>
 				</td>
 				<td>
