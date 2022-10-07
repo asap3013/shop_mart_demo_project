@@ -620,7 +620,7 @@
                 value--;
                 document.getElementById('product-qty-' + prod_id).value = value;
                 if (value == 0) {
-                    $('.submitWidget').css("display", "none");
+                    $('.submitWidget-'+prod_id).css("display", "none");
                 }
             }
 
