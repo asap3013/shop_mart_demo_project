@@ -11,7 +11,6 @@ urlpatterns = [
     path('registration/',views.UserRegister.as_view(),name='register'),
     path('mycart/',views.add_cart,name='cart'),
     path('cart/',views.cart_list,name='addcart'),
-    # path('cart/<int:product_id>/', views.add_to_cart, name='add'),
-    # path('cart/', views.get_cart, name='cart'),
-
+    path('delete-from-cart',views.delete_cart_item,name='delete-from-cart'),
+    path('update-cart',views.update_cart_item,name='update-cart'),
     ]
