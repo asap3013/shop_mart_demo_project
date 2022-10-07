@@ -621,7 +621,21 @@
                 document.getElementById('product-qty-' + prod_id).value = value;
                 if (value == 0) {
                     $('.submitWidget-'+prod_id).css("display", "none");
+
+                    $.ajax({
+                    url: '/deletefromcart',
+                    data: {
+                        'id': prod_id,
+
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        $(".cart-list").text(res.totalitems);
+                        _vm.attr('disabled', false);
+                    }
+            });
                 }
+
             }
 
         }
