@@ -604,13 +604,24 @@
     <script type="text/javascript">
 
         function incrementValue(prod_id) {
-
+            debugger;
             var value = parseInt(document.getElementById('product-qty-' + prod_id).value, 10);
             value = isNaN(value) ? 0 : value;
             if (value < 10) {
                 value++;
-
                 document.getElementById('product-qty-' + prod_id).value = value;
+                $.ajax({
+                url: '/updatecart',
+                data: {
+                    'id': prod_id,
+                    'qty': value,
+                },
+                dataType: 'json',
+                success: function (res) {
+                    $(".cart-list").text(res.totalitems);
+                    _vm.attr('disabled', false);
+                }
+            });
             }
         }
         function decrementValue(prod_id) {
@@ -649,7 +660,6 @@
     <script>
         $(document).on('click', ".add-to-cart", function () {
             var _vm = $(this);
-            debugger;
             var _index = _vm.attr('data-index');
             $('.submitWidget-' + _index).css("display", "block");
             var _qty = $("#product-qty-" + _index).val();
