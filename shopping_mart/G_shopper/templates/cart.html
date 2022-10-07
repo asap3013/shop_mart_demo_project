@@ -27,9 +27,9 @@
 						<!-- <input type="button" onclick="decrementValue()" value=" - " /> -->
 						<!-- <input type="text" class="product-qty-{{product_id}}" name="quantity" value="0" maxlength="2" max="10" size="1" id="number" /> -->
 						<div class="cart_quantity_button">
-							<!-- <input type="button"  onclick="decrementValue('{{prod.id}}')" value=" - " /> -->
-							<input type="text" id="product-qty-{{prod.id}}" name="quantity" value="{{item.qty}}" maxlength="2" max="10" size="1" />
-							<!-- <input type="button" onclick="incrementValue('{{prod.id}}')" value="+" /> -->
+							<input type="button"  onclick="decrementValue('{{prod.id}}')" value=" - " />
+							<input type="text" id="product-qty-{{prod.id}}" name="quantity" value="{{item.qty}}" maxlength="2" max="10" size="1" readonly/>
+							<input type="button" onclick="incrementValue('{{prod.id}}')" value="+" />
 						</div>
 						<!-- <input type="button" onclick="incrementValue()" value="+" /> -->
 					</div>
@@ -57,30 +57,4 @@
 	</table>
 </main>
 
-{% endblock %}
-{% block script %}
-<script type="text/javascript">
-        
-	function incrementValue(prod_id)
-	{
-	   
-		var value = parseInt(document.getElementById('product-qty-'+prod_id).value);
-		value = isNaN(value) ? 0 : value;
-		if(value<10){
-			value++;
-			
-				document.getElementById('product-qty-'+prod_id).value = value;
-		}
-	}
-	function decrementValue(prod_id)
-	{
-		var value = parseInt(document.getElementById('product-qty-'+prod_id).value, 10);
-		value = isNaN(value) ? 0 : value;
-		if(value>=1){
-			value--;
-				document.getElementById('product-qty-'+prod_id).value = value;
-		}
-	
-	}
-	</script>
 {% endblock %}

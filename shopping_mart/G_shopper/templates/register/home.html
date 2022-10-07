@@ -101,7 +101,9 @@
                                 <li><a href="#"><i class="fa fa-user"></i> Account</a></li>
                                 <li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
                                 <li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-								<li><a href="{% url 'G_shopper:addcart' %}"><i class="fa fa-shopping-cart"></i> Cart(<span class="cart-list">{{request.session.cartdata|length}}</span>)</a></li>
+                                <li><a href="{% url 'G_shopper:addcart' %}"><i class="fa fa-shopping-cart"></i>
+                                        Cart(<span class="cart-list">{{request.session.cartdata|length}}</span>)</a>
+                                </li>
                                 <li><a href="{% url 'G_shopper:loggedout' %}"><i class="fa fa-lock"></i> Logout</a>
                                 </li>
                             </ul>
@@ -390,25 +392,21 @@
                             <div class="product-image-wrapper">
                                 <div class="single-products">
                                     <div class="productinfo text-center">
-                                        <img src="{{prod.productimages_set.first.image_path.url}}"  alt="" />
+                                        <img src="{{prod.productimages_set.first.image_path.url}}" alt="" />
                                         <p>{{prod.name}}</p>
-                                        <input type="hidden" class="product-image-{{prod.id}}" value="{{prod.productimages_set.first.image_path.url}}" />                                        
+                                        <input type="hidden" class="product-image-{{prod.id}}"
+                                            value="{{prod.productimages_set.first.image_path.url}}" />
                                         <th>$ <span class="product-price-{{prod.id}}">{{prod.price}}</span></th>
-                                        <!-- <input type="number" value="1" class="form-control product-qty-{{prod.id}}"  /> -->
                                         <br>
                                         <input type="hidden" class="product_id-{{prod.id}}" value="{{prod.id}}">
-									    <input type="hidden" class="meta_title-{{prod.id}}" value="{{prod.meta_title}}">
+                                        <input type="hidden" class="meta_title-{{prod.id}}" value="{{prod.meta_title}}">
 
-									<a href="#" class="btn btn-default add-to-cart"  data-index="{{prod.id}}"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-                                            <!-- <div class="cart_quantity_button">
-                                                <a class="cart_quantity_up" href=""> + </a>
-                                                <input class="cart_quantity_input product-qty-{{prod.id}}" type="text" name="quantity" value=0
-                                                    autocomplete="off" size="17" id="productQty">
-                                                <a class="cart_quantity_down" href=""> - </a>
-                                            </div> -->
-                                        <div class="cart_quantity_button">
-                                            <input type="button"  onclick="decrementValue('{{prod.id}}')" value=" - " />
-                                            <input type="text" id="product-qty-{{prod.id}}" name="quantity" value="0" maxlength="2" max="10" size="1" />
+                                        <button class="btn btn-default add-to-cart" data-index="{{prod.id}}"><i
+                                                class="fa fa-shopping-cart"></i>Add to cart</button>
+                                        <div class="cart_quantity_button submitWidget submitWidget-{{prod.id}}">
+                                            <input type="button" onclick="decrementValue('{{prod.id}}')" value=" - " />
+                                            <input type="text" id="product-qty-{{prod.id}}" name="quantity" value="1"
+                                                maxlength="2" max="10" size="1" readonly />
                                             <input type="button" onclick="incrementValue('{{prod.id}}')" value="+" />
                                         </div>
                                     </div>
@@ -604,64 +602,72 @@
     
     </script> -->
     <script type="text/javascript">
-        
-        function incrementValue(prod_id)
-        {
-           
-            var value = parseInt(document.getElementById('product-qty-'+prod_id).value);
+
+        function incrementValue(prod_id) {
+
+            var value = parseInt(document.getElementById('product-qty-' + prod_id).value, 10);
             value = isNaN(value) ? 0 : value;
-            if(value<10){
+            if (value < 10) {
                 value++;
-                
-                    document.getElementById('product-qty-'+prod_id).value = value;
+
+                document.getElementById('product-qty-' + prod_id).value = value;
             }
         }
-        function decrementValue(prod_id)
-        {
-            var value = parseInt(document.getElementById('product-qty-'+prod_id).value, 10);
+        function decrementValue(prod_id) {
+            var value = parseInt(document.getElementById('product-qty-' + prod_id).value, 10);
             value = isNaN(value) ? 0 : value;
-            if(value>=1){
+            if (value >= 1) {
                 value--;
-                    document.getElementById('product-qty-'+prod_id).value = value;
+                document.getElementById('product-qty-' + prod_id).value = value;
+                if (value == 0) {
+                    $('.submitWidget').css("display", "none");
+                }
             }
-        
+
         }
-        </script>
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.submitWidget').css("display", "none");
+        });
+
+    </script>
     <script>
-        $(document).on('click',".add-to-cart",function(){
-		var _vm=$(this);
-        debugger;
-        var _index=_vm.attr('data-index');
-        var _qty = $("#product-qty-"+_index).val();
-        var _productid =$(".product_id-"+_index).val();
-        var _productImage=$(".product-image-"+_index).val();
-        var _title =$(".meta_title-"+_index).val();
-        var _price=$(".product-price-"+_index).text();
-        console.log(_qty, _productid,_title);
-    
-		$.ajax({
-                url:'/mycart',
-			data:{
-                'id':_productid,
-                'image':_productImage,
-				'qty':_qty,
-                'title':_title,
-                'price':_price
-			},
-			dataType:'json',
-			beforeSend:function(){
-				_vm.attr('disabled',true);
-			},
-			success:function(res){
-				$(".cart-list").text(res.totalitems);
-				_vm.attr('disabled',false);
-			}
-		});
-		// End
-	});
-    
-    </script>    
-    
+        $(document).on('click', ".add-to-cart", function () {
+            var _vm = $(this);
+            debugger;
+            var _index = _vm.attr('data-index');
+            $('.submitWidget-' + _index).css("display", "block");
+            var _qty = $("#product-qty-" + _index).val();
+            var _productid = $(".product_id-" + _index).val();
+            var _productImage = $(".product-image-" + _index).val();
+            var _title = $(".meta_title-" + _index).val();
+            var _price = $(".product-price-" + _index).text();
+            console.log(_qty, _productid, _title);
+
+            $.ajax({
+                url: '/mycart',
+                data: {
+                    'id': _productid,
+                    'image': _productImage,
+                    'qty': _qty,
+                    'title': _title,
+                    'price': _price
+                },
+                dataType: 'json',
+                beforeSend: function () {
+                    _vm.attr('disabled', true);
+                },
+                success: function (res) {
+                    $(".cart-list").text(res.totalitems);
+                    _vm.attr('disabled', false);
+                }
+            });
+            // End
+        });
+
+    </script>
+
 </body>
 
 </html>
