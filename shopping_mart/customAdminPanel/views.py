@@ -993,3 +993,12 @@ def userWishlist_check(request):
     fm = UserWishList.objects.all()
     context = {'form': fm}
     return render(request, "userWishlist.html", context)
+
+
+class DeleteuserWishlist(View):
+    def post(self, request):
+        data = request.POST
+        id = data.get('id')
+        fm = UserWishList.objects.get(id=id)
+        fm.delete()
+        return redirect('customAdminPanel:userWishlist')

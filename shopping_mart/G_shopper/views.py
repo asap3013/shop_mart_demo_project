@@ -1,4 +1,3 @@
-from itertools import product
 from django.shortcuts import render
 from django.views import View
 from django.contrib.auth.decorators import login_required
@@ -7,7 +6,7 @@ from django.contrib import messages
 from .form import UserRegistraionForm
 from django.shortcuts import render, redirect
 from customAdminPanel.models import *
-from django.http import JsonResponse
+from django.http import JsonResponse , HttpResponseRedirect
 from django.contrib.auth import login, logout
 from django.template.loader import render_to_string
 from django.conf import settings
@@ -66,9 +65,8 @@ class UserRegister(View):
         else:
             return render(request, "register/register_form.html", {'form': obj})
 
-
+#Add to cart
 def add_cart(request):
-    # del request.session['cartdata']
     cart_p = {}
     cart_p[str(request.GET['id'])] = {
         'image': request.GET['image'],
@@ -134,20 +132,20 @@ def update_cart_item(request):
     return JsonResponse({'data': t, 'totalitems': len(request.session['cartdata'])})
 
 
-# My Wishlist
 # Wishlist
 def add_wishlist(request):
+    breakpoint()
     pid = request.GET['product']
-    # product = Product.objects.get(pk=pid)
+    product = Product.objects.get(pk=pid)
     data = {}
-    checkw = UserWishList.objects.filter(product_id=pid, user_id=request.user).count()
+    checkw = UserWishList.objects.filter(product_id=product, user_id=request.user).count()
     if checkw > 0:
         data = {
             'bool': False
         }
     else:
         wishlist = UserWishList.objects.create(
-            product_id=pid,
+            product_id=product,
             user_id=request.user
         )
         data = {
@@ -155,9 +153,17 @@ def add_wishlist(request):
         }
     return JsonResponse(data)
 
-# My Wishlist
-
-
 def my_wishlist(request):
-    wlist = UserWishList.objects.filter(user_id=request.user).order_by('id')
+    # breakpoint()
+    wlist = UserWishList.objects.filter(user_id=request.user.id).order_by('id')
     return render(request, 'wishlist.html', {'wlist': wlist})
+
+# def deletewishlist(request, id):
+#     breakpoint()
+#     user=request.user.id
+#     UserWishList.objects.filter(user_id=user.id, product=Product.objects.get(id=id).delete())
+#     UserWishList.delete()
+#     return HttpResponseRedirect('/my-wishlist')
+
+
+

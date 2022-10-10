@@ -3,13 +3,14 @@
 {% block content %}
 <main class="container my-4">
     <!-- Featured Products -->
-    <h3 class="my-4 border-bottom pb-1">Wishlist({{totalitems}})</h3>
+    <h3 class="my-4 border-bottom pb-1">Wishlist</h3>
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th>Title</th>
                 <th>Image</th>
                 <th>Price</th>
+                <!-- <th>Action</th> -->
             </tr>
         </thead>
         <tbody>
@@ -21,6 +22,10 @@
                         alt="{{wl.product_id.title}}">
                 </td>
                 <td>{{wl.product_id.price}}</td>
+                <!-- <td>
+                    <input type="button"  onclick="decrementValue('{{wl.id}}')" value="Remove"/>
+
+                </td> -->
             </tr>
             {% endfor %}
         </tbody>

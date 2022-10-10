@@ -93,10 +93,10 @@ $(document).on('click', ".add-to-cart", function () {
 // addwishlist
 
 $(document).on('click',".add-wishlist",function(){
-    
+    debugger;
     var _pid=$(this).attr('data-product');
     var _vm=$(this);
-    debugger;
+    
     $.ajax({
         
         url:"/add-wishlist",

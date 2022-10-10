@@ -67,7 +67,8 @@ urlpatterns = [
     path('userOrder/',views.userOrder_check, name='userOrder'),
     path('userOrder_form/',views.UserOrderField.as_view(),name='userOrder_form'),
     path('userWishlist/',views.userWishlist_check, name='userWishlist'),
-    path('userWishlist_form/',views.UserWishlistField.as_view(),name='userWishlist_form')
+    path('userWishlist_form/',views.UserWishlistField.as_view(),name='userWishlist_form'),
+    path("userWishlistdelete/",views.DeleteuserWishlist.as_view(),name="Delete_userWishlist"),
 
 ]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 

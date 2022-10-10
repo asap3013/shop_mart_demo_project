@@ -71,26 +71,25 @@
                         </div>
                         <div class="btn-group pull-right">
                             <div class="btn-group">
-                                <button type="button" class="btn btn-default dropdown-toggle usa"
+                                <button type="button" class="btn btn-default dropdown-toggle india"
                                     data-toggle="dropdown">
-                                    USA
+                                    INDIA
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Canada</a></li>
-                                    <li><a href="#">UK</a></li>
+                                    <li><a href="#">Mumbai</a></li>
+                                    <li><a href="#">Delhi</a></li>
                                 </ul>
                             </div>
 
                             <div class="btn-group">
-                                <button type="button" class="btn btn-default dropdown-toggle usa"
+                                <button type="button" class="btn btn-default dropdown-toggle india"
                                     data-toggle="dropdown">
-                                    DOLLAR
+                                    Rupees
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Canadian Dollar</a></li>
-                                    <li><a href="#">Pound</a></li>
+                                    <li><a href="#">Rupees</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -99,7 +98,8 @@
                         <div class="shop-menu pull-right">
                             <ul class="nav navbar-nav">
                                 <li><a href="#"><i class="fa fa-user"></i> Account</a></li>
-                                <li><a href="{% url 'G_shopper:my_wishlist' %}"><i class="fa fa-star"></i> Wishlist</a></li>
+                                <li><a href="{% url 'G_shopper:my_wishlist' %}"><i class="fa fa-star"></i> Wishlist</a>
+                                </li>
                                 <li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
                                 <li><a href="{% url 'G_shopper:addcart' %}"><i class="fa fa-shopping-cart"></i>
                                         Cart(<span class="cart-list">{{request.session.cartdata|length}}</span>)</a>
@@ -403,7 +403,7 @@
 
                                         <button class="btn btn-default add-to-cart" id="{{prod.id}}"><i
                                                 class="fa fa-shopping-cart addcart"></i>Add to cart</button>
-                                                
+
                                         <div class="cart_quantity_button submitWidget submitWidget-{{prod.id}}">
                                             <input type="button" onclick="decrementValue('{{prod.id}}')" value=" - " />
                                             <input type="text" id="product-qty-{{prod.id}}" name="quantity" value="1"
@@ -411,10 +411,12 @@
                                             <input type="button" onclick="incrementValue('{{prod.id}}')" value="+" />
                                         </div> <br>
                                         {% if user.is_authenticated %}
-			  	<button class="btn btn-sm btn-danger add-wishlist" data-product="{{prod.id}}"><i class="fa fa-heart"></i></button>
-          {% else %}
-          <button class="btn btn-sm btn-danger disabled"><i class="fa fa-heart"></i></button>
-          {% endif %}
+                                        <button class="btn btn-sm btn-danger add-wishlist" data-product="{{prod.id}}"><i
+                                                class="fa fa-heart"></i></button>
+                                        {% else %}
+                                        <button class="btn btn-sm btn-danger disabled"><i
+                                                class="fa fa-heart"></i></button>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -602,3 +604,4 @@
 </body>
 
 </html>
+
