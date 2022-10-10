@@ -1,3 +1,4 @@
+from itertools import product
 from django.shortcuts import render
 from django.views import View
 from django.contrib.auth.decorators import login_required
@@ -73,7 +74,7 @@ def add_cart(request):
         'image': request.GET['image'],
         'title': request.GET['title'],
         'qty': request.GET['qty'],
-            'price': request.GET['price'],
+        'price': request.GET['price'],
     }
     if 'cartdata' in request.session:
         if str(request.GET['id']) in request.session['cartdata']:
@@ -128,5 +129,35 @@ def update_cart_item(request):
     total_amt = 0
     for p_id, item in request.session['cartdata'].items():
         total_amt += int(item['qty'])*float(item['price'])
-    t = render_to_string('cart.html', {'cart_data': request.session['cartdata'], 'totalitems':len(request.session['cartdata']),'total_amt':total_amt})
+    t = render_to_string('cart.html', {'cart_data': request.session['cartdata'], 'totalitems': len(
+        request.session['cartdata']), 'total_amt': total_amt})
     return JsonResponse({'data': t, 'totalitems': len(request.session['cartdata'])})
+
+
+# My Wishlist
+# Wishlist
+def add_wishlist(request):
+    pid = request.GET['product']
+    # product = Product.objects.get(pk=pid)
+    data = {}
+    checkw = UserWishList.objects.filter(product_id=pid, user_id=request.user).count()
+    if checkw > 0:
+        data = {
+            'bool': False
+        }
+    else:
+        wishlist = UserWishList.objects.create(
+            product_id=pid,
+            user_id=request.user
+        )
+        data = {
+            'bool': True
+        }
+    return JsonResponse(data)
+
+# My Wishlist
+
+
+def my_wishlist(request):
+    wlist = UserWishList.objects.filter(user_id=request.user).order_by('id')
+    return render(request, 'wishlist.html', {'wlist': wlist})

@@ -182,10 +182,10 @@ class ProductImages(models.Model):
 
 class UserWishList(models.Model):
     user_id = models.ForeignKey(User,on_delete=models.CASCADE)
-    product_id = models.IntegerField()
+    product_id = models.ForeignKey(Product,on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.UserWishList
+    # def __str__(self):
+    #     return self.
 
     class Meta:
         verbose_name = "UserWishList"

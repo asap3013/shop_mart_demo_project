@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="container my-4">
+    <!-- Featured Products -->
+    <h3 class="my-4 border-bottom pb-1">Wishlist({{totalitems}})</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Image</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for wl in wlist %}
+            <tr>
+                <td><a href="/product/{{wl.product_id.slug}}/{{wl.product_id.id}}">{{wl.product_id.name}}</a></td>
+                <td>
+                    <img width="100" src="{{wl.product_id.productimages_set.first.image_path.url}}"
+                        alt="{{wl.product_id.title}}">
+                </td>
+                <td>{{wl.product_id.price}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</main>
+
+{% endblock %}
