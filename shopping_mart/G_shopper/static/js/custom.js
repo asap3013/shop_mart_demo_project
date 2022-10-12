@@ -124,16 +124,14 @@ $(document).on('click', ".apply", function () {
         url: '/coupon',
         data: {
             'cart_coupon': coupon,
-        },
-        
+        },       
         dataType: 'json',
         success: function (data) {
-
             $("#apply").hide();
             document.getElementById("coupons").disabled = true;
             $('#remove').css("display", "block");
             var total_amt = document.getElementById('prd_amt').innerText;
-            var dist_amt = 100 * (total_amt-data[0])/(total_amt) ;
+            var dist_amt = (total_amt * data[0])/100 ;
             if (total_amt < 500) {
                 total_amt = total_amt + 50  
             }
@@ -141,7 +139,9 @@ $(document).on('click', ".apply", function () {
                 total_amt
             }
             var final_amt = (total_amt-dist_amt)
+            var final_amt = Math.round(final_amt).toFixed(2)
             document.getElementById('ftotal').innerHTML= final_amt;
+            document.getElementById('msg').innerHTML= data + "% applied";
         }
     });
 });
@@ -155,7 +155,6 @@ $(document).on('click', ".remove", function () {
         data: {
             'cart_coupon': coupon,
         },
-        
         dataType: 'json',
         success: function (data) {
             $("#remove").hide();
@@ -164,7 +163,8 @@ $(document).on('click', ".remove", function () {
             var total_amt = document.getElementById('prd_amt').innerText;          
             var final_amt = total_amt
             document.getElementById('ftotal').innerHTML= final_amt;
-            
+            // document.getElementById('dist').innerHTML= data;
+            document.getElementById('msg').innerHTML= "";
 
         }
     });

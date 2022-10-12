@@ -77,7 +77,7 @@
 								<span>Apply Coupon</span>
 								<input type="text" name="coupon" id="coupons" class="form-control">
 								<span class="input-group-append">
-									<button type="submit" class="btn btn-primary apply" id="apply">Apply</button>
+									<button type="submit" class="btn btn-primary apply" id="apply" required>Apply</button>
 									<button type="submit" class="btn btn-primary remove" id="remove">Remove</button>
 								</span>
 							</div>
@@ -93,7 +93,9 @@
 							{% else %}
 							<li>Shipping Cost <span id="fifty">50</span></li>
 							{% endif %}
+							<li id="dist">Discount<span id="msg"></span></li>
 							<li>Total <span id="ftotal">{{total_amt}}</span></li>
+							
 						</ul>
 							<!-- <button class="btn btn-default update" >Update</button> -->
 							<a class="btn btn-default check_out" href="">Check Out</a>

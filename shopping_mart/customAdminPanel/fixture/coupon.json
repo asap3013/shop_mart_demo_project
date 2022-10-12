@@ -26,6 +26,20 @@
             "no_of_user":1
          }
 
+    },
+    {
+        "model":"customAdminPanel.Coupon",
+        "pk":3,
+        "fields":{
+            "code":"AABCCF43ERR",
+            "percent_off":50.00,
+            "created_by":1,
+            "created_date":	"2022-02-11 13:23:04",
+            "modify_by":1,
+            "modify_date":"2022-02-11 13:23:04",
+            "no_of_user":1
+         }
+
     }
     
 ] 
