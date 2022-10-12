@@ -182,8 +182,6 @@ def couponcalculate(request):
     for i in coupon:
         if (i['code']==pid):
             data.append(i['percent_off'])
-        else:
-            messages.add_message(request, messages.INFO, 'invalid coupon')
     return JsonResponse(data,safe=False)
 
 

@@ -128,14 +128,44 @@ $(document).on('click', ".apply", function () {
         
         dataType: 'json',
         success: function (data) {
+
             $("#apply").hide();
+            document.getElementById("coupons").disabled = true;
             $('#remove').css("display", "block");
             var total_amt = document.getElementById('prd_amt').innerText;
             var dist_amt = 100 * (total_amt-data[0])/(total_amt) ;
+            if (total_amt < 500) {
+                total_amt = total_amt + 50  
+            }
+            else {
+                total_amt
+            }
             var final_amt = (total_amt-dist_amt)
             document.getElementById('ftotal').innerHTML= final_amt;
-          
         }
     });
 });
 
+$(document).on('click', ".remove", function () {
+    var coupon = $("#coupons").val();
+    console.log(coupon);
+    $.ajax({
+        type: "GET",
+        url: '/coupon',
+        data: {
+            'cart_coupon': coupon,
+        },
+        
+        dataType: 'json',
+        success: function (data) {
+            $("#remove").hide();
+            $('#apply').css("display", "block");
+            document.getElementById("coupons").disabled = false;
+            var total_amt = document.getElementById('prd_amt').innerText;          
+            var final_amt = total_amt
+            document.getElementById('ftotal').innerHTML= final_amt;
+            
+
+        }
+    });
+});
