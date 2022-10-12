@@ -1,3 +1,4 @@
+from multiprocessing import context
 from django.shortcuts import render
 from django.views import View
 from django.contrib.auth.decorators import login_required
@@ -42,8 +43,10 @@ def userLogin(request):
 
 @login_required(redirect_field_name='register', login_url='/registration')
 def home_page(request):
+    banners = Banners.objects.all()
     products = Product.objects.all()
-    return render(request, 'register/home.html', {'obj': products})
+    context={'form':banners,'obj':products}
+    return render(request, 'register/home.html',context)
 
 
 def logoutuser(request):
@@ -165,5 +168,33 @@ def my_wishlist(request):
 #     UserWishList.delete()
 #     return HttpResponseRedirect('/my-wishlist')
 
+def product_detail(request,id):
+    product = Product.objects.filter(id=id).first()
+    context={
+        'product':product
+    }
+    return render(request,'productDetails.html',context)
+
+def couponcalculate(request):
+    data=[]
+    pid = request.GET['cart_coupon']
+    coupon = Coupon.objects.all().values('code','percent_off')
+    for i in coupon:
+        if (i['code']==pid):
+            data.append(i['percent_off'])
+        else:
+            messages.add_message(request, messages.INFO, 'invalid coupon')
+    return JsonResponse(data,safe=False)
+
+
+
+
+
+    
+    
+
+
+
+    
 
 

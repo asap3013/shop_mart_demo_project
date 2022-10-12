@@ -17,8 +17,8 @@
         "model":"customAdminPanel.Coupon",
         "pk":2,
         "fields":{
-            "code":"AABBCF43ERT",
-            "percent_off":10.00,
+            "code":"AABCCF43ERT",
+            "percent_off":20.00,
             "created_by":1,
             "created_date":	"2022-02-11 13:23:04",
             "modify_by":1,

@@ -1,3 +1,8 @@
+$(document).ready(function(){
+    $('.submitWidget').css("display", "none");
+    $('.remove').css("display","none")
+});
+
 //add to cart increment and decrement
 function incrementValue(prod_id) {
     var value = parseInt(document.getElementById('product-qty-' + prod_id).value, 10);
@@ -50,9 +55,7 @@ function decrementValue(prod_id) {
 }
 
 
-$(document).ready(function () {
-    $('.submitWidget').css("display", "none");
-});
+
 
 //add ro cart
 
@@ -93,7 +96,7 @@ $(document).on('click', ".add-to-cart", function () {
 // addwishlist
 
 $(document).on('click',".add-wishlist",function(){
-    debugger;
+    
     var _pid=$(this).attr('data-product');
     var _vm=$(this);
     
@@ -111,3 +114,28 @@ $(document).on('click',".add-wishlist",function(){
         }
     });
 });
+
+
+$(document).on('click', ".apply", function () {
+    var coupon = $("#coupons").val();
+    console.log(coupon);
+    $.ajax({
+        type: "GET",
+        url: '/coupon',
+        data: {
+            'cart_coupon': coupon,
+        },
+        
+        dataType: 'json',
+        success: function (data) {
+            $("#apply").hide();
+            $('#remove').css("display", "block");
+            var total_amt = document.getElementById('prd_amt').innerText;
+            var dist_amt = 100 * (total_amt-data[0])/(total_amt) ;
+            var final_amt = (total_amt-dist_amt)
+            document.getElementById('ftotal').innerHTML= final_amt;
+          
+        }
+    });
+});
+

@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 <script src="/static/js/custom.js"></script>
 <main class="container my-4" id="cartList">
 	<h3 class="my-4 border-bottom pb-1">Cart({{totalitems}})</h3>
@@ -49,7 +50,60 @@
 				{% endif %}
 		</tfoot>
 	</table>
+	<!-- <div>
+		<form>
+			<div class="form-group">
+				<label>Have Coupon?</label>
+				<div class="input-group">
+					<input type="text" name="coupon" class="form-control">
+					<span class="input-group-append">
+						<button type="submit" class="btn btn-primary">Apply</button>
+					</span>
+				</div>
+			</div>
+		</form>
+	</div> -->
+	<section id="do_action">
+		<div class="container">
+			<div class="heading">
+				<h3>What would you like to do next?</h3>
+				<p>Choose if you have a discount code or reward points you want to use or would like to estimate your delivery cost.</p>
+			</div>
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="chose_area">
+						<ul class="user_option">
+							<div class="input-group">
+								<span>Apply Coupon</span>
+								<input type="text" name="coupon" id="coupons" class="form-control">
+								<span class="input-group-append">
+									<button type="submit" class="btn btn-primary apply" id="apply">Apply</button>
+									<button type="submit" class="btn btn-primary remove" id="remove">Remove</button>
+								</span>
+							</div>
+						</ul>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="total_area coupon">
+						<ul>
+							<li>Cart Sub Total <span id="prd_amt">{{total_amt}}</span></li>
+							{% if total_amt > 500 %}
+							<li>Shipping Cost <span id="zero">0</span></li>
+							{% else %}
+							<li>Shipping Cost <span id="fifty">50</span></li>
+							{% endif %}
+							<li>Total <span id="ftotal">{{total_amt}}</span></li>
+						</ul>
+							<button class="btn btn-default update" >Update</button>
+							<a class="btn btn-default check_out" href="">Check Out</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section><!--/#do_action-->
 </main>
 
 {% endblock %}
+
 

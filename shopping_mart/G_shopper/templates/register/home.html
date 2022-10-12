@@ -173,8 +173,9 @@
                             <li data-target="#slider-carousel" data-slide-to="1"></li>
                             <li data-target="#slider-carousel" data-slide-to="2"></li>
                         </ol>
-
+                        {% for ban in form %}
                         <div class="carousel-inner">
+                            {% if forloop.first %}
                             <div class="item active">
                                 <div class="col-sm-6">
                                     <h1><span>E</span>-SHOPPER</h1>
@@ -184,10 +185,10 @@
                                     <button type="button" class="btn btn-default get">Get it now</button>
                                 </div>
                                 <div class="col-sm-6">
-                                    <img src="/static/images/home/girl1.jpg" class="girl img-responsive" alt="" />
-                                    <img src="/static/images/home/pricing.png" class="pricing" alt="" />
+                                    <img src="{{ban.banner_path.url}}" alt="" />
                                 </div>
                             </div>
+                            {% else %}
                             <div class="item">
                                 <div class="col-sm-6">
                                     <h1><span>E</span>-SHOPPER</h1>
@@ -197,35 +198,20 @@
                                     <button type="button" class="btn btn-default get">Get it now</button>
                                 </div>
                                 <div class="col-sm-6">
-                                    <img src="/static/images/home/girl2.jpg" class="girl img-responsive" alt="" />
-                                    <img src="/static/images/home/pricing.png" class="pricing" alt="" />
+                                    <img src="{{ban.banner_path.url}}" alt="" />
+                                    <!-- <img src="/static/images/home/pricing.png" class="pricing" alt="" /> -->
                                 </div>
                             </div>
-
-                            <div class="item">
-                                <div class="col-sm-6">
-                                    <h1><span>E</span>-SHOPPER</h1>
-                                    <h2>Free Ecommerce Template</h2>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                        incididunt ut labore et dolore magna aliqua. </p>
-                                    <button type="button" class="btn btn-default get">Get it now</button>
-                                </div>
-                                <div class="col-sm-6">
-                                    <img src="/static/images/home/girl3.jpg" class="girl img-responsive" alt="" />
-                                    <img src="/static/images/home/pricing.png" class="pricing" alt="" />
-                                </div>
-                            </div>
-
+                            {% endif %}
                         </div>
-
                         <a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
                             <i class="fa fa-angle-left"></i>
                         </a>
                         <a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
                             <i class="fa fa-angle-right"></i>
                         </a>
+                        {% endfor %}
                     </div>
-
                 </div>
             </div>
         </div>
@@ -417,6 +403,11 @@
                                         <button class="btn btn-sm btn-danger disabled"><i
                                                 class="fa fa-heart"></i></button>
                                         {% endif %}
+                                        <div class="choose">
+                                            <ul class="nav nav-pills nav-justified">
+                                                <li><a href="{{prod.id}}"><i class="fa fa-plus-square"></i>view product</a></li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -604,4 +595,3 @@
 </body>
 
 </html>
-
