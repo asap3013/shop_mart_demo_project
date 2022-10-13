@@ -202,7 +202,7 @@ class UserAddress(models.Model):
     zip_code = models.CharField(max_length=45)
 
     def __str__(self):
-        return self.UserAddress
+        return self.address_1
 
     class Meta:
         verbose_name = "UserAddress"

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="shopper-informations">
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="shopper-info">
+            </div>
+        </div>
+        <div class="col-sm-5 clearfix">
+            <div class="bill-to">
+                <p>Bill To</p>
+                <div class="form-one">
+                    <form action="" method="post" value="Add Address">
+                        {% csrf_token %}
+                        <label for="user_id">user_id</label>
+                        {{ form.user_id }}
+                        <label for="address_1">address_1</label>
+                        {{ form.address_1 }}
+                        <label for="address_2">address_2</label>
+                        {{ form.address_2 }}
+                        <label for="city">city</label>
+                        {{ form.city }}
+                        <label for="country">country</label>
+                        {{ form.country }}
+                        <label for="state">state</label>
+                        {{ form.state }}
+                        <label for="zip_code">zip_code</label>
+                        {{ form.zip_code }}
+                        <button type="submit">Add Address</button>    
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="order-message">
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

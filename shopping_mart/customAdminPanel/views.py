@@ -912,8 +912,7 @@ class UserAddressField(LoginRequiredMixin, View):
     def post(self, request):
         obj = UserAddressForm(request.POST, request.FILES)
         if obj.is_valid():
-            instance = obj.save()
-            print(instance.banner_path.path)
+            obj.save()
             return redirect('customAdminPanel:userAddress')
         else:
             return render(request, "model_form/userAddress_form.html", {'form': obj})

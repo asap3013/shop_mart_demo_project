@@ -17,5 +17,7 @@ urlpatterns = [
     path('my-wishlist/',views.my_wishlist, name='my_wishlist'),
     path('product/<int:id>',views.product_detail, name='product_detail'),
     path('coupon/',views.couponcalculate, name='couponcal'),
+    path('checkout/',views.checkout,name='checkout'),
+    path('address/',views.Add_address.as_view(),name='address')
 
     ]

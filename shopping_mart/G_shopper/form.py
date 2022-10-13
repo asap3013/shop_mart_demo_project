@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from customAdminPanel.models import User
+from customAdminPanel.models import *
 
 
 class UserRegistraionForm(forms.ModelForm):  
@@ -56,3 +56,31 @@ class UserRegistraionForm(forms.ModelForm):
         )  
         return user  
 
+class Address_form(forms.ModelForm):
+    # user_id = forms.CharField(label='user_id')   
+    # address_1 = forms.CharField(label='address_1', min_length=5, max_length=150)
+    # address_2 = forms.CharField(label='address_2', min_length=5, max_length=150)
+    # city = forms.CharField(label='city', min_length=5, max_length=150)
+    # country = forms.CharField(label='country')
+    # state = forms.CharField(label='state')
+    # zip_code = forms.IntegerField(label='zip_code')
+
+    class Meta:
+        model = UserAddress
+        fields = ["user_id","address_1","address_2","city","country","state","zip_code"]
+
+    # def address_1_clean(self):  
+    #     address_1 = self.cleaned_data['address_1'].lower()  
+    #     new = UserAddress.objects.filter(address_1 = address_1)  
+    #     if new.count():  
+    #         raise ValidationError("address_1 Already Exist")  
+    #     return address_1 
+    # def address_2_clean(self):  
+    #     address_2 = self.cleaned_data['address_2'].lower()  
+    #     new = UserAddress.objects.filter(address_2 = address_2)  
+    #     if new.count():  
+    #         raise ValidationError("address_2 Already Exist")  
+    #     return address_2
+    # def save(self, commit = True):  
+    #     userAddress = UserAddress.objects.all()  
+    #     return userAddress

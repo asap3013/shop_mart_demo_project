@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<p><b>Select Address</b></p>  
+<select name="address" class="col-sm-6" >
+    <option>-----Select-----</option>
+    {% for i in form %} 
+    <option value="Address" >
+        <div>{{i.address_1}} {{i.address_2}} {{i.city}} {{i.state}} {{i.zip_code}}</div>
+    </option>
+    {% endfor %}
+</select>
+<br>
+</div>
+<br>
+{% endblock %}

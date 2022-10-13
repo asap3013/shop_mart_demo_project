@@ -4,7 +4,7 @@ from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
 from django.contrib import messages
-from .form import UserRegistraionForm
+from .form import *
 from django.shortcuts import render, redirect
 from customAdminPanel.models import *
 from django.http import JsonResponse , HttpResponseRedirect
@@ -184,11 +184,23 @@ def couponcalculate(request):
             data.append(i['percent_off'])
     return JsonResponse(data,safe=False)
 
+def checkout(request):
+    address = UserAddress.objects.all()
+    return render(request,'checkout.html',{'form':address})
 
 
+class Add_address(View):
+    def get(self, request):
+        obj = Address_form()
+        return render(request, "register/address_form.html", {'form': obj})
 
-
-    
+    def post(self, request):
+        obj = Address_form(request.POST)
+        if obj.is_valid():
+            obj.save()
+            return redirect('G_shopper:addcart')
+        else:
+            return render(request, "register/address_form.html", {'form': obj})
     
 
 

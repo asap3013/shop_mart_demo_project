@@ -98,7 +98,10 @@
 							
 						</ul>
 							<!-- <button class="btn btn-default update" >Update</button> -->
-							<a class="btn btn-default check_out" href="">Check Out</a>
+							<a class="btn btn-default check_out" 
+							href="{% url 'G_shopper:checkout' %}">Check Out</a>
+							<a class="btn btn-default check_out" 
+							href="{% url 'G_shopper:address' %}">Add Address</a>
 					</div>
 				</div>
 			</div>
