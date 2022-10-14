@@ -405,7 +405,8 @@
                                         {% endif %}
                                         <div class="choose">
                                             <ul class="nav nav-pills nav-justified">
-                                                <li><a href="{{prod.id}}"><i class="fa fa-plus-square"></i>view product</a></li>
+                                                
+                            <li><a href="{% url 'G_shopper:product_detail' prod.id %}" value=""><i class="fa fa-plus-square"></i>view product</a></li>
                                             </ul>
                                         </div>
                                     </div>

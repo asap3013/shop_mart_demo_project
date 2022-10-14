@@ -137,7 +137,6 @@ def update_cart_item(request):
 
 # Wishlist
 def add_wishlist(request):
-    breakpoint()
     pid = request.GET['product']
     product = Product.objects.get(pk=pid)
     data = {}
@@ -157,7 +156,6 @@ def add_wishlist(request):
     return JsonResponse(data)
 
 def my_wishlist(request):
-    # breakpoint()
     wlist = UserWishList.objects.filter(user_id=request.user.id).order_by('id')
     return render(request, 'wishlist.html', {'wlist': wlist})
 
@@ -168,12 +166,9 @@ def my_wishlist(request):
 #     UserWishList.delete()
 #     return HttpResponseRedirect('/my-wishlist')
 
-def product_detail(request,id):
-    product = Product.objects.filter(id=id).first()
-    context={
-        'product':product
-    }
-    return render(request,'productDetails.html',context)
+def product_detail(request,product_id):
+    product = Product.objects.get(id=product_id)
+    return render(request,'productDetails.html',{'product':product})
 
 def couponcalculate(request):
     data=[]
