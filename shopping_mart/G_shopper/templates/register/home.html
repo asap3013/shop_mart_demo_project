@@ -100,7 +100,7 @@
                                 <li><a href="#"><i class="fa fa-user"></i> Account</a></li>
                                 <li><a href="{% url 'G_shopper:my_wishlist' %}"><i class="fa fa-star"></i> Wishlist</a>
                                 </li>
-                                <li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
+                                <li><a href="{% url 'G_shopper:checkout' %}"><i class="fa fa-crosshairs"></i> Checkout</a></li>
                                 <li><a href="{% url 'G_shopper:addcart' %}"><i class="fa fa-shopping-cart"></i>
                                         Cart(<span class="cart-list">{{request.session.cartdata|length}}</span>)</a>
                                 </li>

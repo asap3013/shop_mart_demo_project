@@ -1,4 +1,5 @@
 from multiprocessing import context
+from unicodedata import category
 from django.shortcuts import render
 from django.views import View
 from django.contrib.auth.decorators import login_required
@@ -7,7 +8,7 @@ from django.contrib import messages
 from .form import *
 from django.shortcuts import render, redirect
 from customAdminPanel.models import *
-from django.http import JsonResponse , HttpResponseRedirect
+from django.http import JsonResponse 
 from django.contrib.auth import login, logout
 from django.template.loader import render_to_string
 from django.conf import settings
@@ -95,6 +96,7 @@ def add_cart(request):
 
 def cart_list(request):
     total_amt = 0
+
     if 'cartdata' in request.session:
         for item in request.session['cartdata'].items():
             total_amt += (int(item[1]['qty']))*float(item[1]['price'])
@@ -171,17 +173,38 @@ def product_detail(request,product_id):
     return render(request,'productDetails.html',{'product':product})
 
 def couponcalculate(request):
-    data=[]
+    breakpoint()
+    data={
+        'coupon_code':'',
+        'percent_off':''
+    }
     pid = request.GET['cart_coupon']
     coupon = Coupon.objects.all().values('code','percent_off')
     for i in coupon:
         if (i['code']==pid):
-            data.append(i['percent_off'])
+            data['percent_off']=i['percent_off']
+            data['coupon_code']=i['code']            
+            request.session['coupon_data']=data
     return JsonResponse(data,safe=False)
+
+# def coupondata(request):
+    # if 'coupons' and 'ftotal' and 'address' in request.POST:
+    #     request.session['coupon_data'] = request.POST['coupons'] 
+    #     request.session['total_price'] = request.POST['ftotal']
+    #     request.session['address'] = request.POST['addressd']
+    # return render(request, 'checkout.html', {'coupon_data': request.session['coupons'], 'total_price': request.session['ftotal'],'address':request.session['addressd']})
+
 
 def checkout(request):
     address = UserAddress.objects.all()
-    return render(request,'checkout.html',{'form':address})
+    # request.session['address'] = address
+    total_amt = 0
+    if 'cartdata' in request.session:
+        for item in request.session['cartdata'].items():
+            total_amt += (int(item[1]['qty']))*float(item[1]['price'])
+        return render(request, 'checkout.html', {'cart_data': request.session['cartdata'], 'totalitems': len(request.session['cartdata']), 'total_amt': total_amt,'address':address})
+    else:
+        return render(request, 'checkout.html', {'cart_data': '', 'totalitems': 0, 'total_amt': total_amt,'address':address})
 
 
 class Add_address(View):
@@ -197,6 +220,27 @@ class Add_address(View):
         else:
             return render(request, "register/address_form.html", {'form': obj})
     
+def placeorder(request):
+    breakpoint()
+    cart = request.session['cartdata'] 
+    coupon = request.session['coupon_data']
+    # amt = request.session['total_amt'].items()
+    # useraddress = request.session['address']
+    order =UserOrder.objects.get(grand_total=request.session['price'])
+    order.save()
+
+    
+    return redirect('G_shopper:home')
+        
+# class Checkout(View):
+#     def post (self, request,):
+#         address = UserAddress.objects.get(id=id)
+#         cart = request.session.get('cart_data').items()
+
+#         return redirect('G_shopper:home',)
+
+
+
 
 
 

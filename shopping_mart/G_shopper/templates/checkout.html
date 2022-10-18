@@ -1,18 +1,135 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script src="/static/js/custom.js"></script>
+<main class="container my-4" id="cartList" onload="checkCookies()">
+    <h3 class="my-4 border-bottom pb-1">Cart({{totalitems}})</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product_id,item in cart_data.items %}
+            <tr>
+                <td>
+                    <input type="hidden" class="product_id-{{product_id}}" value="{{item.id}}">
+                    <img src="{{item.image}}" width="50" />
+                    <p><a href="/product/{{item.title|slugify}}/{{product_id}}">{{item.title}}</a></p>
+
+                </td>
+                <td>
+                    <div class="cart_quantity_button">
+                        <div class="cart_quantity_button">
+                            <input type="text" id="product-qty-{{prod.id}}" name="quantity" value="{{item.qty}}"
+                                maxlength="2" max="10" size="1" readonly />
+                        </div>
+                    </div>
+                </td>
+                <td>$ {{item.price}}</td>
+                <td>$ {% widthratio item.price 1 item.qty %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2"></td>
+                <th>Total</th>
+                <th>Rs. {{total_amt}}</th>
+                <!-- {% if totalitems %}
+            <tr>
+
+            </tr>
+            {% endif %} -->
+        </tfoot>
+    </table>
+    <!-- <div>
+		<form>
+			<div class="form-group">
+				<label>Have Coupon?</label>
+				<div class="input-group">
+					<input type="text" name="coupon" class="form-control">
+					<span class="input-group-append">
+						<button type="submit" class="btn btn-primary">Apply</button>
+					</span>
+				</div>
+			</div>
+		</form>
+	</div> -->
+    <section id="do_action">
+        <div class="container">
+            <div class="heading">
+                <h3>What would you like to do next?</h3>
+                <p>Choose if you have a discount code or reward points you want to use or would like to estimate your
+                    delivery cost.</p>
+            </div>
+            <!-- <div class="row">
+                <div class="col-sm-6">
+                    <div class="chose_area">
+                        <ul class="user_option">
+                            <div class="input-group">
+                                <span>Apply Coupon</span>
+                                <input type="text" name="coupon" id="coupon" class="form-control">
+                                <span class="input-group-append">
+                                    <button type="submit" class="btn btn-primary apply" id="apply"
+                                        required>Apply</button>
+                                    <button type="submit" class="btn btn-primary remove" id="remove">Remove</button>
+                                </span>
+                            </div>
+                        </ul>
+                    </div>
+                </div> -->
+            <p><b>Select Address</b></p>
+            <!-- <select name="address" class="col-sm-6">
+                    <option>-----Select-----</option> -->
+            {% for i in address %}
+            <input type="radio" id="addressd" name="fav_lang" value="ADDRESS">
+            <label for="addressd">{{i.address_1}} {{i.address_2}} {{i.city}} {{i.state}} {{i.zip_code}} </label>
+            <br>
+            {% endfor %}
+            <!-- </select> -->
+            <br>
+        </div>
+        <div class="col-sm-6">
+            <div class="total_area coupon">
+                <form action="" method="POST">
+
+                    <ul>
+                        <li>Cart Sub Total <span id="prd_amt">{{total_amt}}</span></li>
+                        {% if total_amt > 500 %}
+                        <li>Shipping Cost <span id="zero">0</span></li>
+                        {% else %}
+                        <li>Shipping Cost <span id="fifty">50</span></li>
+                        {% endif %}
+                        <li id="dist">Discount<span id="msg"></span></li>
+                        <li>Total <span id="ftotal" value="{{i.price}}">{{total_amt}}</span></li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+        <input type="radio" id="cod" name="fav_language" value="COD">
+        <label for="cod">COD</label><br>
+        <form action="" hidden>
+            <input type="text" value="" id="">
+        </form>
+        <input type="radio" id="stripe" name="fav_language" value="stripe">
+        <label for="paypal">stripe</label><br>
+        <button type="submit" class="btn btn-primary order" id="order" required><a href="{% url 'G_shopper:placeorder' %}">Checkout</a></button>
+        </div>
+
+        </div>
+    </section>
+</main>
 
 
-<p><b>Select Address</b></p>  
-<select name="address" class="col-sm-6" >
-    <option>-----Select-----</option>
-    {% for i in form %} 
-    <option value="Address" >
-        <div>{{i.address_1}} {{i.address_2}} {{i.city}} {{i.state}} {{i.zip_code}}</div>
-    </option>
-    {% endfor %}
-</select>
 <br>
-</div>
-<br>
+
+
+
+
 {% endblock %}

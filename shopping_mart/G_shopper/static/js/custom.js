@@ -131,7 +131,7 @@ $(document).on('click', ".apply", function () {
             document.getElementById("coupons").disabled = true;
             $('#remove').css("display", "block");
             var total_amt = document.getElementById('prd_amt').innerText;
-            var dist_amt = (total_amt * data[0])/100 ;
+            var dist_amt = (total_amt * data['percent_off'])/100 ;
             if (total_amt < 500) {
                 total_amt = total_amt + 50  
             }
@@ -141,7 +141,7 @@ $(document).on('click', ".apply", function () {
             var final_amt = (total_amt-dist_amt)
             var final_amt = Math.round(final_amt).toFixed(2)
             document.getElementById('ftotal').innerHTML= final_amt;
-            document.getElementById('msg').innerHTML= data + "% applied";
+            document.getElementById('msg').innerHTML= data['percent_off'] + "% applied";
         }
     });
 });
@@ -169,3 +169,36 @@ $(document).on('click', ".remove", function () {
         }
     });
 });
+
+
+
+// $(document).on('click', ".order", function () {
+//     var product = document.getElementById('product_id-').value;
+//     var coupon = document.getElementById('coupons').value;
+//     var quantity = document.getElementById('product-qty-').value;
+//     var amount = document.getElementById('ftotal').value;
+// });
+
+$(document).on('click', ".order", function () {
+    debugger;
+    var _productid = $(".product_id-").val();
+    var _qty = $("#product-qty-").val();
+    var _address = $("#useraddress").val();
+    var _price = $("#ftotal").val();
+
+    $.ajax({
+        url: '/placeorder',
+        data: {
+            'id': _productid,
+            'qty': _qty,
+            'address':_address,
+            'price': _price
+        },
+        dataType: 'json',
+        success: function (res) {
+            
+        }
+    });
+});
+
+
