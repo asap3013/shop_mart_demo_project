@@ -107,5 +107,5 @@ admin.site.register(OrderDetails,OrderDetailsAdmin)
 
 
 class UserOrderAdmin(admin.ModelAdmin):
-    list_display = ('user_id','shipping_method','AWB_NO','payment_gateway','transaction_id','created_date','status','grand_total','shipping_charges','coupon_id','billing_address_1','billing_address_2','billing_city','billing_state','billing_country','billing_zipcode','shipping_address_1','shipping_address_2','shipping_city','shipping_state','shipping_country','shipping_zipcode')
+    list_display = ('user_id','payment_gateway','transaction_id','created_date','status','grand_total','shipping_charges','coupon_id','billing_address_1','billing_address_2','billing_city','billing_state','billing_country','billing_zipcode','shipping_address_1','shipping_address_2','shipping_city','shipping_state','shipping_country','shipping_zipcode')
 admin.site.register(UserOrder,UserOrderAdmin)

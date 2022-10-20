@@ -11,6 +11,7 @@ from customAdminPanel.models import *
 from django.http import JsonResponse 
 from django.contrib.auth import login, logout
 from django.template.loader import render_to_string
+import random
 from django.conf import settings
 User = settings.AUTH_USER_MODEL
 
@@ -173,26 +174,18 @@ def product_detail(request,product_id):
     return render(request,'productDetails.html',{'product':product})
 
 def couponcalculate(request):
-    breakpoint()
     data={
         'coupon_code':'',
-        'percent_off':''
+        'percent_off':'',
     }
     pid = request.GET['cart_coupon']
     coupon = Coupon.objects.all().values('code','percent_off')
     for i in coupon:
         if (i['code']==pid):
             data['percent_off']=i['percent_off']
-            data['coupon_code']=i['code']            
+            data['coupon_code']=i['code'] 
             request.session['coupon_data']=data
     return JsonResponse(data,safe=False)
-
-# def coupondata(request):
-    # if 'coupons' and 'ftotal' and 'address' in request.POST:
-    #     request.session['coupon_data'] = request.POST['coupons'] 
-    #     request.session['total_price'] = request.POST['ftotal']
-    #     request.session['address'] = request.POST['addressd']
-    # return render(request, 'checkout.html', {'coupon_data': request.session['coupons'], 'total_price': request.session['ftotal'],'address':request.session['addressd']})
 
 
 def checkout(request):
@@ -223,21 +216,43 @@ class Add_address(View):
 def placeorder(request):
     breakpoint()
     cart = request.session['cartdata'] 
-    coupon = request.session['coupon_data']
-    # amt = request.session['total_amt'].items()
-    # useraddress = request.session['address']
-    order =UserOrder.objects.get(grand_total=request.session['price'])
-    order.save()
+    coupon = request.session['coupon_data'] 
+    address_id= request.GET.get('address_id')
+    address = UserAddress.objects.get(pk=address_id)
+    total = request.GET.get('TOTAL')
+    request.session['final_total'] = total
+    final_amount = request.session['final_total']
+    ship_amount = request.GET.get('ship_amt')
+    request.session['ship_amount'] = ship_amount
+    ship_amount = request.session['ship_amount']
 
-    
+
+        
+    # context = {'cart':cart,'coupon':coupon,'final_amount':final_amount,'address':address}
+    # userOrder = UserOrder.objects.all()
+    order = UserOrder(
+            user_id = request.user,
+            # payment_gateway =  ,
+            grand_total = final_amount,
+            transaction_id = random.random()*100000000000000000,
+            shipping_charges = ship_amount,
+            # coupon_id = coupon.percent_off,
+            billing_address_1 = address.address_1,
+            billing_address_2 = address.address_2,
+            billing_city = address.city,
+            billing_state = address.state,
+            billing_country = address.country,
+            billing_zipcode = address.zip_code,
+            shipping_address_1 = address.address_1,
+            shipping_address_2 = address.address_2,
+            shipping_city = address.city,
+            shipping_country = address.country,
+            shipping_zipcode = address.zip_code
+        )
+    order.save()
     return redirect('G_shopper:home')
         
-# class Checkout(View):
-#     def post (self, request,):
-#         address = UserAddress.objects.get(id=id)
-#         cart = request.session.get('cart_data').items()
 
-#         return redirect('G_shopper:home',)
 
 
 

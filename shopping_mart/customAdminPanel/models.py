@@ -1,3 +1,4 @@
+from email.policy import default
 from django.contrib.auth.models import Group
 from django.db import models
 # from django.contrib.auth.models import User
@@ -317,12 +318,12 @@ class OrderDetails(models.Model):
 
 class UserOrder(models.Model):
     user_id = models.ForeignKey(User,on_delete=models.CASCADE)
-    shipping_method = models.IntegerField()
-    AWB_NO =models.CharField(max_length=100)
-    payment_gateway = models.ForeignKey(PaymentGateway,on_delete=models.CASCADE)
+    # shipping_method = models.IntegerField()
+    # AWB_NO =models.CharField(max_length=100)
+    payment_gateway = models.ForeignKey(PaymentGateway,null=True,on_delete=models.CASCADE)
     transaction_id = models.CharField(max_length=100)
     created_date = models.DateTimeField(auto_now=True)
-    status = models.BooleanField()
+    status = models.BooleanField(default=True)
     grand_total = models.FloatField()
     shipping_charges = models.FloatField()
     coupon_id = models.ForeignKey(Coupon,on_delete=models.CASCADE)

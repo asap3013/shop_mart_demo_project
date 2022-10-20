@@ -70,6 +70,8 @@ $(document).on('click', ".add-to-cart", function () {
     var _productImage = $(".product-image-" + _index).val();
     var _title = $(".meta_title-" + _index).val();
     var _price = $(".product-price-" + _index).text();
+    console.log(_qty, _productid, _title);
+
     $.ajax({
         url: '/mycart',
         data: {
@@ -138,7 +140,7 @@ $(document).on('click', ".apply", function () {
             }
             var final_amt = (total_amt-dist_amt)
             var final_amt = Math.round(final_amt).toFixed(2)
-            document.getElementById('ftotal').innerHTML= final_amt;
+            document.getElementById('ftotals').innerHTML= final_amt;
             document.getElementById('msg').innerHTML= data['percent_off'] + "% applied";
         }
     });
@@ -160,7 +162,7 @@ $(document).on('click', ".remove", function () {
             document.getElementById("coupons").disabled = false;
             var total_amt = document.getElementById('prd_amt').innerText;          
             var final_amt = total_amt
-            document.getElementById('ftotal').innerHTML= final_amt;
+            document.getElementById('ftotals').innerHTML= final_amt;
             // document.getElementById('dist').innerHTML= data;
             document.getElementById('msg').innerHTML= "";
 
@@ -177,47 +179,33 @@ $(document).on('click', ".remove", function () {
 //     var amount = document.getElementById('ftotal').value;
 // });
 
-// $(document).on('click', ".order", function () {
-//     debugger;
-//     var _productid = $(".product_id-").val();
-//     var _qty = $("#product-qty-").val();
-//     var _address = $("#useraddress").val();
-//     var _price = $("#ftotal").val();
-
-//     $.ajax({
-//         url: '/placeorder',
-//         data: {
-//             'id': _productid,
-//             'qty': _qty,
-//             'address':_address,
-//             'price': _price
-//         },
-//         dataType: 'json',
-//         success: function (res) {
-            
-//         }
-//     });
-// });
-
-
-function handleSubmit () {
+$(document).on('click', ".order", function () {
     debugger;
-    const ftotal = document.getElementById('ftotal').innerText;  
-    sessionStorage.setItem("TOTAL", ftotal);
-    return;
-}
+    var address = document.getElementById('hiddenaddress').value;
+    let final_total =sessionStorage.getItem('TOTAL');
+    let ship_amount = document.getElementsByClassName('shipamt');
+    for(let i = 0; i < ship_amount.length; i++){
+         ship_amt =document.getElementsByClassName(i).value;
+    }
+    $.ajax({
+        url: '/placeorder',
+        data: {
+            'address_id':address,
+            'TOTAL': final_total,
+            'ship_amt':ship_amt
+        },
+        dataType: 'json',
+        success: function (res) {
+            
+        }
+    });
+});  
 
-// $(document).on('click', ".check_out", function () {
-//     debugger;
-//     console.log(final_total)
-//     $.ajax({
-//         url: '{% url "G_shopper:placeorder" address %}',
-//         type: 'GET',
-//         data: {'TOTAL': final_total},
-        
-//         dataType: 'json',
-//         success: function (res) {
-//             console.log("final_total")
-//         }
-//     });
-// });
+window.addEventListener('load', () => {
+    debugger;
+    const ftotal = sessionStorage.getItem("TOTAL");
+    document.getElementById('ftotal').innerHTML = ftotal;
+
+})
+
+

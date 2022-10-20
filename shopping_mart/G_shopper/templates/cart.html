@@ -94,12 +94,16 @@
 							<li>Shipping Cost <span id="fifty">50</span></li>
 							{% endif %}
 							<li id="dist">Discount<span id="msg"></span></li>
-							<li>Total <span id="ftotal">{{total_amt}}</span></li>
+
+							<form action="checkout.html" method="POST">
+							<li>Total <span id="ftotal" name="ftotal" >{{total_amt}}</span></li>
+						
 							
 						</ul>
 							<!-- <button class="btn btn-default update" >Update</button> -->
 							<a class="btn btn-default check_out" 
-							href="{% url 'G_shopper:checkout' %}">Check Out</a>
+							href="{% url 'G_shopper:checkout' %}" onclick="handleSubmit()">Check Out</a>
+						</form>
 							<a class="btn btn-default check_out" 
 							href="{% url 'G_shopper:address' %}">Add Address</a>
 					</div>
@@ -110,5 +114,4 @@
 </main>
 
 {% endblock %}
-
 

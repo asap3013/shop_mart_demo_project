@@ -2,7 +2,7 @@
 
 {% block content %}
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-<script src="/static/js/custom.js"></script>
+<script src="/static/js/check.js"></script>
 <main class="container my-4" id="cartList" onload="checkCookies()">
     <h3 class="my-4 border-bottom pb-1">Cart({{totalitems}})</h3>
     <table class="table table-bordered">
@@ -88,7 +88,8 @@
             <!-- <select name="address" class="col-sm-6">
                     <option>-----Select-----</option> -->
             {% for i in address %}
-            <input type="radio" id="addressd" name="fav_lang" value="ADDRESS">
+            <input type="radio" id="address" name="fav_lang" value="address">
+            <input type="hidden" id="hiddenaddress" name="fav_lang" value="{{i.id}}">
             <label for="addressd">{{i.address_1}} {{i.address_2}} {{i.city}} {{i.state}} {{i.zip_code}} </label>
             <br>
             {% endfor %}
@@ -102,12 +103,12 @@
                     <ul>
                         <li>Cart Sub Total <span id="prd_amt">{{total_amt}}</span></li>
                         {% if total_amt > 500 %}
-                        <li>Shipping Cost <span id="zero">0</span></li>
+                        <li>Shipping Cost <span class="shipamt">0</span></li>
                         {% else %}
-                        <li>Shipping Cost <span id="fifty">50</span></li>
+                        <li>Shipping Cost <span class="shipamt">50</span></li>
                         {% endif %}
-                        <li id="dist">Discount<span id="msg"></span></li>
-                        <li>Total <span id="ftotal" value="{{i.price}}">{{total_amt}}</span></li>
+                        <!-- <li id="dist">Discount<span id="msg"></span></li> -->
+                        <li>Total <span name="ftotal" id="ftotal"></span></li>
                     </ul>
                 </form>
             </div>
@@ -119,8 +120,7 @@
         </form>
         <input type="radio" id="stripe" name="fav_language" value="stripe">
         <label for="paypal">stripe</label><br>
-        <button type="submit" class="btn btn-primary order" id="order" required><a href="{% url 'G_shopper:placeorder' %}">Checkout</a></button>
-        </div>
+        <button type="submit" class="btn btn-primary order" id="order" required>Checkout</button>
 
         </div>
     </section>
@@ -128,8 +128,4 @@
 
 
 <br>
-
-
-
-
 {% endblock %}

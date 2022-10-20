@@ -20,7 +20,6 @@ urlpatterns = [
     path('checkout/',views.checkout,name='checkout'),
     path('address/',views.Add_address.as_view(),name='address'),    
     path('placeorder/',views.placeorder,name='placeorder'),
-    # path('coupondata/',views.coupondata,name='coupondata'),
 
 
     ]
