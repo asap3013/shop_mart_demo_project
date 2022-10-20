@@ -170,12 +170,6 @@ $(document).on('click', ".remove", function () {
 
 
 
-// $(document).on('click', ".order", function () {
-//     var product = document.getElementById('product_id-').value;
-//     var coupon = document.getElementById('coupons').value;
-//     var quantity = document.getElementById('product-qty-').value;
-//     var amount = document.getElementById('ftotal').value;
-// });
 
 // $(document).on('click', ".order", function () {
 //     debugger;
@@ -204,20 +198,9 @@ function handleSubmit () {
     debugger;
     const ftotal = document.getElementById('ftotal').innerText;  
     sessionStorage.setItem("TOTAL", ftotal);
+    const ship_amount = document.getElementsByClassName('shipamt').innerText;
+    sessionStorage.setItem('ship_amt',ship_amount)
     return;
 }
 
-// $(document).on('click', ".check_out", function () {
-//     debugger;
-//     console.log(final_total)
-//     $.ajax({
-//         url: '{% url "G_shopper:placeorder" address %}',
-//         type: 'GET',
-//         data: {'TOTAL': final_total},
-        
-//         dataType: 'json',
-//         success: function (res) {
-//             console.log("final_total")
-//         }
-//     });
-// });
+

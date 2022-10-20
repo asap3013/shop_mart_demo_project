@@ -183,10 +183,7 @@ $(document).on('click', ".order", function () {
     debugger;
     var address = document.getElementById('hiddenaddress').value;
     let final_total =sessionStorage.getItem('TOTAL');
-    let ship_amount = document.getElementsByClassName('shipamt');
-    for(let i = 0; i < ship_amount.length; i++){
-         ship_amt =document.getElementsByClassName(i).value;
-    }
+    let ship_amt = document.getElementsByClassName('shipamt')[0].innerHTML;
     $.ajax({
         url: '/placeorder',
         data: {
@@ -203,8 +200,11 @@ $(document).on('click', ".order", function () {
 
 window.addEventListener('load', () => {
     debugger;
+    const ship_amount = sessionStorage.getItem("ship_amt");
+    document.getElementsByClassName('shipamt').innerHTML = ship_amount;
     const ftotal = sessionStorage.getItem("TOTAL");
     document.getElementById('ftotal').innerHTML = ftotal;
+    
 
 })
 

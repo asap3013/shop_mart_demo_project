@@ -19,6 +19,59 @@
                             <button style="float: right; width: 150px; height: 40px;" type="submit"
                                 class="btn btn-block btn-primary">Add</button>
                         </form>
+                        <div class="card-body">
+                            <table id="example2" class="table table-bordered table-hover">
+                              <thead>
+                                <tr>
+                                  <th>user_id</th>
+                                  <th>transaction_id</th>
+                                  <th>coupon_id</th>
+
+                                  <th scope="col" colspan="2">Action</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {% for i in form %}
+                                <tr>
+                                  <!-- <td>{{ban.id}}</td> -->
+                                  <td>{{i.user_id}}</td>
+                                  <td>{{i.transaction_id}}</td> 
+                                  <td>{{i.coupon_id}}</td> 
+
+                                  <td>
+                                    <button type="submit" value="Delete" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deletemodal">
+                                      Delete
+                                    </button>
+                                    <div class="modal fade" id="deletemodal">
+                                      <div class="modal-dialog">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h4 class="modal-title">Delete</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
+                                          </div>
+                                          <form action="{% url 'customAdminPanel:Delete_userWishlist' %}" method="POST">
+                                            {% csrf_token %}
+                                            <div class="modal6-body">
+                                              <input type="hidden" name="id" value={{i.id}}>
+                                              <h4>Do you want to delete this data??</h4>
+                                            </div>
+                                            <div class="modal-footer justify-content-between">
+                                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                              <button type="submit" class="btn btn-danger">Ok
+                                              </button>
+                                            </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    </form>
+                                  </td>                    
+                                </tr>
+                                {% endfor %}
+                              </tbody>
+                            </table>
+                          </div>
                     </div>
                 </div>
             </div>

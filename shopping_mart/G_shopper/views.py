@@ -175,13 +175,15 @@ def product_detail(request,product_id):
 
 def couponcalculate(request):
     data={
+        'id':'',
         'coupon_code':'',
         'percent_off':'',
     }
     pid = request.GET['cart_coupon']
-    coupon = Coupon.objects.all().values('code','percent_off')
+    coupon = Coupon.objects.all().values('pk','code','percent_off')
     for i in coupon:
         if (i['code']==pid):
+            data['id']=i['pk'] 
             data['percent_off']=i['percent_off']
             data['coupon_code']=i['code'] 
             request.session['coupon_data']=data
@@ -226,17 +228,13 @@ def placeorder(request):
     request.session['ship_amount'] = ship_amount
     ship_amount = request.session['ship_amount']
 
-
-        
-    # context = {'cart':cart,'coupon':coupon,'final_amount':final_amount,'address':address}
-    # userOrder = UserOrder.objects.all()
     order = UserOrder(
             user_id = request.user,
             # payment_gateway =  ,
             grand_total = final_amount,
             transaction_id = random.random()*100000000000000000,
             shipping_charges = ship_amount,
-            # coupon_id = coupon.percent_off,
+            coupon_id_id = coupon['id'],
             billing_address_1 = address.address_1,
             billing_address_2 = address.address_2,
             billing_city = address.city,

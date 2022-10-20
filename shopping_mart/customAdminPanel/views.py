@@ -947,7 +947,7 @@ class UserOrderField(LoginRequiredMixin, View):
         obj = UserOrderForm(request.POST, request.FILES)
         if obj.is_valid():
             instance = obj.save()
-            print(instance.banner_path.path)
+            instance.save()
             return redirect('customAdminPanel:userOrder')
         else:
             return render(request, "model_form/userOrder_form.html", {'form': obj})
