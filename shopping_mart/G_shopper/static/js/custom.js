@@ -195,7 +195,6 @@ $(document).on('click', ".remove", function () {
 
 
 function handleSubmit () {
-    debugger;
     const ftotal = document.getElementById('ftotal').innerText;  
     sessionStorage.setItem("TOTAL", ftotal);
     const ship_amount = document.getElementsByClassName('shipamt').innerText;

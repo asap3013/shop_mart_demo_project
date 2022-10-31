@@ -20,6 +20,8 @@ urlpatterns = [
     path('checkout/',views.checkout,name='checkout'),
     path('address/',views.Add_address.as_view(),name='address'),    
     path('placeorder/',views.placeorder,name='placeorder'),
+    # path('stripe/',views.stripe,name='stripe'),
+    path('charge/',views.charge,name='charge'),
 
 
     ]

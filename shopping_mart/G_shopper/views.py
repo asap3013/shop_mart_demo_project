@@ -216,7 +216,6 @@ class Add_address(View):
             return render(request, "register/address_form.html", {'form': obj})
     
 def placeorder(request):
-    breakpoint()
     cart = request.session['cartdata'] 
     coupon = request.session['coupon_data'] 
     address_id= request.GET.get('address_id')
@@ -227,29 +226,57 @@ def placeorder(request):
     ship_amount = request.GET.get('ship_amt')
     request.session['ship_amount'] = ship_amount
     ship_amount = request.session['ship_amount']
+    pay_opt_cod = request.GET.get('cod')
+    pay_opt_stripe = request.GET.get('stripe')
 
-    order = UserOrder(
-            user_id = request.user,
-            # payment_gateway =  ,
-            grand_total = final_amount,
-            transaction_id = random.random()*100000000000000000,
-            shipping_charges = ship_amount,
-            coupon_id_id = coupon['id'],
-            billing_address_1 = address.address_1,
-            billing_address_2 = address.address_2,
-            billing_city = address.city,
-            billing_state = address.state,
-            billing_country = address.country,
-            billing_zipcode = address.zip_code,
-            shipping_address_1 = address.address_1,
-            shipping_address_2 = address.address_2,
-            shipping_city = address.city,
-            shipping_country = address.country,
-            shipping_zipcode = address.zip_code
-        )
-    order.save()
+    if pay_opt_stripe:
+        order = UserOrder(
+                user_id = request.user,
+                grand_total = final_amount,
+                transaction_id = random.random()*100000000000000000,
+                shipping_charges = ship_amount,
+                coupon_id_id = coupon['id'],
+                billing_address_1 = address.address_1,
+                billing_address_2 = address.address_2,
+                billing_city = address.city,
+                billing_state = address.state,
+                billing_country = address.country,
+                billing_zipcode = address.zip_code,
+                shipping_address_1 = address.address_1,
+                shipping_address_2 = address.address_2,
+                shipping_city = address.city,
+                shipping_country = address.country,
+                shipping_zipcode = address.zip_code
+            )
+        order.save() 
+    else:
+        order = UserOrder(
+                user_id = request.user,
+                grand_total = final_amount,
+                transaction_id = random.random()*100000000000000000,
+                shipping_charges = ship_amount,
+                coupon_id_id = coupon['id'],
+                billing_address_1 = address.address_1,
+                billing_address_2 = address.address_2,
+                billing_city = address.city,
+                billing_state = address.state,
+                billing_country = address.country,
+                billing_zipcode = address.zip_code,
+                shipping_address_1 = address.address_1,
+                shipping_address_2 = address.address_2,
+                shipping_city = address.city,
+                shipping_country = address.country,
+                shipping_zipcode = address.zip_code
+            )
+        order.save()
     return redirect('G_shopper:home')
-        
+
+
+# def stripe(request):
+#     return render(request, "stripe_payment.html")
+
+
+
 
 
 

@@ -341,7 +341,7 @@ class UserOrder(models.Model):
     shipping_zipcode = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.UserOrder
+        return self.billing_address_1
 
     class Meta:
         verbose_name = "userOrder"
