@@ -14,7 +14,6 @@ window.addEventListener('load', () => {
 })
 
 $(document).on('click', ".order", function () {
-    debugger;
     var address = document.getElementById('hiddenaddress').value;
     let final_total =sessionStorage.getItem('TOTAL');
     let ship_amt = document.getElementsByClassName('shipamt')[0].innerHTML;
@@ -37,5 +36,26 @@ $(document).on('click', ".order", function () {
 });  
 
 
-
+$(document).on('click', ".stripebutton", function () {
+    debugger;
+    var address = document.getElementById('hiddenaddress').value;
+    let final_total =sessionStorage.getItem('TOTAL');
+    let ship_amt = document.getElementsByClassName('shipamt')[0].innerHTML;
+    let cod = document.getElementsByClassName('payload').innerHTML;
+    let stripe = document.getElementsByClassName('payload').innerHTML;
+    $.ajax({
+        url: '/stripe',
+        data: {
+            'address_id':address,
+            'TOTAL': final_total,
+            'ship_amt':ship_amt,
+            'cod':cod,
+            'stripe':stripe
+        },
+        dataType: 'json',
+        success: function (res) {
+            
+        }
+    });
+});  
 

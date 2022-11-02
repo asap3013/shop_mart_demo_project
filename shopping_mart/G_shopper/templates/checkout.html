@@ -100,7 +100,6 @@
         <div class="col-sm-6">
             <div class="total_area coupon">
                 <form action="" method="POST">
-
                     <ul>
                         <li>Cart Sub Total <span id="prd_amt">{{total_amt}}</span></li>
                         {% if total_amt > 500 %}
@@ -121,14 +120,24 @@
         </form>
         <!-- <input type="radio" class="payload"  id="stripe" name="fav_language" value="stripe">
         <label for="paypal">stripe</label><br> -->
-        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-        data-key={{ "pk_test_51LsPV8SFVCTJbUjWNOI1m4Qmrp2tXWBDijvD5QCY32hqx7v72UrEMn8ZcuRELi1Nqj1SGo4vN9rduf9CVAyAmRjK00uymD8Aj9" }}
-        data-name="G_shopper"
-        data-description="Payment Gateway"
-        data-amount="500"
-        data-label="Pay with stripe">
-        </script> <br>
-        <button type="submit" class="btn btn-primary order"  required>Checkout</button>
+        <!-- <div class="stripebutton"> -->
+        <!-- <form action="{% url 'G_shopper:stripe' %}" method="post">
+            {% csrf_token %}
+                <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                    data-key="pk_test_51LsPV8SFVCTJbUjWNOI1m4Qmrp2tXWBDijvD5QCY32hqx7v72UrEMn8ZcuRELi1Nqj1SGo4vN9rduf9CVAyAmRjK00uymD8Aj9"
+                    data-name="G_shopper" 
+                    data-description="Payment Gateway" 
+                    data-currency="INR"
+                    data-amount={{total_amt}} * 100
+                    data-label="Pay with stripe">
+                    </script>
+        </form>
+        </div> <br> -->
+        <!-- <form action="{% url 'G_shopper:stripe' %}" method="post">
+        <button type="button" class="btn btn-primary">stripe</button>
+        </form> -->
+        <a href="{% url 'G_shopper:stripe' %}">Stripe</a>
+        <button type="submit" class="btn btn-primary order" required>Checkout</button>
 
         </div>
     </section>
