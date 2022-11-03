@@ -217,10 +217,12 @@ class Add_address(View):
             return render(request, "register/address_form.html", {'form': obj})
     
 def placeorder(request):
+    breakpoint()
     cart = request.session['cartdata'] 
     coupon = request.session['coupon_data'] 
     address_id= request.GET.get('address_id')
-    address = UserAddress.objects.get(pk=address_id)
+    request.session['address']=address_id   
+    address = request.session['address']
     total = request.GET.get('TOTAL')
     request.session['final_total'] = total
     final_amount = request.session['final_total']
@@ -252,9 +254,11 @@ def placeorder(request):
     return redirect('G_shopper:home')
 
 def stripe_order(request):
+    breakpoint()
     cart = request.session['cartdata'] 
     coupon = request.session['coupon_data'] 
     address_id= request.GET.get('address_id')
+    request.session['address']=address_id
     # address = UserAddress.objects.get(pk=address_id)
     total = request.GET.get('TOTAL')
     request.session['final_total'] = total
@@ -265,14 +269,13 @@ def stripe_order(request):
     # pay_opt_stripe = request.GET.get('stripe')
 
     stripe.api_key = "sk_test_51LsPV8SFVCTJbUjWsE8cslsMCnNNp3PUS7mQIoUAzsgKKFaMokZ5rIXaLyiSUSPgOpcZTD02FGjDMgFXOwjrHY7200sqNGxgu1"
-    product = stripe.Product.create(name="Gold Special")
+    product = stripe.Product.create(name="product")
 
     price = stripe.Price.create(
-            unit_amount=1000,
+            unit_amount= 1440 ,
             currency="INR",
             product=product.id,
             )
-    breakpoint()
     checkout_session = stripe.checkout.Session.create(
        
         line_items=[
@@ -283,9 +286,28 @@ def stripe_order(request):
         ],
         
         mode='payment',
-        success_url= 'http://localhost:8000'+ '/placeorder',
+        success_url= 'http://localhost:8000' + "{% url 'G_shopper:placeorder' %}",
         cancel_url= 'http://localhost:8000' + '/cancel.html',
-    )
+        )
+    # order = UserOrder(
+    #         user_id = request.user,
+    #         grand_total = final_amount,
+    #         transaction_id = random.random()*100000000000000000,
+    #         shipping_charges = ship_amount,
+    #         coupon_id_id = coupon['id'],
+    #         billing_address_1 = address.address_1,
+    #         billing_address_2 = address.address_2,
+    #         billing_city = address.city,
+    #         billing_state = address.state,
+    #         billing_country = address.country,
+    #         billing_zipcode = address.zip_code,
+    #         shipping_address_1 = address.address_1,
+    #         shipping_address_2 = address.address_2,
+    #         shipping_city = address.city,
+    #         shipping_country = address.country,
+    #         shipping_zipcode = address.zip_code
+    #     )
+    # order.save()
     
     return render(request,'stripe.html',{'pay':checkout_session.url})
 
