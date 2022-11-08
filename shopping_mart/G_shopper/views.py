@@ -1,5 +1,6 @@
 from multiprocessing import context
 from unicodedata import category
+import json
 from django.shortcuts import render
 from django.views import View
 from django.contrib.auth.decorators import login_required
@@ -14,6 +15,8 @@ from django.template.loader import render_to_string
 import random
 import stripe
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+
 User = settings.AUTH_USER_MODEL
 
 # Create your views here.
@@ -217,24 +220,18 @@ class Add_address(View):
             return render(request, "register/address_form.html", {'form': obj})
     
 def placeorder(request):
-    breakpoint()
     cart = request.session['cartdata'] 
     coupon = request.session['coupon_data'] 
-    address_id= request.GET.get('address_id')
-    request.session['address']=address_id   
-    address = request.session['address']
-    total = request.GET.get('TOTAL')
-    request.session['final_total'] = total
+    address_id = request.session['address_id']
+    address = UserAddress.objects.get(pk=address_id)
+    # total = request.session['final_total']
     final_amount = request.session['final_total']
-    ship_amount = request.GET.get('ship_amt')
-    request.session['ship_amount'] = ship_amount
     ship_amount = request.session['ship_amount']
     # pay_opt_cod = request.GET.get('cod')
     # pay_opt_stripe = request.GET.get('stripe')
 
     order = UserOrder(
             user_id = request.user,
-            grand_total = final_amount,
             transaction_id = random.random()*100000000000000000,
             shipping_charges = ship_amount,
             coupon_id_id = coupon['id'],
@@ -248,31 +245,33 @@ def placeorder(request):
             shipping_address_2 = address.address_2,
             shipping_city = address.city,
             shipping_country = address.country,
-            shipping_zipcode = address.zip_code
+            shipping_zipcode = address.zip_code,
+            grand_total = final_amount,
         )
     order.save()
     return redirect('G_shopper:home')
 
+@csrf_exempt
 def stripe_order(request):
-    breakpoint()
     cart = request.session['cartdata'] 
     coupon = request.session['coupon_data'] 
-    address_id= request.GET.get('address_id')
-    request.session['address']=address_id
+    json_data = json.loads(request.body.decode("utf-8"))
+    address_id = json_data.get('address_id')
+    # request.session['address_id'] = address_id
     # address = UserAddress.objects.get(pk=address_id)
-    total = request.GET.get('TOTAL')
-    request.session['final_total'] = total
-    final_amount = request.session['final_total']
-    ship_amount = request.GET.get('ship_amt')
-    request.session['ship_amount'] = ship_amount
-    ship_amount = request.session['ship_amount']
+    total = json_data.get('total')
+    # request.session['final_total'] = total
+    # final_amount = request.session['final_total']
+    ship_amount = json_data.get('ship_amount')
+    # request.session['ship_amount'] = ship_amount
+    # ship_amount = request.session['ship_amount']
     # pay_opt_stripe = request.GET.get('stripe')
 
     stripe.api_key = "sk_test_51LsPV8SFVCTJbUjWsE8cslsMCnNNp3PUS7mQIoUAzsgKKFaMokZ5rIXaLyiSUSPgOpcZTD02FGjDMgFXOwjrHY7200sqNGxgu1"
     product = stripe.Product.create(name="product")
 
     price = stripe.Price.create(
-            unit_amount= 1440 ,
+            unit_amount= 1400 ,
             currency="INR",
             product=product.id,
             )
@@ -281,12 +280,15 @@ def stripe_order(request):
         line_items=[
             {
             'price': price.id,
-            'quantity': 1
+            'quantity': 1,
+            
             },
         ],
         
         mode='payment',
-        success_url= 'http://localhost:8000' + "{% url 'G_shopper:placeorder' %}",
+        
+        # success_url= 'http://127.0.0.1:8000/placeorder',
+        success_url= 'http://127.0.0.1:8000' + '/placeorder',
         cancel_url= 'http://localhost:8000' + '/cancel.html',
         )
     # order = UserOrder(
@@ -309,7 +311,7 @@ def stripe_order(request):
     #     )
     # order.save()
     
-    return render(request,'stripe.html',{'pay':checkout_session.url})
+    return JsonResponse(checkout_session.url,safe=False)
 
 
 

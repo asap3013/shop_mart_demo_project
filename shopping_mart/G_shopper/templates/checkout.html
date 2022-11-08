@@ -89,8 +89,7 @@
             <!-- <select name="address" class="col-sm-6">
                     <option>-----Select-----</option> -->
             {% for i in address %}
-            <input type="radio" id="address" name="fav_lang" value="address">
-            <input type="hidden" id="hiddenaddress" name="fav_lang" value="{{i.id}}">
+            <input type="radio" id="address" class="hiddenaddress" name="fav_lang" value="{{i.id}}">
             <label for="addressd">{{i.address_1}} {{i.address_2}} {{i.city}} {{i.state}} {{i.zip_code}} </label>
             <br>
             {% endfor %}
@@ -136,7 +135,7 @@
         <!-- <form action="{% url 'G_shopper:stripe' %}" method="post">
         <button type="button" class="btn btn-primary">stripe</button>
         </form> -->
-        <a href="{% url 'G_shopper:stripe' %}"><button class="btn btn-default stripebutton">Stripe</button></a> <br>
+        <button class="btn btn-default stripebutton">Stripe</button></a> <br>
         <button type="submit" class="btn btn-primary order" required>Checkout</button>
 
         </div>
