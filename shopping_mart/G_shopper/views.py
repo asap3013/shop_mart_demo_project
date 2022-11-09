@@ -253,19 +253,16 @@ def placeorder(request):
 
 @csrf_exempt
 def stripe_order(request):
+    breakpoint()
     cart = request.session['cartdata'] 
     coupon = request.session['coupon_data'] 
     json_data = json.loads(request.body.decode("utf-8"))
     address_id = json_data.get('address_id')
-    # request.session['address_id'] = address_id
-    # address = UserAddress.objects.get(pk=address_id)
+    request.session['address_id'] = address_id
     total = json_data.get('total')
-    # request.session['final_total'] = total
-    # final_amount = request.session['final_total']
+    request.session['final_total'] = total
     ship_amount = json_data.get('ship_amount')
-    # request.session['ship_amount'] = ship_amount
-    # ship_amount = request.session['ship_amount']
-    # pay_opt_stripe = request.GET.get('stripe')
+    request.session['ship_amount'] = ship_amount
 
     stripe.api_key = "sk_test_51LsPV8SFVCTJbUjWsE8cslsMCnNNp3PUS7mQIoUAzsgKKFaMokZ5rIXaLyiSUSPgOpcZTD02FGjDMgFXOwjrHY7200sqNGxgu1"
     product = stripe.Product.create(name="product")
@@ -287,7 +284,6 @@ def stripe_order(request):
         
         mode='payment',
         
-        # success_url= 'http://127.0.0.1:8000/placeorder',
         success_url= 'http://127.0.0.1:8000' + '/placeorder',
         cancel_url= 'http://localhost:8000' + '/cancel.html',
         )
@@ -314,7 +310,37 @@ def stripe_order(request):
     return JsonResponse(checkout_session.url,safe=False)
 
 
+def cashondelivery(request):
+    breakpoint()
+    cart = request.session['cartdata'] 
+    coupon = request.session['coupon_data'] 
+    address_id = request.GET.get('address_id')
+    address = UserAddress.objects.get(pk=address_id)
+    final_amount = request.session['final_total']
+    ship_amount = request.session['ship_amount']
+    # pay_opt_cod = request.GET.get('cod')
+    # pay_opt_stripe = request.GET.get('stripe')
 
+    order = UserOrder(
+            user_id = request.user,
+            transaction_id = random.random()*100000000000000000,
+            shipping_charges = ship_amount,
+            coupon_id_id = coupon['id'],
+            billing_address_1 = address.address_1,
+            billing_address_2 = address.address_2,
+            billing_city = address.city,
+            billing_state = address.state,
+            billing_country = address.country,
+            billing_zipcode = address.zip_code,
+            shipping_address_1 = address.address_1,
+            shipping_address_2 = address.address_2,
+            shipping_city = address.city,
+            shipping_country = address.country,
+            shipping_zipcode = address.zip_code,
+            grand_total = final_amount,
+        )
+    order.save()
+    return redirect('G_shopper:home')
 
 
 

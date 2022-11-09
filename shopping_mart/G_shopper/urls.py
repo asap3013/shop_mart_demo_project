@@ -21,4 +21,5 @@ urlpatterns = [
     path('address/',views.Add_address.as_view(),name='address'),    
     path('placeorder/',views.placeorder,name='placeorder'),
     path('stripe/',views.stripe_order,name='stripe'),
+    path('cod/',views.cashondelivery,name='cod'),
     ]

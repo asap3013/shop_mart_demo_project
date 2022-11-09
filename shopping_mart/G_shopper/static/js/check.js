@@ -14,19 +14,26 @@ window.addEventListener('load', () => {
 })
 
 $(document).on('click', ".order", function () {
-    var address = document.getElementById('hiddenaddress').value;
+    debugger;
+    // var address = document.getElementsByClassName('hiddenaddress').value;
+    var rates = document.getElementsByClassName('hiddenaddress');
+    var rate_value;
+    for(var i = 0; i < rates.length; i++){
+    if(rates[i].checked){
+        rate_value = rates[i].value;
+    }}
     let final_total =sessionStorage.getItem('TOTAL');
     let ship_amt = document.getElementsByClassName('shipamt')[0].innerHTML;
     let cod = document.getElementsByClassName('payload').innerHTML;
     let stripe = document.getElementsByClassName('payload').innerHTML;
     $.ajax({
-        url: '/placeorder',
+        url: '/cod',
         data: {
-            'address_id':address,
+            'address_id':rate_value,
             'TOTAL': final_total,
             'ship_amt':ship_amt,
             'cod':cod,
-            'stripe':stripe
+            'stripe':stripe,
         },
         dataType: 'json',
         success: function (res) {
