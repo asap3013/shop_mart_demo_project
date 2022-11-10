@@ -114,33 +114,14 @@
         </div>
         <input type="radio" class="payload" id="cod" name="fav_language" value="cod">
         <label for="cod">COD</label><br>
-        <form action="" hidden>
-            <input type="text" value="" id="">
-        </form>
-        <!-- <input type="radio" class="payload"  id="stripe" name="fav_language" value="stripe">
-        <label for="paypal">stripe</label><br> -->
-        <!-- <div class="stripebutton"> -->
-        <!-- <form action="{% url 'G_shopper:stripe' %}" method="post">
-            {% csrf_token %}
-                <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                    data-key="pk_test_51LsPV8SFVCTJbUjWNOI1m4Qmrp2tXWBDijvD5QCY32hqx7v72UrEMn8ZcuRELi1Nqj1SGo4vN9rduf9CVAyAmRjK00uymD8Aj9"
-                    data-name="G_shopper" 
-                    data-description="Payment Gateway" 
-                    data-currency="INR"
-                    data-amount={{total_amt}} * 100
-                    data-label="Pay with stripe">
-                    </script>
-        </form>
-        </div> <br> -->
-        <!-- <form action="{% url 'G_shopper:stripe' %}" method="post">
-        <button type="button" class="btn btn-primary">stripe</button>
-        </form> -->
-        <button class="btn btn-default stripebutton">Stripe</button></a> <br>
-        <button type="submit" class="btn btn-primary order" required>Checkout</button>
+        <input type="radio" class="payload" id="stripe" name="fav_language" value="stripe">
+        <label for="stripe">Stripe</label><br>
+        <button class="btn btn-primary stripebutton" id="stripebtn" style="display: none ;">Stripe</button></a> <br>
+        <a href="" id="checkouts"></a><button type="submit" id="checkout" class="btn btn-primary order"  required>Checkout</button>
+        <!-- <a href="{% url 'G_shopper:stripe' %}">abcd</a> -->
 
         </div>
     </section>
 </main>
-
 <br>
 {% endblock %}
