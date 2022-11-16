@@ -187,9 +187,9 @@
                                 <img src="" class="newarrival" alt="" />
                                 <h2>{{product.name}}</h2>  
                                 <span>
-                                    <span>{{product.price}}</span>
+                                    <span class="product-price-{{prod.id}}">{{product.price}}</span>
                                     <br>
-                                    <span>Qty-{{product.quantity}}</span>
+                                    <span id="product-qty-{{prod.id}}">Qty-{{product.quantity}}</span>
                                     <br>
                                     <button class="btn btn-default add-to-cart" id="{{product.id}}"><i
                                         class="fa fa-shopping-cart addcart"></i>Add to cart</button>
@@ -210,5 +210,5 @@
             </div>
         </div>
 </section>
-
+<script src="/static/js/productcart.js"></script>
 {% endblock %}

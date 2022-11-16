@@ -26,7 +26,6 @@ $(document).on('click','.order',function () {
     }
 
     if(order_value == "stripe"){
-        console.log(ch)
         var rates = document.getElementsByClassName('hiddenaddress');
         var rate_value;
         for(var i = 0; i < rates.length; i++){
@@ -74,7 +73,7 @@ $(document).on('click','.order',function () {
             },
             dataType: 'json',
             success: function (response) {
-                window.location.href = 'http://127.0.0.1:8000/home'
+                // window.location.href = 'http://127.0.0.1:8000/home'
             }
         });
     }

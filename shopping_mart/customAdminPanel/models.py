@@ -157,8 +157,8 @@ class ProductCategories(models.Model):
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
     category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.ProductCategories
+    # def __str__(self):
+    #     return self.ProductCategories
 
     class Meta:
         verbose_name = "ProductCategories"

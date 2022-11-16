@@ -22,4 +22,5 @@ urlpatterns = [
     path('placeorder/',views.placeorder,name='placeorder'),
     path('stripe/',views.stripe_order,name='stripe'),
     path('cod/',views.cashondelivery,name='cod'),
+    path('category/',views.category_filter,name='category')
     ]

@@ -721,7 +721,7 @@ class ProductCategoryField(LoginRequiredMixin, View):
 
 
 @login_required(redirect_field_name='login', login_url='/adminpanel/login')
-def productCategory_check(request):
+def productCategory_check(request): 
     fm = ProductCategories.objects.all()
     context = {'obj': fm}
     return render(request, "productCategory.html", context)

@@ -25,9 +25,9 @@
 				<td>
 					<div class="cart_quantity_button">
 						<div class="cart_quantity_button">
-							<input type="button"  onclick="decrementValue('{{prod.id}}')" value=" - " />
+							<!-- <input type="button"  onclick="decrementValue('{{prod.id}}')" value=" - " /> -->
 							<input type="text" id="product-qty-{{prod.id}}" name="quantity" value="{{item.qty}}" maxlength="2" max="10" size="1" readonly/>
-							<input type="button" onclick="incrementValue('{{prod.id}}')" value="+" />
+							<!-- <input type="button" onclick="incrementValue('{{prod.id}}')" value="+" /> -->
 						</div>
 					</div>
 				</td>
@@ -43,9 +43,9 @@
 				<th>Rs. {{total_amt}}</th>
 				{% if totalitems %}
 				<tr>
-					<td colspan="4">
+					<!-- <td colspan="4">
 						<a href="" class="btn btn-dark btn-sm">Checkout <i class="fa fa-long-arrow-alt-right"></i></a>
-					</td>
+					</td> -->
 				</tr>
 				{% endif %}
 		</tfoot>

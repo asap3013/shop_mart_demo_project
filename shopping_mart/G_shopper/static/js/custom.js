@@ -1,6 +1,17 @@
 $(document).ready(function(){
     $('.submitWidget').css("display", "none");
     $('.remove').css("display","none")
+    // $.ajax({
+    //     method: 'GET',
+    //     url: '/home',
+    //     data: {
+            
+    //     },
+    //     dataType: 'json',
+    //     success: function (res) {
+            
+    //     }
+    // });
 });
 
 //add to cart increment and decrement
@@ -169,31 +180,6 @@ $(document).on('click', ".remove", function () {
 });
 
 
-
-
-// $(document).on('click', ".order", function () {
-//     debugger;
-//     var _productid = $(".product_id-").val();
-//     var _qty = $("#product-qty-").val();
-//     var _address = $("#useraddress").val();
-//     var _price = $("#ftotal").val();
-
-//     $.ajax({
-//         url: '/placeorder',
-//         data: {
-//             'id': _productid,
-//             'qty': _qty,
-//             'address':_address,
-//             'price': _price
-//         },
-//         dataType: 'json',
-//         success: function (res) {
-            
-//         }
-//     });
-// });
-
-
 function handleSubmit () {
     const ftotal = document.getElementById('ftotal').innerText;  
     sessionStorage.setItem("TOTAL", ftotal);
@@ -203,3 +189,65 @@ function handleSubmit () {
 }
 
 
+$(document).on('click',".categorie",function(){
+    var _vm = $(this);
+    var _index = _vm.attr('id');
+    // var category = document.getElementsByClassName('categories_'+ _index);
+    // console.log(category) 
+    $.ajax({
+        method:'GET',
+        url:"/category",
+        data: {"category_id":_index},
+        dataType: "json",
+        success:function(data){
+            var image = (data.product_img[0].image_path)
+            var url = "/media/".concat(image)
+            console.log(data.product.length)
+            $ .each(data,function(){
+            $('#cart_data').html(  
+                ` <div class="col-sm-4" >
+                            <div class="product-image-wrapper">
+                                <div class="single-products">
+                                    <div class="productinfo text-center">
+                                        <img src="`+url+`" alt="" />
+                                        <p>`+data.product[0].name+`</p>
+                                        <input type="hidden" class="product-image-{{prod.id}}"
+                                            value="{{prod.productimages_set.first.image_path.url}"/>
+                                        <th>$ <span class="product-price-{{prod.id}}">`+data.product[0].price+`</span></th>
+                                        <input type="hidden" class="product_id-{{prod.id}}" value="{{prod.id}}">
+                                        <input type="hidden" class="meta_title-{{prod.id}}" value="{{prod.meta_title}}">
+                                        <br>
+                                        <button class="btn btn-default add-to-cart" id="{{prod.id}}"><i
+                                                class="fa fa-shopping-cart addcart"></i>Add to cart</button>
+
+                                        <div class="cart_quantity_button submitWidget submitWidget-{{prod.id}}">
+                                            <input type="button" onclick="decrementValue('{{prod.id}}')" value=" - " />
+                                            <input type="text" id="product-qty-{{prod.id}}" name="quantity" value="1"
+                                                maxlength="2" max="10" size="1" readonly />
+                                            <input type="button" onclick="incrementValue('{{prod.id}}')" value="+" />
+                                        </div> <br>
+                                        <div class="choose">
+                                            <ul class="nav nav-pills nav-justified">
+                                                
+                            <li><a href="{% url 'G_shopper:product_detail' prod.id %}" value=""><i class="fa fa-plus-square"></i>view product</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> `
+            );  
+        });           
+        }
+    });
+});
+
+
+
+
+
+
+
+function slider(){
+    console.log('hello')
+}

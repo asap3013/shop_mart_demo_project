@@ -1,6 +1,7 @@
 from multiprocessing import context
 from unicodedata import category
 import json
+from django.core import serializers
 from django.shortcuts import render
 from django.views import View
 from django.contrib.auth.decorators import login_required
@@ -46,12 +47,14 @@ def userLogin(request):
 # def base_page(request):
 #     return render(request, 'base.html', {})
 
-
+@csrf_exempt
 @login_required(redirect_field_name='register', login_url='/registration')
 def home_page(request):
     banners = Banners.objects.all()
     products = Product.objects.all()
-    context={'form':banners,'obj':products}
+    category = Category.objects.all()
+    prodcat = ProductCategories.objects.all()
+    context={'form':banners,'obj':products,'cat':category,'prodcat':prodcat}
     return render(request, 'register/home.html',context)
 
 
@@ -59,6 +62,15 @@ def logoutuser(request):
     logout(request)
     obj = UserRegistraionForm()
     return render(request, 'register/register_form.html', {'form': obj})
+
+
+def category_filter(request):
+    category_id = request.GET.get('category_id')
+    request.session['category'] = category_id
+    product_id = ProductCategories.objects.filter(category_id=category_id).values('product_id')
+    product = Product.objects.filter(pk = product_id[0]['product_id']).values('name','price')
+    product_img = ProductImages.objects.filter(product_id=product_id[0]['product_id']).values('image_path')
+    return JsonResponse({'product':list(product),'product_img':list(product_img)})
 
 
 class UserRegister(View):
@@ -319,8 +331,6 @@ def cashondelivery(request):
         )
     order.save()
     return redirect('G_shopper:home')
-
-
 
 
 
