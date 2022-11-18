@@ -1,6 +1,7 @@
 $(document).ready(function(){
     $('.submitWidget').css("display", "none");
     $('.remove').css("display","none")
+
     // $.ajax({
     //     method: 'GET',
     //     url: '/home',
@@ -243,11 +244,35 @@ $(document).on('click',".categorie",function(){
 });
 
 
+  
+
+$(document).on('click',".slider-track",function(){
+    let option = document.getElementById('sl2').value;
+    console.log(option)
+    let value = option.split(",");
+    let minvalue = value[0];
+    let maxvalue = value[1];
+    console.log(minvalue)
+    console.log(maxvalue)
+    $.ajax({
+        method:'GET',   
+        url:"/price",
+        data: {
+            "minvalue":minvalue,
+            "maxvalue":maxvalue,},
+        dataType: "json",
+        success:function(data){
+            
+
+        }
+    });
+
+});
 
 
 
 
 
-function slider(){
-    console.log('hello')
-}
+
+
+

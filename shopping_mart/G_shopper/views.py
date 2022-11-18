@@ -54,6 +54,7 @@ def home_page(request):
     products = Product.objects.all()
     category = Category.objects.all()
     prodcat = ProductCategories.objects.all()
+
     context={'form':banners,'obj':products,'cat':category,'prodcat':prodcat}
     return render(request, 'register/home.html',context)
 
@@ -72,6 +73,11 @@ def category_filter(request):
     product_img = ProductImages.objects.filter(product_id=product_id[0]['product_id']).values('image_path')
     return JsonResponse({'product':list(product),'product_img':list(product_img)})
 
+def price_filter(request):
+    minvalue = request.GET.get('minvalue') 
+    maxvalue = request.GET.get('maxvalue')
+    return JsonResponse({'minvalue':list(minvalue),'maxvalue':list(maxvalue)})
+    
 
 class UserRegister(View):
     def get(self, request):

@@ -364,20 +364,15 @@
                         </div>
                         <!--/brands_products-->
 
-                        <div class="price-range">
-                            <!--price-range-->
-                            <h2>Price Range</h2>
-                            <div class="well text-center">
-                                <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="600" onchange="slider()"
-                                    data-slider-step="5" data-slider-value="[250,450]" id="sl2" value="10"><br />
-                                
-                                <div id="slider">
+                        
+                        <div class="price-range" ><!--price-range-->
+							<h2>Price Range</h2>
+							<div class="well text-center" id="price_range" >
+								 <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="1000" data-slider-step="5" data-slider-value="[0,1000]" id="sl2"  ><br />
+								 <b class="pull-left">$ 0</b> <b class="pull-right">$ 1000</b> <br>
                                     
-                                </div>
-                                <div id=d1></div>
-                                    <div id=d2></div>
-                            </div>
-                        </div>
+							</div>
+						</div>
                         <!--/price-range-->
 
                         <div class="shipping text-center">
@@ -391,7 +386,6 @@
 
                 <div class="col-sm-9 padding-right" id="cart_data">
                     <div class="features_items" id="like">
-                        <!--features_items-->
                         <h2 class="title text-center">Featured Items</h2>
                         {% for prod in obj %}
                         <div class="col-sm-4" >
@@ -605,6 +599,11 @@
         </div>
 
     </footer>
+    <script>
+        function getValue(){
+            console.log("welcome")
+        }
+    </script>
     <script src="/static/js/jquery.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <script src="/static/js/jquery.scrollUp.min.js"></script>
