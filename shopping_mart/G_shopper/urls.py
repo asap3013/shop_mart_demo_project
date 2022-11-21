@@ -23,5 +23,5 @@ urlpatterns = [
     path('stripe/',views.stripe_order,name='stripe'),
     path('cod/',views.cashondelivery,name='cod'),
     path('category/',views.category_filter,name='category'),
-    path('price/',views.price_filter,name='price')
+    path('price/',views.price_filter,name='price'),
     ]

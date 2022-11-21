@@ -66,17 +66,44 @@ def logoutuser(request):
 
 
 def category_filter(request):
+    breakpoint()
     category_id = request.GET.get('category_id')
     request.session['category'] = category_id
     product_id = ProductCategories.objects.filter(category_id=category_id).values('product_id')
     product = Product.objects.filter(pk = product_id[0]['product_id']).values('name','price')
     product_img = ProductImages.objects.filter(product_id=product_id[0]['product_id']).values('image_path')
+
     return JsonResponse({'product':list(product),'product_img':list(product_img)})
 
 def price_filter(request):
-    minvalue = request.GET.get('minvalue') 
-    maxvalue = request.GET.get('maxvalue')
-    return JsonResponse({'minvalue':list(minvalue),'maxvalue':list(maxvalue)})
+    category_id = request.session['category']
+    min_value = request.GET.get('min_price') 
+    max_value = request.GET.get('max_price')
+    min_price = int(min_value)
+    max_price = int(max_value)
+    product = Product.objects.filter(price__gte=min_price, price__lte=max_price).values('id','name','price','productimages')
+    product_img = ProductImages.objects.filter().values('product_id_id','image_path')
+    nme = []
+    price = []
+    image = []
+    prodid = []
+    for i in product:
+        for j in product_img:
+            if int(i['id']) == int(j['product_id_id']):
+                if j['product_id_id'] not in prodid:
+                    prodid.append(j['product_id_id'])
+                    image.append(j['image_path'])
+                    continue
+    for i in product:
+        if i['name'] not in nme :
+            nme.append(i['name'])
+            continue
+    for i in product:
+        if i['price'] not in price:
+            price.append(i['price'])
+            continue
+    prods = [nme,price,image]
+    return JsonResponse({'product':list(prods)})
     
 
 class UserRegister(View):
