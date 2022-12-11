@@ -49,10 +49,10 @@ class UserRegistraionForm(forms.ModelForm):
     def save(self, commit = True):  
         user = User.objects.create_user(  
             self.cleaned_data['username'],  
-            self.cleaned_data['email'],  
-            self.cleaned_data['mobile_no'],
-            self.cleaned_data['password1'], 
-            self.cleaned_data['password2']
+            email=self.cleaned_data['email'],
+            # mobile_no=self.cleaned_data['mobile_no'],
+            # password1=self.cleaned_data['password1'],
+            # password2=self.cleaned_data['password2']
         )  
         return user  
 
@@ -84,3 +84,13 @@ class Address_form(forms.ModelForm):
     # def save(self, commit = True):  
     #     userAddress = UserAddress.objects.all()  
     #     return userAddress
+
+class ContactForm(forms.ModelForm):
+    name = forms.CharField(label='Name')
+    email = forms.EmailField(label='Email Address')
+    message = forms.CharField(label='Message',min_length=5, max_length=150)
+
+
+    class Meta:
+        model = ContactUs
+        fields = ["name","email","message"]

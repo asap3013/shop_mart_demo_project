@@ -1,8 +1,8 @@
 from multiprocessing import context
 from unicodedata import category
 import json
-from django.core import serializers
 from django.shortcuts import render
+from django.core.mail import send_mail ,BadHeaderError
 from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
@@ -10,11 +10,16 @@ from django.contrib import messages
 from .form import *
 from django.shortcuts import render, redirect
 from customAdminPanel.models import *
-from django.http import JsonResponse 
+from django.http import HttpResponse,JsonResponse 
 from django.contrib.auth import login, logout
 from django.template.loader import render_to_string
 import random
 import stripe
+from django.core.mail import EmailMessage
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.template import Context
+from django.template.loader import get_template
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 
@@ -33,6 +38,7 @@ def userLogin(request):
         password = request.POST.get('password1')
         if username and password:
             user = authenticate(request, username=username, password=password)
+
 
             if user is not None:
                 login(request, user)
@@ -66,7 +72,6 @@ def logoutuser(request):
 
 
 def category_filter(request):
-    breakpoint()
     category_id = request.GET.get('category_id')
     request.session['category'] = category_id
     product_id = ProductCategories.objects.filter(category_id=category_id).values('product_id')
@@ -76,7 +81,6 @@ def category_filter(request):
     return JsonResponse({'product':list(product),'product_img':list(product_img)})
 
 def price_filter(request):
-    category_id = request.session['category']
     min_value = request.GET.get('min_price') 
     max_value = request.GET.get('max_price')
     min_price = int(min_value)
@@ -108,13 +112,24 @@ def price_filter(request):
 
 class UserRegister(View):
     def get(self, request):
+        
         obj = UserRegistraionForm()
         return render(request, "register/register_form.html", {'form': obj})
 
     def post(self, request):
+        breakpoint()
         obj = UserRegistraionForm(request.POST)
         if obj.is_valid():
             obj.save()
+            user_mail = obj.__dict__['cleaned_data']['email']
+            send_mail(
+            'Thanks for Register',
+            'HEY you are now successfully register in our e-shopper website',
+            settings.EMAIL_HOST_USER,
+            [user_mail],
+            fail_silently=False,
+            )
+            messages.success(request, "User Register Successfully")
             return redirect('G_shopper:home')
         else:
             return render(request, "register/register_form.html", {'form': obj})
@@ -292,6 +307,14 @@ def placeorder(request):
             grand_total = final_amount,
         )
     order.save()
+    user_email = request.user.email
+    send_mail(
+            'Thank You for Order',
+            'HEY you are now successfully placed your order in our E-shopper website',
+            settings.EMAIL_HOST_USER,
+            [user_email],
+            fail_silently=False,
+            )
     return redirect('G_shopper:home')
 
 @csrf_exempt
@@ -306,6 +329,7 @@ def stripe_order(request):
     print(total)
     print(type(total))
     request.session['final_total'] = total
+    final_total = request.session['final_total']
     ship_amount = json_data.get('ship_amount')
     request.session['ship_amount'] = ship_amount
 
@@ -335,14 +359,16 @@ def stripe_order(request):
     
     return JsonResponse(checkout_session.url,safe=False)
 
-@csrf_exempt
+@csrf_exempt 
 def cashondelivery(request):
+    breakpoint()
     cart = request.session['cartdata'] 
+    # user_email = User.objects.first()
     coupon = request.session['coupon_data'] 
     address_id = request.GET.get('address_id')
     address = UserAddress.objects.get(pk=address_id)
-    final_amount = request.session['final_total']
-    ship_amount = request.session['ship_amount']
+    final_amount = request.GET.get('TOTAL')
+    ship_amount = request.GET.get('ship_amt')
 
     order = UserOrder(
             user_id = request.user,
@@ -363,13 +389,62 @@ def cashondelivery(request):
             grand_total = final_amount
         )
     order.save()
-    return redirect('G_shopper:home')
-
-
-
-
-
-
     
+    user_email =  request.user.email
+    # order = instance
+    context = {'order': order}
+    message = get_template("product_order.html").render(context)
+    mail = EmailMessage(
+        subject="Order confirmation",
+        body=message,
+        from_email=settings.EMAIL_HOST_USER,
+        to=[user_email],
+        # reply_to=[user_email],
+    )
+    mail.content_subtype = "html"
+    return mail.send()
+    # send_mail(
+    #         'Thank You for Order',
+    #         'HEY you are now successfully placed your order in our E-shopper website',
+    #         settings.EMAIL_HOST_USER,
+    #         [user_email],
+    #         fail_silently=False,
+    #         )
+    # subject = 'Thank You for Order'
+    # html_message = render_to_string('product_order.html', {'context': 'values'})
+    # # plain_message = strip_tags(html_message)
+    # from_email = settings.EMAIL_HOST_USER
+    # to = [user_email]
+    # return redirect('G_shopper:home')
 
+
+
+def track_order(request):
+    return render(request, 'track_order.html')
+
+
+def tracking_order(request):
+    email_id = request.GET.get('email_track')
+    order_id = request.GET.get('orderid_track')
+    context = {'email':email_id,'order':order_id}
+    return JsonResponse({'data':list(context)})
+
+
+def contact_us(request):
+    if request.method == "GET":
+        form = ContactForm()
+    else:
+        breakpoint()
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            name=form.cleaned_data['name']
+            email = form.cleaned_data["email"]
+            message = form.cleaned_data['message']
+            form.save()
+            try:
+                send_mail('Feedback',message, email, ["abhisheksapkal1316@gmail.com"],fail_silently=False)
+            except BadHeaderError:
+                return HttpResponse(" found.")
+        return redirect(request,'home.html')
+    return render(request,"contact_us.html",{"form": form})
 

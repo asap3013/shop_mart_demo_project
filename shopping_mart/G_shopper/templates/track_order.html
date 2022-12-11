@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="content-wrapper">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="col-sm-12">
+                            <h4>Email Id</h4>
+                            <input type="email" name="email" class="email_id" placeholder="Enter Email Id">
+                            <h4>Order Id</h4>
+                            <input type="number" name="order_id" class="order_id" placeholder="Enter Order Id"> <br><br>
+                            <button type="submit" class="btn btn-primary order_tracking">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+{% endblock %}
+
+{% block script %}
+<script>
+$(document).on('click','.order_tracking',function () {
+    console.log("Hello")
+    debugger;
+    let email_track = document.getElementsByClassName('email_id')
+    let orderid_track = document.getElementsByClassName('order_id')
+    console.log(email_track,orderid_track)
+    $.ajax({
+            type: "GET",
+            url: 'order_track/',
+            data: JSON.stringify({
+                "email_track":email_track,
+                "orderid_track": orderid_track,
+            }),
+            contentType: "application/json; charset=UTF-8",
+            success: function (data) {
+                console.log(data)  
+                $("#cart_data").empty();              
+                 }
+        });
+    });
+
+</script>
+
+{% endblock %}

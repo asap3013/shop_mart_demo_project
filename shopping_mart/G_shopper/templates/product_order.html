@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <br>
+        <!-- {% for order in orders %} -->
+        <h2>Thank you for your order @{{ order.user_id }}</h2>
+        <h3>Your Order ID: {{ order.id }}</h3>
+
+
+        <h3>Shipping Details:</h3>
+
+        {{ order.user_id }} </br>
+        {{ order.billing_address_1 }} <br/>
+        {{ order.billing_city }} <br/>
+        {{ order.billing_zipcode }}
+        {{ order.grand_total }}
+
+        <!-- <h2>Order Details:</h2> -->
+        <!-- {% endfor %} -->
+        <table>
+
+            <!-- <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                </tr>
+            </thead> -->
+
+            <tbody>
+                <!-- {% for item in order %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.grand_total }}</td>
+                    </tr>
+                {% endfor %} -->
+            </tbody>
+        </table>
+    </body>
+</html>

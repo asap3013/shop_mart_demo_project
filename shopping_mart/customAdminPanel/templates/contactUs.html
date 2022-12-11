@@ -14,11 +14,75 @@
                                 <li class="breadcrumb-item active">contactUs</li>
                             </ol>
                         </div>
-                        <form action="{% url 'customAdminPanel:contactUs_form' %}">
-                            <!-- <button  type="submit" class="btn btn-primary btn-block">Sign Out</button> -->
+                        <!-- <form action="{% url 'customAdminPanel:contactUs_form' %}">
+                            <button  type="submit" class="btn btn-primary btn-block">Sign Out</button>
                             <button style="float: right; width: 150px; height: 40px;" type="submit"
                                 class="btn btn-block btn-primary">Add</button>
-                        </form>
+                        </form> -->
+                        <div class="card-body">
+                            <table id="example2" class="table table-bordered table-hover">
+                              <thead>
+                                <tr>
+                                  <th>Name</th>
+                                  <th>Email</th>
+                                  <th>Message</th>
+                                  <th>Created by</th>
+                                  <th>Created date</th>
+                                  <th>modify by</th>
+                                  <th>modify date</th>
+                                  <th scope="col" colspan="2">Action</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {% for i in form %}
+                                <tr>
+                                  <td>{{i.name}}</td>
+                                  <td>{{i.email}}</td>
+                                  <td>{{i.message}}</td>
+                                  <td>{{i.created_by}}</td>
+                                  <td>{{i.created_date}}</td>
+                                  <td>{{i.modify_by}}</td>
+                                  <td>{{i.modify_date}}</td>
+                                  <td>{{i.status}}</td>
+                                  <td>
+                                    <a href="{% url 'customAdminPanel:EditCategory' i.id %}"><button class="btn btn-default btn-sm"><i
+                                          class="fas fa-edit"></i></button></a>
+                                  </td>
+                                  <td>
+                                      <button type="submit" value="Delete" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deletemodal">
+                                        Delete
+                                      </button>
+                                      <div class="modal fade" id="deletemodal">
+                                        <div class="modal-dialog">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <h4 class="modal-title">Delete</h4>
+                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                              </button>
+                                            </div>
+                                            <form action="{% url 'customAdminPanel:Delete_category' %}" method="POST">
+                                              {% csrf_token %}
+                                              <div class="modal6-body">
+                                                <input type="hidden" name="id" value={{i.id}}>
+                                                <h4>Do you want to delete this data??</h4>
+                                              </div>
+                                              <div class="modal-footer justify-content-between">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-danger">Ok
+                                                </button>
+                                              </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+              
+                              </tbody>
+                            </table>
+                          </div>
                     </div>
                 </div>
             </div>

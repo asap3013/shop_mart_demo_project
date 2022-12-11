@@ -68,7 +68,7 @@
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="logo pull-left">
-                            <a href="index.html"><img src="/static/images/home/logo.png" alt="" /></a>
+                            <a href="{% url 'G_shopper:home' %}"><img src="/static/images/home/logo.png" alt="" /></a>
                         </div>
                         <div class="btn-group pull-right">
                             <div class="btn-group">
@@ -105,6 +105,7 @@
                                 <li><a href="{% url 'G_shopper:addcart' %}"><i class="fa fa-shopping-cart"></i>
                                         Cart(<span class="cart-list">{{request.session.cartdata|length}}</span>)</a>
                                 </li>
+                                <li><a href="{% url 'G_shopper:order_tracker' %}"><i class="fa fa-crosshairs"></i> track Order</a></li>
                                 <li><a href="{% url 'G_shopper:loggedout' %}"><i class="fa fa-lock"></i> Logout</a>
                                 </li>
                             </ul>
@@ -131,7 +132,7 @@
                         </div>
                         <div class="mainmenu pull-left">
                             <ul class="nav navbar-nav collapse navbar-collapse">
-                                <li><a href="index.html" class="active">Home</a></li>
+                                <li><a href="{% url 'G_shopper:home' %}" class="active">Home</a></li>
                                 <li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
                                         <li><a href="shop.html">Products</a></li>
@@ -148,7 +149,7 @@
                                     </ul>
                                 </li>
                                 <li><a href="404.html">404</a></li>
-                                <li><a href="contact-us.html">Contact</a></li>
+                                <li><a href="{% url 'G_shopper:contact' %}">Contact</a></li>
                             </ul>
                         </div>
                     </div>

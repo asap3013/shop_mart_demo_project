@@ -67,8 +67,6 @@ function decrementValue(prod_id) {
 }
 
 
-
-
 //add ro cart
 
 $(document).on('click', ".add-to-cart", function () {

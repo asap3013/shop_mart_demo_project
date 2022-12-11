@@ -14,16 +14,17 @@
                                 <li class="breadcrumb-item active">userOrder</li>
                             </ol>
                         </div>
-                        <form action="{% url 'customAdminPanel:userOrder_form' %}">
-                            <!-- <button  type="submit" class="btn btn-primary btn-block">Sign Out</button> -->
+                        <!-- <form action="{% url 'customAdminPanel:userOrder_form' %}">
+                            <button  type="submit" class="btn btn-primary btn-block">Sign Out</button>
                             <button style="float: right; width: 150px; height: 40px;" type="submit"
                                 class="btn btn-block btn-primary">Add</button>
-                        </form>
+                        </form> -->
                         <div class="card-body">
                             <table id="example2" class="table table-bordered table-hover">
                               <thead>
                                 <tr>
                                   <th>user_id</th>
+                                  <th>Status</th>
                                   <th>transaction_id</th>
                                   <th>coupon_id</th>
 
@@ -35,8 +36,13 @@
                                 <tr>
                                   <!-- <td>{{ban.id}}</td> -->
                                   <td>{{i.user_id}}</td>
+                                  <td>{{i.status}}</td>
                                   <td>{{i.transaction_id}}</td> 
                                   <td>{{i.coupon_id}}</td> 
+                                  <td>
+                                    <a href="{% url 'customAdminPanel:Edit_userOrder' i.id %}"><button class="btn btn-default btn-sm"><i
+                                          class="fas fa-edit"></i></button></a>
+                                  </td>
 
                                   <td>
                                     <button type="submit" value="Delete" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deletemodal">
@@ -51,7 +57,7 @@
                                               <span aria-hidden="true">&times;</span>
                                             </button>
                                           </div>
-                                          <form action="{% url 'customAdminPanel:Delete_userWishlist' %}" method="POST">
+                                          <form action="{% url 'customAdminPanel:Delete_userOrder' %}" method="POST">
                                             {% csrf_token %}
                                             <div class="modal6-body">
                                               <input type="hidden" name="id" value={{i.id}}>

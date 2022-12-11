@@ -12,7 +12,7 @@
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">Add Email</li>
+            <li class="breadcrumb-item active">Add userOrder</li>
           </ol>
         </div>
       </div>
@@ -28,20 +28,20 @@
           <!-- general form elements -->
           <div class="card card-primary">
             <div class="card-header">
-              <h3 class="card-title">Add Email</h3>
+              <h3 class="card-title">Add userOrder</h3>
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form action="{% url 'customAdminPanel:email_form' %}" method="post" enctype="multipart/form-data">
+            <form action="{% url 'customAdminPanel:userOrder_form' %}" method="post" enctype="multipart/form-data">
               {% csrf_token %}
               <div class="card-body">
                 <div class="form-group">
-                  <label for="title">title</label>
-                  {{ form.title }}
+                  <label for="banner_name">Banner name</label>
+                  {{ form.banner_name }}
                 </div>
                 <div class="form-group">
-                  <label for="subject">subject</label>
-                  {{ form.subject }}
+                  <label for="banner_path">Banner Path</label>
+                  {{ form.banner_path }}
                   <!-- <div class="input-group">
                       <div class="custom-file">
                         <label class="custom-file-label" for="banner_path">Choose file</label>
@@ -50,8 +50,8 @@
                     </div> -->
                 </div>
                 <div class="form-check">
-                  <label for="content">content</label>
-                  {{ form.content }}
+                  <label class="form-check-label" for="status">Check me out</label>
+                  {{ form.status }}
                 </div>
               </div>
               <!-- /.card-body -->
@@ -76,7 +76,7 @@
   // set navebar
   function setNavBar(){ 
       $(".nav-link").removeClass("active")
-      $(".email-menu").addClass("active")
+      $(".userOrder-menu").addClass("active")
   }
 </script>
 {% endblock %}

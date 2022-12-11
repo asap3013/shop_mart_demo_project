@@ -1,6 +1,6 @@
-from email.policy import default
 from django.contrib.auth.models import Group
 from django.db import models
+from django_mysql.models import EnumField
 # from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractUser
 
@@ -79,13 +79,13 @@ class EmailTemplate(models.Model):
     title = models.CharField(max_length=45)
     subject = models.CharField(max_length=255)
     content = models.TextField()
-    created_by = models.IntegerField()
+    created_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='EmailTemplate_created_by')
     created_date = models.DateTimeField(auto_now_add=True)
-    modify_by = models.IntegerField()
+    modify_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='EmailTemplate_modified_by')
     modify_date = models.DateTimeField(auto_now=True)   
 
     def __str__(self):
-        return self.EmailTemplate
+        return self.title
     
     class Meta:
         verbose_name = "EmailTemplate"
@@ -97,13 +97,13 @@ class ContactUs(models.Model):
     contact_no = models.CharField(max_length=45)
     message = models.TextField()
     note_admin = models.TextField()
-    created_by = models.IntegerField()
+    created_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='ContactUs_created_by')
     created_date = models.DateTimeField(auto_now_add=True)
-    modify_by = models.IntegerField()
+    modify_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='ContactUs_modify_by')
     modify_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.ContactUs
+        return self.name
 
     class Meta:
         verbose_name = "ContactUs"
@@ -317,13 +317,22 @@ class OrderDetails(models.Model):
 
 
 class UserOrder(models.Model):
+    OUT_FOR_DELIVERY = 'Out for delivery'
+    PENDING = 'pending'
+    PLACED = 'Placed'
+
+    CHOICES = (
+        (OUT_FOR_DELIVERY, 'Out for delivery'),
+        (PENDING, 'Pending'),
+        (PLACED, 'Placed'),
+    )
     user_id = models.ForeignKey(User,on_delete=models.CASCADE)
     # shipping_method = models.IntegerField()
     # AWB_NO =models.CharField(max_length=100)
     payment_gateway = models.ForeignKey(PaymentGateway,null=True,on_delete=models.CASCADE)
     transaction_id = models.CharField(max_length=100)
     created_date = models.DateTimeField(auto_now=True)
-    status = models.BooleanField(default=True)
+    status = models.CharField(max_length=255, choices=CHOICES, default=PENDING)
     grand_total = models.FloatField()
     shipping_charges = models.FloatField()
     coupon_id = models.ForeignKey(Coupon,on_delete=models.CASCADE)

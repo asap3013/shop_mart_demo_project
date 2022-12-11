@@ -50,7 +50,9 @@ $(document).on('click','.order',function () {
             }),
             contentType: "application/json; charset=UTF-8",
             success: function (response) {
-                window.location.href = ''+response; }
+                debugger;
+                window.location.href = ''+response;
+                 }
         });
     }
 
@@ -72,7 +74,8 @@ $(document).on('click','.order',function () {
                 'ship_amt':ship_amt,
             },
             dataType: 'json',
-            success: function (response) {
+            success: function (data) {
+                debugger;
                 // window.location.href = 'http://127.0.0.1:8000/home'
             }
         });

@@ -227,7 +227,9 @@ class ContactUsField(LoginRequiredMixin, View):
         obj = ContactUsForm(request.POST, request.FILES)
         if obj.is_valid():
             instance = obj.save()
-            print(instance.banner_path.path)
+            instance.created_by = request.user
+            instance.modify_by = request.user
+            instance.save()
             return redirect('customAdminPanel:contactUs')
         else:
             return render(request, "model_form/contactUs_form.html", {'form': obj})
@@ -361,7 +363,9 @@ class EmailField(LoginRequiredMixin, View):
         obj = EmailTemplateForm(request.POST, request.FILES)
         if obj.is_valid():
             instance = obj.save()
-            print(instance.banner_path.path)
+            instance.created_by = request.user
+            instance.modify_by = request.user
+            instance.save()
             return redirect('customAdminPanel:email')
         else:
             return render(request, "model_form/email_form.html", {'form': obj})
@@ -370,8 +374,37 @@ class EmailField(LoginRequiredMixin, View):
 @login_required(redirect_field_name='login', login_url='/adminpanel/login')
 def email_check(request):
     fm = EmailTemplate.objects.all()
-    context = {'form': fm}
+    context = {'obj': fm}
     return render(request, "email.html", context)
+
+
+class DeleteEmail(View):
+    def post(self, request):
+        data = request.POST
+        id = data.get('id')
+        fm = EmailTemplate.objects.get(id=id)
+        fm.delete()
+        return redirect('customAdminPanel:email')
+
+
+class EditEmail(View):
+    """_summary_
+
+    Args:
+        View (_type_): _description_
+    """
+
+    def get(self, request, id):
+        obj = EmailTemplate.objects.get(id=id)
+        fm = EmailTemplateForm(instance=obj)
+        return render(request, "model_form/editEmail.html", {'form': fm})
+
+    def post(self, request, id):
+        cat = EmailTemplate.objects.get(id=id)
+        fm = EmailTemplateForm(request.POST, instance=cat)
+        if fm.is_valid():
+            fm.save()
+            return redirect('customAdminPanel:email')
 
 
 class OrderDetailField(LoginRequiredMixin, View):
@@ -886,9 +919,9 @@ class UserField(LoginRequiredMixin, View):
 
 @login_required(redirect_field_name='login', login_url='/adminpanel/login')
 def user_check(request):
-    # username = User.objects.all()
-    # context = {'form': username}
-    return render(request, "user.html", {})
+    username = User.objects.all()
+    context = {'form': username}
+    return render(request, "user.html", context)
 
 
 class UserAddressField(LoginRequiredMixin, View):
@@ -958,6 +991,34 @@ def userOrder_check(request):
     fm = UserOrder.objects.all()
     context = {'form': fm}
     return render(request, "userOrder.html", context)
+
+class DeleteUserOrder(View):
+    def post(self, request):
+        data = request.POST
+        id = data.get('id')
+        fm = UserOrder.objects.get(id=id)
+        fm.delete()
+        return redirect('customAdminPanel:userOrder')
+
+
+class EditUserOrder(View):
+    """_summary_
+
+    Args:
+        View (_type_): _description_
+    """
+
+    def get(self, request, id):
+        obj = UserOrder.objects.get(id=id)
+        fm = UserOrderForm(instance=obj)
+        return render(request, "model_form/editUserOrder.html", {'form': fm})
+
+    def post(self, request, id):
+        cat = UserOrder.objects.get(id=id)
+        fm = UserOrderForm(request.POST, instance=cat)
+        if fm.is_valid():
+            fm.save()
+            return redirect('customAdminPanel:userOrder')
 
 
 class UserWishlistField(LoginRequiredMixin, View):

@@ -24,4 +24,7 @@ urlpatterns = [
     path('cod/',views.cashondelivery,name='cod'),
     path('category/',views.category_filter,name='category'),
     path('price/',views.price_filter,name='price'),
+    path('order_tracker/',views.track_order,name='order_tracker'),
+    path('order_track/',views.tracking_order,name='order_track'),
+    path('contact/',views.contact_us,name='contact')
     ]
