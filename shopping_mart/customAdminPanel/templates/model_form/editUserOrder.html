@@ -1,6 +1,7 @@
 {% extends 'starter.html' %}
 
 {% block content %}
+<form action="" method="post" enctype="multipart/form-data">
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <section class="content-header">
@@ -12,7 +13,7 @@
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">Add userOrder</li>
+            <li class="breadcrumb-item active">Edit userOrder</li>
           </ol>
         </div>
       </div>
@@ -28,20 +29,19 @@
           <!-- general form elements -->
           <div class="card card-primary">
             <div class="card-header">
-              <h3 class="card-title">Add userOrder</h3>
+              <h3 class="card-title">Edit userOrder</h3>
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form action="{% url 'customAdminPanel:userOrder_form' %}" method="post" enctype="multipart/form-data">
               {% csrf_token %}
               <div class="card-body">
                 <div class="form-group">
-                  <label for="banner_name">Banner name</label>
-                  {{ form.banner_name }}
+                  <!-- <label for="banner_name">Banner name</label> -->
+                  <!-- {{ form.banner_name }} -->
                 </div>
                 <div class="form-group">
-                  <label for="banner_path">Banner Path</label>
-                  {{ form.banner_path }}
+                  <!-- <label for="banner_path">Banner Path</label>
+                  {{ form.banner_path }} -->
                   <!-- <div class="input-group">
                       <div class="custom-file">
                         <label class="custom-file-label" for="banner_path">Choose file</label>

@@ -307,6 +307,20 @@ def placeorder(request):
             grand_total = final_amount,
         )
     order.save()
+    order_ids = order.id
+    breakpoint()
+    if order.save:
+        order_id = order_ids
+        cart_details = request.session['cartdata']
+        for key,value in cart_details.items():
+            print(value)
+            order_details = OrderDetails(
+                order_id = order_id,
+                product_id_id = key,
+                amount = cart_details[key]['price'],
+                quantity = cart_details[key]['qty']
+            )
+            order_details.save()
     user_email = request.user.email
     send_mail(
             'Thank You for Order',
@@ -389,33 +403,48 @@ def cashondelivery(request):
             grand_total = final_amount
         )
     order.save()
-    
+    order_ids = order.id
+    if order.save:
+        order_id = order_ids
+        cart_details = request.session['cartdata']
+        for key,value in cart_details.items():
+            print(value)
+            order_details = OrderDetails(
+                order_id = order_id,
+                product_id_id = key,
+                amount = cart_details[key]['price'],
+                quantity = cart_details[key]['qty']
+            )
+
+            order_details.save()
+    # user_email =  request.user.email
+    # # order = instance
+    # context = {'order': order}
+    # message = get_template("product_order.html").render(context)
+    # mail = EmailMessage(
+    #     subject="Order confirmation",
+    #     body=message,
+    #     from_email=settings.EMAIL_HOST_USER,
+    #     to=[user_email],
+    #     # reply_to=[user_email],
+    # )
+    # mail.content_subtype = "html"
+    # return mail.send()
     user_email =  request.user.email
-    # order = instance
-    context = {'order': order}
-    message = get_template("product_order.html").render(context)
-    mail = EmailMessage(
-        subject="Order confirmation",
-        body=message,
-        from_email=settings.EMAIL_HOST_USER,
-        to=[user_email],
-        # reply_to=[user_email],
-    )
-    mail.content_subtype = "html"
-    return mail.send()
-    # send_mail(
-    #         'Thank You for Order',
-    #         'HEY you are now successfully placed your order in our E-shopper website',
-    #         settings.EMAIL_HOST_USER,
-    #         [user_email],
-    #         fail_silently=False,
-    #         )
-    # subject = 'Thank You for Order'
-    # html_message = render_to_string('product_order.html', {'context': 'values'})
-    # # plain_message = strip_tags(html_message)
-    # from_email = settings.EMAIL_HOST_USER
-    # to = [user_email]
-    # return redirect('G_shopper:home')
+    send_mail(
+            'Thank You for Order',
+            'HEY you are now successfully placed your order in our E-shopper website',
+            settings.EMAIL_HOST_USER,
+            [user_email],
+            fail_silently=False,
+            )
+    subject = 'Thank You for Order'
+    html_message = render_to_string('product_order.html', {'context': 'values'})
+    # plain_message = strip_tags(html_message)
+    from_email = settings.EMAIL_HOST_USER
+    to = [user_email]
+    return redirect('G_shopper:home')
+
 
 
 
@@ -424,8 +453,9 @@ def track_order(request):
 
 
 def tracking_order(request):
-    email_id = request.GET.get('email_track')
-    order_id = request.GET.get('orderid_track')
+    breakpoint()
+    email_id = request.POST.get('email_track')
+    order_id = request.POST.get('orderid_track')
     context = {'email':email_id,'order':order_id}
     return JsonResponse({'data':list(context)})
 
@@ -448,3 +478,13 @@ def contact_us(request):
         return redirect(request,'home.html')
     return render(request,"contact_us.html",{"form": form})
 
+def my_order(request):
+    order_data = OrderDetails.objects.all()
+    context={'order_data':order_data}
+    return render(request,'my_order.html',context)
+
+def my_account(request):
+    breakpoint()
+    users = User.objects.filter().values('username','email')
+    context = {'users':users}
+    return render(request,'my_account.html',context)

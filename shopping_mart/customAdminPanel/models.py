@@ -19,8 +19,8 @@ class User(AbstractUser):
     # specify_role = [('M','manager'),('C','customer'),('A','admin')]
     # role = models.CharField(max_length=10, choices=specify_role,default='')
     
-    def __str__(self):
-        return self.username
+    # def __str__(self):
+    #     return self.username
 
     class Meta:
         verbose_name = "User"
@@ -305,11 +305,10 @@ class ProductAttributesAssoc(models.Model):
 class OrderDetails(models.Model):
     order_id = models.IntegerField()
     product_id = models.ForeignKey(Product,on_delete=models.CASCADE)
-    quantity = models.IntegerField()
+    quantity = models.IntegerField(null=True)
     amount = models.FloatField()
 
-    def __str__(self):
-        return self.OrderDetails
+
 
     class Meta:
         verbose_name = "OrderDetails"
@@ -332,7 +331,7 @@ class UserOrder(models.Model):
     payment_gateway = models.ForeignKey(PaymentGateway,null=True,on_delete=models.CASCADE)
     transaction_id = models.CharField(max_length=100)
     created_date = models.DateTimeField(auto_now=True)
-    status = models.CharField(max_length=255, choices=CHOICES, default=PENDING)
+    status = models.CharField(max_length=255, choices=CHOICES, default=OUT_FOR_DELIVERY)
     grand_total = models.FloatField()
     shipping_charges = models.FloatField()
     coupon_id = models.ForeignKey(Coupon,on_delete=models.CASCADE)

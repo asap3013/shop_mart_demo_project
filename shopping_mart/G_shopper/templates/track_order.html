@@ -9,11 +9,13 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="col-sm-12">
+                            <form >
                             <h4>Email Id</h4>
                             <input type="email" name="email" class="email_id" placeholder="Enter Email Id">
                             <h4>Order Id</h4>
                             <input type="number" name="order_id" class="order_id" placeholder="Enter Order Id"> <br><br>
-                            <button type="submit" class="btn btn-primary order_tracking">Submit</button>
+                            <button type="submit" class="btn btn-primary" id="order_trace">Submit</button>
+                        </form>
                         </div>
                     </div>
                 </div>
@@ -27,14 +29,14 @@
 
 {% block script %}
 <script>
-$(document).on('click','.order_tracking',function () {
+$(document).on('click','#order_trace',function () {
     console.log("Hello")
     debugger;
     let email_track = document.getElementsByClassName('email_id')
     let orderid_track = document.getElementsByClassName('order_id')
     console.log(email_track,orderid_track)
     $.ajax({
-            type: "GET",
+            type: "POST",
             url: 'order_track/',
             data: JSON.stringify({
                 "email_track":email_track,

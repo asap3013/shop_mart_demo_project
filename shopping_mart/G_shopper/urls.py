@@ -26,5 +26,7 @@ urlpatterns = [
     path('price/',views.price_filter,name='price'),
     path('order_tracker/',views.track_order,name='order_tracker'),
     path('order_track/',views.tracking_order,name='order_track'),
-    path('contact/',views.contact_us,name='contact')
+    path('contact/',views.contact_us,name='contact'),
+    path('my_order/',views.my_order,name='my_order'),
+    path('my_account/',views.my_account,name='my_account')
     ]
