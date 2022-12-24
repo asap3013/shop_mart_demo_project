@@ -9,7 +9,8 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="col-sm-12">
-                            <form >
+                            <form method="post">
+                                {% csrf_token %}
                             <h4>Email Id</h4>
                             <input type="email" name="email" class="email_id" placeholder="Enter Email Id">
                             <h4>Order Id</h4>
@@ -30,8 +31,8 @@
 {% block script %}
 <script>
 $(document).on('click','#order_trace',function () {
-    console.log("Hello")
     debugger;
+    console.log("Hello")
     let email_track = document.getElementsByClassName('email_id')
     let orderid_track = document.getElementsByClassName('order_id')
     console.log(email_track,orderid_track)
@@ -39,11 +40,12 @@ $(document).on('click','#order_trace',function () {
             type: "POST",
             url: 'order_track/',
             data: JSON.stringify({
-                "email_track":email_track,
-                "orderid_track": orderid_track,
+                "email":email_track,
+                "order_id": orderid_track,
             }),
             contentType: "application/json; charset=UTF-8",
             success: function (data) {
+                debugger;
                 console.log(data)  
                 $("#cart_data").empty();              
                  }

@@ -19,7 +19,7 @@
     <script src="js/html5shiv.js"></script>
     <script src="js/respond.min.js"></script>
     <![endif]-->
-    
+
     <link rel="shortcut icon" href="/static/images/ico/favicon.ico">
     <link rel="/static/apple-touch-icon-precomposed" sizes="144x144"
         href="/static/images/ico/apple-touch-icon-144-precomposed.png">
@@ -98,15 +98,19 @@
                     <div class="col-sm-8">
                         <div class="shop-menu pull-right">
                             <ul class="nav navbar-nav">
-                                <li><a href="{% url 'G_shopper:my_account' %}"><i class="fa fa-user"></i> My Account</a></li>
-                                <li><a href="{% url 'G_shopper:my_order' %}"><i class="fa fa-user"></i> My Order</a></li>
+                                <li><a href="{% url 'G_shopper:my_account' %}"><i class="fa fa-user"></i> My Account</a>
+                                </li>
+                                <li><a href="{% url 'G_shopper:my_order' %}"><i class="fa fa-user"></i> My Order</a>
+                                </li>
                                 <li><a href="{% url 'G_shopper:my_wishlist' %}"><i class="fa fa-star"></i> Wishlist</a>
                                 </li>
-                                <li><a href="{% url 'G_shopper:checkout' %}"><i class="fa fa-crosshairs"></i> Checkout</a></li>
+                                <li><a href="{% url 'G_shopper:checkout' %}"><i class="fa fa-crosshairs"></i>
+                                        Checkout</a></li>
                                 <li><a href="{% url 'G_shopper:addcart' %}"><i class="fa fa-shopping-cart"></i>
                                         Cart(<span class="cart-list">{{request.session.cartdata|length}}</span>)</a>
                                 </li>
-                                <li><a href="{% url 'G_shopper:order_tracker' %}"><i class="fa fa-crosshairs"></i> track Order</a></li>
+                                <li><a href="{% url 'G_shopper:order_track' %}"><i class="fa fa-crosshairs"></i> track
+                                        Order</a></li>
                                 <li><a href="{% url 'G_shopper:loggedout' %}"><i class="fa fa-lock"></i> Logout</a>
                                 </li>
                             </ul>
@@ -149,7 +153,7 @@
                                         <li><a href="blog-single.html">Blog Single</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="404.html">404</a></li>
+                                <li><a href="{% url 'G_shopper:password' %}">change Password </a></li>
                                 <li><a href="{% url 'G_shopper:contact' %}">Contact</a></li>
                             </ul>
                         </div>
@@ -170,6 +174,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-12">
+
                     <div id="slider-carousel" class="carousel slide" data-ride="carousel">
                         <ol class="carousel-indicators">
                             <li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
@@ -228,16 +233,16 @@
                         <h2>Category</h2>
                         <div class="panel-group category-products" id="accordian">
                             <!--category-productsr-->
-                            
+
                             {% for category in cat %}
-                            <div class="panel panel-default" >
+                            <div class="panel panel-default">
                                 <!-- {{category.id}} -->
-                                <div class="panel-heading"> 
+                                <div class="panel-heading">
                                     <h4 class="panel-title">
-                                <input type="hidden" class="categories_{{category.id}}" 
-                                value="{{category.id}}">
-    
-                                <a data-toggle="collapse" class="categorie" data-parent="#accordian" href="" id="{{category.id}}">
+                                        <input type="hidden" class="categories_{{category.id}}" value="{{category.id}}">
+
+                                        <a data-toggle="collapse" class="categorie" data-parent="#accordian" href=""
+                                            id="{{category.id}}">
                                             {{category.name}}
                                         </a>
                                     </h4>
@@ -346,7 +351,7 @@
                             </div>
                              {% endfor %} -->
                         </div>
-                        
+
                         <!--/category-products-->
 
                         <div class="brands_products">
@@ -366,15 +371,17 @@
                         </div>
                         <!--/brands_products-->
 
-                        
-                        <div class="price-range" ><!--price-range-->
-							<h2>Price Range</h2>
-							<div class="well text-center" id="price_range" >
-								 <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="1000" data-slider-step="5" data-slider-value="[0,1000]" id="sl2"  ><br />
-								 <b class="pull-left">$ 0</b> <b class="pull-right">$ 1000</b> <br>
-                                    
-							</div>
-						</div>
+
+                        <div class="price-range">
+                            <!--price-range-->
+                            <h2>Price Range</h2>
+                            <div class="well text-center" id="price_range">
+                                <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="1000"
+                                    data-slider-step="5" data-slider-value="[0,1000]" id="sl2"><br />
+                                <b class="pull-left">$ 0</b> <b class="pull-right">$ 1000</b> <br>
+
+                            </div>
+                        </div>
                         <!--/price-range-->
 
                         <div class="shipping text-center">
@@ -390,52 +397,59 @@
                     <div class="features_items" id="like">
                         <h2 class="title text-center">Featured Items</h2>
                         {% for prod in obj %}
-                        <div class="col-sm-4" >
-                            <div class="product-image-wrapper">
-                                <div class="single-products">
-                                    <div class="productinfo text-center">
-                                        <img src="{{prod.productimages_set.first.image_path.url}}" alt="" />
-                                        <p>{{prod.name}}</p>
-                                        <input type="hidden" class="product-image-{{prod.id}}"
-                                            value="{{prod.productimages_set.first.image_path.url}}" />
-                                        <th>$ <span class="product-price-{{prod.id}}">{{prod.price}}</span></th>
-                                        <br>
-                                        <input type="hidden" class="product_id-{{prod.id}}" value="{{prod.id}}">
-                                        <input type="hidden" class="meta_title-{{prod.id}}" value="{{prod.meta_title}}">
+                        <div class="col-sm-4">
+                            <a href="{% url 'G_shopper:product_detail' prod.id %}" value="">
+                                <div class="product-image-wrapper">
+                                    <div class="single-products">
+                                        <div class="productinfo text-center">
+                                            <img src="{{prod.productimages_set.first.image_path.url}}" alt="" />
+                                            <p>{{prod.name}}</p>
+                                            <input type="hidden" class="product-image-{{prod.id}}"
+                                                value="{{prod.productimages_set.first.image_path.url}}" />
+                                            <th>$ <span class="product-price-{{prod.id}}">{{prod.price}}</span></th>
+                                            <br>
+                                            <input type="hidden" class="product_id-{{prod.id}}" value="{{prod.id}}">
+                                            <input type="hidden" class="meta_title-{{prod.id}}"
+                                                value="{{prod.meta_title}}">
 
-                                        <button class="btn btn-default add-to-cart" id="{{prod.id}}"><i
-                                                class="fa fa-shopping-cart addcart"></i>Add to cart</button>
+                                            <button class="btn btn-default add-to-cart" id="{{prod.id}}"><i
+                                                    class="fa fa-shopping-cart addcart"></i>Add to cart</button>
 
-                                        <div class="cart_quantity_button submitWidget submitWidget-{{prod.id}}">
-                                            <input type="button" onclick="decrementValue('{{prod.id}}')" value=" - " />
-                                            <input type="text" id="product-qty-{{prod.id}}" name="quantity" value="1"
-                                                maxlength="2" max="10" size="1" readonly />
-                                            <input type="button" onclick="incrementValue('{{prod.id}}')" value="+" />
-                                        </div> <br>
-                                        {% if user.is_authenticated %}
-                                        <button class="btn btn-sm btn-danger add-wishlist" data-product="{{prod.id}}"><i
-                                                class="fa fa-heart"></i></button>
-                                        {% else %}
-                                        <button class="btn btn-sm btn-danger disabled"><i
-                                                class="fa fa-heart"></i></button>
-                                        {% endif %}
-                                        <div class="choose">
-                                            <ul class="nav nav-pills nav-justified">
-                                                
-                            <li><a href="{% url 'G_shopper:product_detail' prod.id %}" value=""><i class="fa fa-plus-square"></i>view product</a></li>
-                                            </ul>
+                                            <div class="cart_quantity_button submitWidget submitWidget-{{prod.id}}">
+                                                <input type="button" onclick="decrementValue('{{prod.id}}')"
+                                                    value=" - " />
+                                                <input type="text" id="product-qty-{{prod.id}}" name="quantity"
+                                                    value="1" maxlength="2" max="10" size="1" readonly />
+                                                <input type="button" onclick="incrementValue('{{prod.id}}')"
+                                                    value="+" />
+                                            </div> <br>
+                                            {% if user.is_authenticated %}
+                                            <button class="btn btn-sm btn-danger add-wishlist"
+                                                data-product="{{prod.id}}"><i class="fa fa-heart"></i></button>
+                                            {% else %}
+                                            <button class="btn btn-sm btn-danger disabled"><i
+                                                    class="fa fa-heart"></i></button>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                         {% endfor %}
                     </div>
                 </div>
             </div>
         </div>
-        </div>
     </section><br>
+
+
+
+    <!-- </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section> -->
 
     {% block content %}
 
@@ -602,7 +616,7 @@
 
     </footer>
     <script>
-        function getValue(){
+        function getValue() {
             console.log("welcome")
         }
     </script>
@@ -618,5 +632,3 @@
 </body>
 
 </html>
-
-

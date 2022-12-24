@@ -19,8 +19,7 @@ class User(AbstractUser):
     # specify_role = [('M','manager'),('C','customer'),('A','admin')]
     # role = models.CharField(max_length=10, choices=specify_role,default='')
     
-    # def __str__(self):
-    #     return self.username
+
 
     class Meta:
         verbose_name = "User"

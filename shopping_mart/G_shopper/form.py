@@ -1,7 +1,18 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from django.contrib.auth.forms import PasswordChangeForm
 from customAdminPanel.models import *
 
+class PasswordChangingForm(PasswordChangeForm):
+    old_password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','type':'password'}))
+    new_password1 = forms.CharField(max_length=100,
+                                    widget=forms.PasswordInput(attrs={'class':'form-control','type':'password'}))
+    new_password2 = forms.CharField(max_length=100,
+                                    widget=forms.PasswordInput(attrs={'class':'form-control','type':'password'}))
+
+    class Meta:
+        model = User
+        fields = ('old_password','new_password1','new_password2')
 
 class UserRegistraionForm(forms.ModelForm):  
     first_name = forms.CharField(label='First Name', min_length=5, max_length=150)  
@@ -94,3 +105,11 @@ class ContactForm(forms.ModelForm):
     class Meta:
         model = ContactUs
         fields = ["name","email","message"]
+
+class TrackorderForm(forms.ModelForm):
+    email = forms.EmailField(label='Email Address')
+    order_id = forms.IntegerField(label='order id')
+
+    class Meta:
+        model = UserOrder
+        fields = ['email','order_id']

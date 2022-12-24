@@ -28,7 +28,7 @@
                                         <th>created_date</th>
                                         <th>modify_by</th>
                                         <th>modify_date</th>
-                                        <th scope="col" colspan="2">Action</th>
+                                        <!-- <th scope="col" colspan="2">Action</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -39,11 +39,11 @@
                                         <td>{{i.created_date}}</td>
                                         <td>{{i.modify_by}}</td>
                                         <td>{{i.modify_date}}</td>
-                                        <td>
+                                        <!-- <td>
                                             <a href="{% url 'customAdminPanel:EditProductAttributes' i.id %}"><button
                                                     class="btn btn-default btn-sm"><i
                                                         class="fas fa-edit"></i></button></a>
-                                        </td>
+                                        </td> 
                                         <td>
                                             <button type="submit" value="Delete" class="btn btn-danger btn-sm"
                                                 data-toggle="modal" data-target="#deletemodal">
@@ -76,7 +76,7 @@
                                                 </div>
                                             </div>
                                             </form>
-                                        </td>
+                                        </td>-->
                                     </tr>
                                     {% endfor %}
                                 </tbody>

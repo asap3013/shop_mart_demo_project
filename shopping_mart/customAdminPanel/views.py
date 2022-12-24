@@ -10,7 +10,11 @@ from django.views import View
 from django.http import JsonResponse
 # from django.contrib.auth.models import User
 from django.conf import settings
-User = settings.AUTH_USER_MODEL
+# User = settings.AUTH_USER_MODEL
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
 
 
 
@@ -74,10 +78,12 @@ class BannerField(LoginRequiredMixin, View):
 
     def post(self, request):
         obj = BannersForm(request.POST, request.FILES)
+        breakpoint()
         if obj.is_valid():
             obj.save()
             return redirect('customAdminPanel:banner')
         else:
+            messages.error(request,'Invalid format Uploads')
             return render(request, "model_form/banner_form.html", {'form': obj})
 
 
@@ -114,7 +120,7 @@ class EditBanner(View):
         fm = BannersForm(request.POST, request.FILES, instance=ban)
         if fm.is_valid():
             fm.save()
-            return redirect('customAdminPanel:banner', {})
+            return redirect('customAdminPanel:banner')
 
 
 class CategoryField(View):
@@ -140,6 +146,13 @@ def category_check(request):
     keys = {"obj": obj}
     return render(request, "category.html", keys)
 
+class DeleteBanner(View):
+    def post(self, request):
+        data = request.POST
+        id = data.get('id')
+        fm = Banners.objects.get(id=id)
+        fm.delete()
+        return redirect('customAdminPanel:banner')
 
 class DeleteCategory(View):
     def post(self, request):

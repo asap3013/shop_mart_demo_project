@@ -275,7 +275,6 @@ $(document).on('click',".slider-track",function(){
             console.log(data.product[1][0])
             console.log(data.product[2][0])
             
-            debugger;
             $("#cart_data").empty();
             for (let i = 0; i < data.product[0].length; i++){
                 var image = (data.product[2][i])

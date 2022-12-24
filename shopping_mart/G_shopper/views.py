@@ -13,6 +13,10 @@ from customAdminPanel.models import *
 from django.http import HttpResponse,JsonResponse 
 from django.contrib.auth import login, logout
 from django.template.loader import render_to_string
+from django.contrib.auth.views import PasswordChangeView
+from django.contrib.auth.forms import PasswordChangeForm
+from django.urls import reverse_lazy
+# from forms import PasswordChangingForm
 import random
 import stripe
 from django.core.mail import EmailMessage
@@ -117,7 +121,6 @@ class UserRegister(View):
         return render(request, "register/register_form.html", {'form': obj})
 
     def post(self, request):
-        breakpoint()
         obj = UserRegistraionForm(request.POST)
         if obj.is_valid():
             obj.save()
@@ -227,7 +230,6 @@ def my_wishlist(request):
     return render(request, 'wishlist.html', {'wlist': wlist})
 
 # def deletewishlist(request, id):
-#     breakpoint()
 #     user=request.user.id
 #     UserWishList.objects.filter(user_id=user.id, product=Product.objects.get(id=id).delete())
 #     UserWishList.delete()
@@ -308,7 +310,6 @@ def placeorder(request):
         )
     order.save()
     order_ids = order.id
-    breakpoint()
     if order.save:
         order_id = order_ids
         cart_details = request.session['cartdata']
@@ -333,7 +334,6 @@ def placeorder(request):
 
 @csrf_exempt
 def stripe_order(request):
-    breakpoint
     cart = request.session['cartdata'] 
     coupon = request.session['coupon_data'] 
     json_data = json.loads(request.body.decode("utf-8"))
@@ -375,7 +375,6 @@ def stripe_order(request):
 
 @csrf_exempt 
 def cashondelivery(request):
-    breakpoint()
     cart = request.session['cartdata'] 
     # user_email = User.objects.first()
     coupon = request.session['coupon_data'] 
@@ -448,23 +447,24 @@ def cashondelivery(request):
 
 
 
-def track_order(request):
-    return render(request, 'track_order.html')
-
-
 def tracking_order(request):
-    breakpoint()
-    email_id = request.POST.get('email_track')
-    order_id = request.POST.get('orderid_track')
-    context = {'email':email_id,'order':order_id}
-    return JsonResponse({'data':list(context)})
+    email_id = request.POST.get('email')
+    order_id = request.POST.get('order_id')
+    # order = int(order_id)
+    user_email =request.user.email
+    user_order = UserOrder.objects.filter(user_id__email=email_id, id=order_id).values('id','status').first()
+    if email_id == user_email and  int(order_id) == user_order['id']:
+        status = user_order['status']
+        context = {'status':status}
+        return render(request,'order_status.html',context)
+    return render(request,'track_order.html')
 
 
 def contact_us(request):
-    if request.method == "GET":
+    breakpoint()
+    if request.method == "POST":
         form = ContactForm()
     else:
-        breakpoint()
         form = ContactForm(request.POST)
         if form.is_valid():
             name=form.cleaned_data['name']
@@ -484,7 +484,20 @@ def my_order(request):
     return render(request,'my_order.html',context)
 
 def my_account(request):
-    breakpoint()
-    users = User.objects.filter().values('username','email')
-    context = {'users':users}
+    username = request.user.username
+    user_email = request.user.email
+    context = {'users':username,'user_email':user_email}
     return render(request,'my_account.html',context)
+
+class PasswordsChangeView(PasswordChangeView):
+    form_class = PasswordChangingForm
+    success_url = reverse_lazy('password_success')
+
+# view for password success of user.
+def password_success(request):
+    breakpoint()
+    """
+    :param request:
+    :return: password success page:
+    """
+    return render(request, 'password_success.html',{})

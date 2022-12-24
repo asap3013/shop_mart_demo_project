@@ -15,7 +15,6 @@ window.addEventListener('load', () => {
 
 
 $(document).on('click','.order',function () {
-    debugger;
     var rates = document.getElementsByClassName('payload');
     var order_value;
     let ch = document.getElementById('checkouts')
@@ -50,7 +49,6 @@ $(document).on('click','.order',function () {
             }),
             contentType: "application/json; charset=UTF-8",
             success: function (response) {
-                debugger;
                 window.location.href = ''+response;
                  }
         });
@@ -75,7 +73,6 @@ $(document).on('click','.order',function () {
             },
             dataType: 'json',
             success: function (data) {
-                debugger;
                 // window.location.href = 'http://127.0.0.1:8000/home'
             }
         });
