@@ -1,0 +1,85 @@
+{% extends 'starter.html' %}
+
+{% block content %}
+<div align="center">
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <!-- <h1>General Form</h1> -->
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active">Update Email</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div><!-- /.container-fluid -->
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <!-- left column -->
+                        <div class="col-md-6" style="position: relative; left: 250px;">
+                            <!-- general form elements -->
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Edit Email</h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <!-- form start -->
+
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="code">code</label>
+                                        {{ form.code }}
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="percent_off">percent_off</label>
+                                        {{ form.percent_off }}
+                                        <!-- <div class="input-group">
+                              <div class="custom-file">
+                                <label class="custom-file-label" for="banner_path">Choose file</label>
+                                {{ form.banner_path }}
+                              </div>
+                            </div> -->
+                                    </div>
+                                    <div class="form-check">
+                                        <label  for="no_of_user">no_of_user</label>
+                                        {{ form.no_of_user }}
+                                    </div>
+                                </div>
+                                <!-- /.card-body -->
+
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </form>
+</div>
+{% endblock %}
+{% block script %}
+<script>
+    $(document).ready(function () {
+        setNavBar()
+    });
+
+    // set navebar
+    function setNavBar() {
+        $(".nav-link").removeClass("active")
+        $(".coupon-menu").addClass("active")
+    }
+</script>
+{% endblock %}

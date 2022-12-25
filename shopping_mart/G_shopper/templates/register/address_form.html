@@ -13,8 +13,8 @@
                 <div class="form-one">
                     <form action="" method="post" value="Add Address">
                         {% csrf_token %}
-                        <label for="user_id">user_id</label>
-                        {{ form.user_id }}
+                        <label for="user_id">user_id</label> <br>
+                        <textarea name="" id="" cols="1" rows="1" disabled>{{ request.user}}</textarea><b></b> <br>
                         <label for="address_1">address_1</label>
                         {{ form.address_1 }}
                         <label for="address_2">address_2</label>

@@ -274,7 +274,7 @@ class Add_address(View):
         return render(request, "register/address_form.html", {'form': obj})
 
     def post(self, request):
-        obj = Address_form(request.POST)
+        obj = Address_form(request.POST,user = request.user)
         if obj.is_valid():
             obj.save()
             return redirect('G_shopper:addcart')
@@ -442,7 +442,7 @@ def cashondelivery(request):
     # plain_message = strip_tags(html_message)
     from_email = settings.EMAIL_HOST_USER
     to = [user_email]
-    return redirect('G_shopper:home')
+    return redirect(request,'register/home.html')
 
 
 

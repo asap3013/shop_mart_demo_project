@@ -33,6 +33,7 @@ urlpatterns = [
     path('email/',views.email_check, name='email'),
     path('email_form/',views.EmailField.as_view(),name='email_form'),
     path('emaildelete/',views.DeleteEmail.as_view(),name='emaildelete'),
+    path("editEmail/<int:id>" ,views.EditEmail.as_view(),name="EditEmail"),
     path('orderDetail/',views.orderDetail_check, name='orderDetail'),
     path('orderDetail_form/',views.OrderDetailField.as_view(),name='orderDetail_form'),
     path('paymentGateway/',views.paymentGateway_check, name='paymentGateway'),

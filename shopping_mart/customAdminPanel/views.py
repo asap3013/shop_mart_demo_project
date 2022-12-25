@@ -78,7 +78,6 @@ class BannerField(LoginRequiredMixin, View):
 
     def post(self, request):
         obj = BannersForm(request.POST, request.FILES)
-        breakpoint()
         if obj.is_valid():
             obj.save()
             return redirect('customAdminPanel:banner')
@@ -146,13 +145,6 @@ def category_check(request):
     keys = {"obj": obj}
     return render(request, "category.html", keys)
 
-class DeleteBanner(View):
-    def post(self, request):
-        data = request.POST
-        id = data.get('id')
-        fm = Banners.objects.get(id=id)
-        fm.delete()
-        return redirect('customAdminPanel:banner')
 
 class DeleteCategory(View):
     def post(self, request):
@@ -280,7 +272,7 @@ class CouponField(LoginRequiredMixin, View):
             instance.created_by = request.user
             instance.modify_by = request.user
             instance.save()
-            return redirect('customAdminPanel:coupon_form')
+            return redirect('customAdminPanel:coupon')
         else:
             return render(request, "coupon.html", {'form': obj})
 
@@ -301,6 +293,7 @@ class DeleteCoupon(View):
 
 
 class EditCoupon(View):
+    
     """_summary_
 
     Args:
@@ -514,7 +507,6 @@ class ProductField(LoginRequiredMixin, View):
 
     def post(self, request):
         # obj = ProductForm(request.POST, request.FILES)
-        # breakpoint()
         if request.method == "POST":
             prod_form = ProductForm(request.POST)
             prod_img_form = ProductImagesForm(request.POST, request.FILES)
@@ -1021,7 +1013,6 @@ class EditUserOrder(View):
         return render(request, "model_form/editUserOrder.html", {'form': fm})
 
     def post(self, request, id):
-        breakpoint()
         cat = UserOrder.objects.get(id=id)
         fm = UserOrderForm(request.POST, instance=cat)
         if fm.is_valid():
