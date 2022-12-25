@@ -457,11 +457,12 @@ def tracking_order(request):
         status = user_order['status']
         context = {'status':status}
         return render(request,'order_status.html',context)
+    else:
+        messages.error(request, 'Please enter correct credentials')
     return render(request,'track_order.html')
 
 
 def contact_us(request):
-    breakpoint()
     if request.method == "POST":
         form = ContactForm()
     else:
@@ -475,7 +476,7 @@ def contact_us(request):
                 send_mail('Feedback',message, email, ["abhisheksapkal1316@gmail.com"],fail_silently=False)
             except BadHeaderError:
                 return HttpResponse(" found.")
-        return redirect(request,'home.html')
+        return redirect(request,'contact_us.html')
     return render(request,"contact_us.html",{"form": form})
 
 def my_order(request):

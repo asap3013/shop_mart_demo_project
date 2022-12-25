@@ -209,6 +209,7 @@ $(document).on('click',".categorie",function(){
                 },
         dataType: "json",
         success:function(data){
+            if(data != null){
             var image = (data.product_img[0].image_path)
             var url = "/media/".concat(image)
             console.log(data.product.length)
@@ -245,7 +246,12 @@ $(document).on('click',".categorie",function(){
                             </div>
                         </div> `
             );  
-        });           
+        });  }
+        else{
+            $('#cart_data').html(
+                `<p>`+"No match found"+`</p>`
+            )
+        }         
         }
     });
 });
