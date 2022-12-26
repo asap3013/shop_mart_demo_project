@@ -248,10 +248,12 @@ $(document).on('click',".categorie",function(){
             );  
         });  }
         else{
+            $ .each(data,function(){
             $('#cart_data').html(
                 `<p>`+"No match found"+`</p>`
-            )
-        }         
+            );
+        });
+        };       
         }
     });
 });

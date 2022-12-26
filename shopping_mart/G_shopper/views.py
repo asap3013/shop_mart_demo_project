@@ -492,7 +492,7 @@ def my_account(request):
 
 class PasswordsChangeView(PasswordChangeView):
     form_class = PasswordChangingForm
-    success_url = reverse_lazy('password_success')
+    success_url = reverse_lazy('G_shopper:password_success')
 
 # view for password success of user.
 def password_success(request):
