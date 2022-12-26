@@ -25,19 +25,19 @@
                                 <tr>
                                   <th>Email Address</th>
                                   <th>Username</th>
-                                  <th scope="col" colspan="2">Action</th>
+                                  <!-- <th scope="col" colspan="2">Action</th> -->
                                 </tr>
                               </thead>
                               <tbody>
                                 {% for i in form %}
                                 <tr>
-                                  <td>{{i.context}}</td>
+                                  <td>{{i.email}}</td>
                                   <td>{{i.username}}</td>
-                                  <td>
+                                  <!-- <td>
                                     <a href="{% url 'customAdminPanel:EditCategory' i.id %}"><button class="btn btn-default btn-sm"><i
                                           class="fas fa-edit"></i></button></a>
-                                  </td>
-                                  <td>
+                                  </td> -->
+                                  <!-- <td>
                                       <button type="submit" value="Delete" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deletemodal">
                                         Delete
                                       </button>
@@ -65,7 +65,7 @@
                                         </div>
                                       </div>
                                       </form>
-                                    </td>
+                                    </td> -->
                                 </tr>
                                 {% endfor %}
               

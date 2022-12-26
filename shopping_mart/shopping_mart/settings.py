@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+from django.urls import reverse_lazy
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -184,7 +185,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
 
 
-LOGIN_URL=''
+LOGIN_URL=reverse_lazy('G_shopper:password_reset_complete')
 LOGIN_REDIRECT_URL = ''
 
 

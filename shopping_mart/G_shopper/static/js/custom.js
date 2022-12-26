@@ -278,22 +278,29 @@ $(document).on('click',".slider-track",function(){
             "max_price":max_price,},
         dataType: "json",
         success:function(data){
+            debugger;
             console.log(data)
             console.log(data.product[0][1])
             console.log(data.product[1][0])
             console.log(data.product[2][0])
-            
+        if(data != null){   
             $("#cart_data").empty();
             for (let i = 0; i < data.product[0].length; i++){
                 var image = (data.product[2][i])
                 var url = "/media/".concat(image)
              { let item_content = '<div class="col-sm-4" ><div class="product-image-wrapper"> <div class="single-products"><div class="productinfo text-center"><img src="'+url+'" alt="" /><p>'+data.product[0][i]+'</p><input type="hidden" class="product-image-{{prod.id}}"value="{{prod.productimages_set.first.image_path.url}"/><th>$ <span class="product-price-{{prod.id}}">'+data.product[1][i]+'</span></th><input type="hidden" class="product_id-{{prod.id}}" value="{{prod.id}}"><input type="hidden" class="meta_title-{{prod.id}}" value="{{prod.meta_title}}"><br><button class="btn btn-default add-to-cart" id="{{prod.id}}"><i class="fa fa-shopping-cart addcart"></i>Add to cart</button><div class="cart_quantity_button submitWidget submitWidget-{{prod.id}}"><input type="button" onclick="decrementValue(" value=" - " /><input type="text" id="product-qty-{{prod.id}}" name="quantity" value="1"maxlength="2" max="10" size="1" readonly /><input type="button" onclick="incrementValue()" value="+" /></div> <br><div class="choose"><ul class="nav nav-pills nav-justified"><li><a href="{% url  prod.id %}" value=""><i class="fa fa-plus-square"></i>view product</a></li></ul></div></div></div></div></div>'
             $("#cart_data").append(item_content);
-            }   
+            } 
+        }}
+        else{
+            $("#cart_data").empty();
+            {item_content=`<p>`+"No product Found"+`</p>`
+            $("#cart_data").append(item_content)}
         }
+        
         }
     });
-                                                
+                                          
 });
 
 

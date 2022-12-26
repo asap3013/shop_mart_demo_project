@@ -76,6 +76,7 @@ def logoutuser(request):
 
 
 def category_filter(request):
+    breakpoint()
     category_id = request.GET.get('category_id')
     request.session['category'] = category_id
     product_id = ProductCategories.objects.filter(category_id=category_id).values('product_id')
@@ -330,6 +331,7 @@ def placeorder(request):
             [user_email],
             fail_silently=False,
             )
+    cart.clear()
     return redirect('G_shopper:home')
 
 @csrf_exempt
@@ -375,6 +377,7 @@ def stripe_order(request):
 
 @csrf_exempt 
 def cashondelivery(request):
+    breakpoint()
     cart = request.session['cartdata'] 
     # user_email = User.objects.first()
     coupon = request.session['coupon_data'] 
@@ -442,7 +445,8 @@ def cashondelivery(request):
     # plain_message = strip_tags(html_message)
     from_email = settings.EMAIL_HOST_USER
     to = [user_email]
-    return redirect(request,'register/home.html')
+    
+    return redirect(request,'home.html')
 
 
 
@@ -496,7 +500,6 @@ class PasswordsChangeView(PasswordChangeView):
 
 # view for password success of user.
 def password_success(request):
-    breakpoint()
     """
     :param request:
     :return: password success page:
