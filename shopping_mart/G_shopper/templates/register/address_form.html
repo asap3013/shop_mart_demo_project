@@ -7,9 +7,11 @@
             <div class="shopper-info">
             </div>
         </div>
+        
+
         <div class="col-sm-5 clearfix">
             <div class="bill-to">
-                <p>Bill To</p>
+                <h1 style="text-align:center;">Add Your Address Here.</h1>
                 <div class="form-one">
                     <form action="" method="post" value="Add Address">
                         {% csrf_token %}
@@ -27,7 +29,8 @@
                         {{ form.state }}
                         <label for="zip_code">zip_code</label>
                         {{ form.zip_code }}
-                        <button type="submit">Add Address</button>    
+                        <button type="submit" class="btn btn-primary">Add Address</button>   
+                        <a href="{% url 'G_shopper:home' %}"><button class="btn btn-primary">Cancel</button></a> 
                     </form>
                 </div>
             </div>

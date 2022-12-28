@@ -138,7 +138,7 @@ class ProductCategoryForm(forms.ModelForm):
 class ProductImagesForm(forms.ModelForm):  
     class Meta:  
         model = ProductImages 
-        fields = ['image_path']
+        fields = ['image_path',]
         # labels = {'banner_path': "banner", "status": "status",}
         # exclude = ('banner_path','status')
 

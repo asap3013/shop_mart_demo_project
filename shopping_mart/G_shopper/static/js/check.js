@@ -65,7 +65,8 @@ $(document).on('click','.order',function () {
         let ship_amt = document.getElementsByClassName('shipamt')[0].innerHTML;
         
         $.ajax({
-            url: '/cod',
+            type: "POST",
+            url: '/cod/',
             data: {
                 'address_id':rate_value,
                 'TOTAL': final_total,
@@ -73,7 +74,7 @@ $(document).on('click','.order',function () {
             },
             dataType: 'json',
             success: function (data) {
-                window.location.href = 'http://127.0.0.1:8000/home'
+                // window.location.href = 'http://127.0.0.1:8000/home'
             }
         });
     }

@@ -25,7 +25,7 @@
                 <thead>
                   <tr>
                     <th>Category Name</th>
-                    <th>parent_id</th>
+                    <!-- <th>parent_id</th> -->
                     <th>Created by</th>
                     <th>Created date</th>
                     <th>modify by</th>
@@ -38,11 +38,11 @@
                   {% for i in obj %}
                   <tr>
                     <td>{{i.name}}</td>
-                    {% if i.parent_id %}
+                    <!-- {% if i.parent_id %}
                     <td>{{i.parent_id}}</td>
-                    {% else %}
-                    <td>-</td>
-                    {% endif %}
+                    {% else %} -->
+                    <!-- <td>-</td>
+                    {% endif %} -->
                     <td>{{i.created_by}}</td>
                     <td>{{i.created_date}}</td>
                     <td>{{i.modify_by}}</td>

@@ -139,7 +139,7 @@
                             <ul class="nav navbar-nav collapse navbar-collapse">
                                 <li><a href="{% url 'G_shopper:home' %}" class="active">Home</a></li>
                                 <!-- <li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a> -->
-                                    <!-- <ul role="menu" class="sub-menu">
+                                <!-- <ul role="menu" class="sub-menu">
                                         <li><a href="shop.html">Products</a></li>
                                         <li><a href="product-details.html">Product Details</a></li>
                                         <li><a href="checkout.html">Checkout</a></li>
@@ -174,16 +174,14 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-12">
-
                     <div id="slider-carousel" class="carousel slide" data-ride="carousel">
                         <ol class="carousel-indicators">
-                            <li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
+                            <!-- <li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
                             <li data-target="#slider-carousel" data-slide-to="1"></li>
-                            <li data-target="#slider-carousel" data-slide-to="2"></li>
+                            <li data-target="#slider-carousel" data-slide-to="2"></li> -->
                         </ol>
-                        {% for ban in form %}
+
                         <div class="carousel-inner">
-                            {% if forloop.first %}
                             <div class="item active">
                                 <div class="col-sm-6">
                                     <h1><span>E</span>-SHOPPER</h1>
@@ -192,8 +190,11 @@
                                         incididunt ut labore et dolore magna aliqua. </p>
                                     <button type="button" class="btn btn-default get">Get it now</button>
                                 </div>
+                                {% for ban in form %}
+                                {% if forloop.first %}
                                 <div class="col-sm-6">
-                                    <img src="{{ban.banner_path.url}}" alt="" />
+                                    <img src="{{ban.banner_path.url}}" />
+                                    <!-- <img src="images/home/pricing.png"  class="pricing" alt="" /> -->
                                 </div>
                             </div>
                             {% else %}
@@ -206,20 +207,22 @@
                                     <button type="button" class="btn btn-default get">Get it now</button>
                                 </div>
                                 <div class="col-sm-6">
-                                    <img src="{{ban.banner_path.url}}" alt="" />
-                                    <!-- <img src="/static/images/home/pricing.png" class="pricing" alt="" /> -->
+                                    <img src="{{ban.banner_path.url}}" />
+                                    <!-- <img src="images/home/pricing.png"  class="pricing" alt="" /> -->
                                 </div>
                             </div>
                             {% endif %}
+                            {% endfor %}
                         </div>
+
                         <a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
                             <i class="fa fa-angle-left"></i>
                         </a>
                         <a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
                             <i class="fa fa-angle-right"></i>
                         </a>
-                        {% endfor %}
                     </div>
+
                 </div>
             </div>
         </div>
@@ -396,9 +399,8 @@
                 <div class="col-sm-9 padding-right" id="cart_data">
                     <div class="features_items" id="like">
                         <h2 class="title text-center">Featured Items</h2>
-                        {% for prod in obj %}
+                        <!-- {% for prod in obj %}
                         <div class="col-sm-4">
-                            <a href="{% url 'G_shopper:product_detail' prod.id %}" value="">
                                 <div class="product-image-wrapper">
                                     <div class="single-products">
                                         <div class="productinfo text-center">
@@ -433,24 +435,60 @@
                                         </div>
                                     </div>
                                 </div>
-                            </a>
                         </div>
-                        {% endfor %}
+                        {% endfor %} -->
+                        {% for prod in obj %}
+                        <div class="col-sm-4">
+                            <div class="product-image-wrapper">
+                                <div class="single-products">
+                                    <div class="productinfo text-center">
+                                        <!-- <img src="images/home/product1.jpg" alt="" /> -->
+                                        <img src="{{prod.productimages_set.first.image_path.url}}" alt="" />
+                                        <input type="hidden" class="product-image-{{prod.id}}"
+                                            value="{{prod.productimages_set.first.image_path.url}}" />
+                                        <th>$ <span class="product-price-{{prod.id}}">{{prod.price}}</span></th>
+                                        <p>{{prod.name}}</p>
+                                        <input type="hidden" class="product_id-{{prod.id}}" value="{{prod.id}}">
+                                        <input type="hidden" class="meta_title-{{prod.id}}" value="{{prod.meta_title}}">
+                                        <button class="btn btn-default add-to-cart" id="{{prod.id}}"><i
+                                                class="fa fa-shopping-cart addcart"></i>Add to cart</button>
+                                    </div>
+                                    <div class="product-overlay">
+                                        <div class="overlay-content">
+                                            <h2>Rs{{prod.price}}</h2>
+                                            <p>{{prod.name}}</p>
+                                            <button class="btn btn-default add-to-cart" id="{{prod.id}}"><i
+                                                    class="fa fa-shopping-cart addcart"></i>Add to cart</button>
+                                            <div class="cart_quantity_button submitWidget submitWidget-{{prod.id}}">
+                                                <input type="button" onclick="decrementValue('{{prod.id}}')"
+                                                    value=" - " />
+                                                <input type="text" id="product-qty-{{prod.id}}" name="quantity"
+                                                    value="1" maxlength="2" max="10" size="1" readonly />
+                                                <input type="button" onclick="incrementValue('{{prod.id}}')"
+                                                    value="+" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="choose">
+                                    {% if user.is_authenticated %}
+                                    <ul class="nav nav-pills nav-justified">
+                                        <li><button class="btn btn-default add-wishlist" data-product="{{prod.id}}">
+                                                Add to wishlist</button></li>
+                                        {% else %}
+                                        <li><button class="btn btn-default disabled" data-product="{{prod.id}}">
+                                                Add to wishlist</button></li>
+                                    </ul>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>{% endfor %}
                     </div>
                 </div>
             </div>
         </div>
-    </section><br>
-
-
-
-    <!-- </div>
-                </div>
-            </div>
-        </div>
-        </div>
-    </section> -->
-
+    </section>
+    <br>
     {% block content %}
 
     {% endblock %}

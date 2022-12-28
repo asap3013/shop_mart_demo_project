@@ -119,6 +119,8 @@ class EditBanner(View):
         fm = BannersForm(request.POST, request.FILES, instance=ban)
         if fm.is_valid():
             fm.save()
+        # else:
+        #     messages.error(request,'Invalid format Uploads')
             return redirect('customAdminPanel:banner')
 
 
@@ -553,6 +555,7 @@ def product_check(request):
 
 class DeleteProduct(View):
     def post(self, request):
+        import pdb;pdb.set_trace()
         data = request.POST
         id = data.get('id')
         fm = Product.objects.get(id=id)
@@ -573,15 +576,20 @@ class EditProduct(View):
 
     def post(self, request, id):
         prod = Product.objects.get(id=id)
-        prod1 = ProductImages.objects.get(product_id=id)
-        prod2 = ProductAttributesAssoc.objects.get(product_id=id)
+        prod1 = ProductImages.objects.filter(product_id=id)
+        prod2 = ProductAttributesAssoc.objects.filter(product_id=id)
         fm = ProductForm(request.POST,instance=prod)
-        fn = ProductImagesForm(request.POST, request.FILES, instance=prod1)
-        fo = ProductAttributesAssocForm(request.POST, instance=prod2)
-        if fm.is_valid() and fn.is_valid() and fo.is_valid() :
-            fm.save()
+        for image in prod1:
+            fn = ProductImagesForm(request.POST, request.FILES, instance=image)
             fn.save()
+        for attribute in prod2:
+            fo = ProductAttributesAssocForm(request.POST, instance=attribute)
             fo.save()
+        if fm.is_valid():
+        # if fm.is_valid() and fn.is_valid() and fo.is_valid() :
+            fm.save()
+            # fn.save()
+            # fo.save()
         fz = Product.objects.all()
         context = {'obj': fz}
         return render(request, "product.html",context)
@@ -998,7 +1006,7 @@ def userOrder_check(request):
     return render(request, "userOrder.html", context)
 
 class DeleteUserOrder(View):
-    def post(self, request):
+    def post(self, request): 
         data = request.POST
         id = data.get('id')
         fm = UserOrder.objects.get(id=id)

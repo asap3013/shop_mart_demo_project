@@ -74,9 +74,9 @@ def logoutuser(request):
     obj = UserRegistraionForm()
     return render(request, 'register/register_form.html', {'form': obj})
 
-
+@csrf_exempt
+@login_required(redirect_field_name='register', login_url='/registration')
 def category_filter(request):
-    breakpoint()
     category_id = request.GET.get('category_id')
     request.session['category'] = category_id
     product_id = ProductCategories.objects.filter(category_id=category_id).values('product_id')
@@ -85,6 +85,8 @@ def category_filter(request):
 
     return JsonResponse({'product':list(product),'product_img':list(product_img)})
 
+@csrf_exempt
+@login_required(redirect_field_name='register', login_url='/registration')
 def price_filter(request):
     min_value = request.GET.get('min_price') 
     max_value = request.GET.get('max_price')
@@ -117,7 +119,6 @@ def price_filter(request):
 
 class UserRegister(View):
     def get(self, request):
-        
         obj = UserRegistraionForm()
         return render(request, "register/register_form.html", {'form': obj})
 
@@ -136,8 +137,12 @@ class UserRegister(View):
             messages.success(request, "User Register Successfully")
             return redirect('G_shopper:home')
         else:
+            messages.error("invalid Credientials")
             return render(request, "register/register_form.html", {'form': obj})
 
+
+@csrf_exempt
+@login_required(redirect_field_name='register', login_url='/registration')
 #Add to cart
 def add_cart(request):
     cart_p = {}
@@ -162,7 +167,8 @@ def add_cart(request):
         request.session['cartdata'] = cart_p
     return JsonResponse({'data': request.session['cartdata'], 'totalitems': len(request.session['cartdata'])})
 
-
+@csrf_exempt
+@login_required(redirect_field_name='register', login_url='/registration')
 def cart_list(request):
     total_amt = 0
 
@@ -174,22 +180,25 @@ def cart_list(request):
     else:
         return render(request, 'cart.html', {'cart_data': '', 'totalitems': 0, 'total_amt': total_amt})
 
-
+@csrf_exempt
+@login_required(redirect_field_name='register', login_url='/registration')
 def delete_cart_item(request):
     prod_id = str(request.GET['id'])
+    p_qty = request.GET['qty']
     if 'cartdata' in request.session:
         if prod_id in request.session['cartdata']:
             cart_data = request.session['cartdata']
-            del request.session['cartdata'][prod_id]
+            cart_data[str(request.GET['id'])]['qty'] = p_qty
+            # del request.session['cartdata'][prod_id]
             request.session['cartdata'] = cart_data
     total_amt = 0
     for prod_id, item in request.session['cartdata'].items():
         total_amt += int(item['qty'])*float(item['price'])
-    t = render_to_string('cart.html', {'cart_data': request.session['cartdata'], 'totalitems': len(
-        request.session['cartdata']), 'total_amt': total_amt})
-    return JsonResponse({'data': t, 'totalitems': len(request.session['cartdata'])})
+    context = {'total_amt': total_amt}
+    return JsonResponse({'data': context, 'totalitems': len(request.session['cartdata'])})
 
-
+@csrf_exempt
+@login_required(redirect_field_name='register', login_url='/registration')
 def update_cart_item(request):
     p_id = str(request.GET['id'])
     p_qty = request.GET['qty']
@@ -201,11 +210,11 @@ def update_cart_item(request):
     total_amt = 0
     for p_id, item in request.session['cartdata'].items():
         total_amt += int(item['qty'])*float(item['price'])
-    t = render_to_string('cart.html', {'cart_data': request.session['cartdata'], 'totalitems': len(
-        request.session['cartdata']), 'total_amt': total_amt})
-    return JsonResponse({'data': t, 'totalitems': len(request.session['cartdata'])})
+    context = {'total_amt': total_amt}
+    return JsonResponse({'data': context, 'totalitems': len(request.session['cartdata'])})
 
-
+@csrf_exempt
+@login_required(redirect_field_name='register', login_url='/registration')
 # Wishlist
 def add_wishlist(request):
     pid = request.GET['product']
@@ -226,6 +235,8 @@ def add_wishlist(request):
         }
     return JsonResponse(data)
 
+@csrf_exempt
+@login_required(redirect_field_name='register', login_url='/registration')
 def my_wishlist(request):
     wlist = UserWishList.objects.filter(user_id=request.user.id).order_by('id')
     return render(request, 'wishlist.html', {'wlist': wlist})
@@ -236,10 +247,15 @@ def my_wishlist(request):
 #     UserWishList.delete()
 #     return HttpResponseRedirect('/my-wishlist')
 
+@csrf_exempt
+@login_required(redirect_field_name='register', login_url='/registration')
 def product_detail(request,product_id):
     product = Product.objects.get(id=product_id)
     return render(request,'productDetails.html',{'product':product})
 
+
+@csrf_exempt
+@login_required(redirect_field_name='register', login_url='/registration')
 def couponcalculate(request):
     data={
         'id':'',
@@ -256,7 +272,8 @@ def couponcalculate(request):
             request.session['coupon_data']=data
     return JsonResponse(data,safe=False)
 
-
+@csrf_exempt
+@login_required(redirect_field_name='register', login_url='/registration')
 def checkout(request):
     address = UserAddress.objects.all()
     # request.session['address'] = address
@@ -281,7 +298,8 @@ class Add_address(View):
             return redirect('G_shopper:addcart')
         else:
             return render(request, "register/address_form.html", {'form': obj})
-
+@csrf_exempt
+@login_required(redirect_field_name='register', login_url='/registration')
 @csrf_exempt  
 def placeorder(request):
     cart = request.session['cartdata'] 
@@ -335,6 +353,8 @@ def placeorder(request):
     return redirect('G_shopper:home')
 
 @csrf_exempt
+@login_required(redirect_field_name='register', login_url='/registration')
+@csrf_exempt
 def stripe_order(request):
     cart = request.session['cartdata'] 
     coupon = request.session['coupon_data'] 
@@ -342,8 +362,6 @@ def stripe_order(request):
     address_id = json_data.get('address_id')
     request.session['address_id'] = address_id
     total = float(json_data.get('total'))
-    print(total)
-    print(type(total))
     request.session['final_total'] = total
     final_total = request.session['final_total']
     ship_amount = json_data.get('ship_amount')
@@ -375,16 +393,17 @@ def stripe_order(request):
     
     return JsonResponse(checkout_session.url,safe=False)
 
-@csrf_exempt 
+
+@csrf_exempt
+@login_required(redirect_field_name='register', login_url='/registration')
 def cashondelivery(request):
-    breakpoint()
     cart = request.session['cartdata'] 
     # user_email = User.objects.first()
     coupon = request.session['coupon_data'] 
-    address_id = request.GET.get('address_id')
+    address_id = request.POST.get('address_id')
     address = UserAddress.objects.get(pk=address_id)
-    final_amount = request.GET.get('TOTAL')
-    ship_amount = request.GET.get('ship_amt')
+    final_amount = request.POST.get('TOTAL')
+    ship_amount = request.POST.get('ship_amt')
 
     order = UserOrder(
             user_id = request.user,
@@ -445,12 +464,13 @@ def cashondelivery(request):
     # plain_message = strip_tags(html_message)
     from_email = settings.EMAIL_HOST_USER
     to = [user_email]
-    
-    return redirect(request,'home.html')
+    request.session['cartdata'].clear()
+    return redirect('G_shopper:home')
 
 
 
-
+@csrf_exempt
+@login_required(redirect_field_name='register', login_url='/registration')
 def tracking_order(request):
     email_id = request.POST.get('email')
     order_id = request.POST.get('order_id')
@@ -466,8 +486,10 @@ def tracking_order(request):
     return render(request,'track_order.html')
 
 
+@csrf_exempt
+@login_required(redirect_field_name='register', login_url='/registration')
 def contact_us(request):
-    if request.method == "POST":
+    if request.method == "GET":
         form = ContactForm()
     else:
         form = ContactForm(request.POST)
@@ -480,19 +502,26 @@ def contact_us(request):
                 send_mail('Feedback',message, email, ["abhisheksapkal1316@gmail.com"],fail_silently=False)
             except BadHeaderError:
                 return HttpResponse(" found.")
-        return redirect(request,'contact_us.html')
-    return render(request,"contact_us.html",{"form": form})
+        return redirect('G_shopper:contact')
+    return render(request,"contact_us.html",{})
 
+@csrf_exempt
+@login_required(redirect_field_name='register', login_url='/registration')
 def my_order(request):
     order_data = OrderDetails.objects.all()
     context={'order_data':order_data}
     return render(request,'my_order.html',context)
 
+
+@csrf_exempt
+@login_required(redirect_field_name='register', login_url='/registration')
 def my_account(request):
     username = request.user.username
     user_email = request.user.email
     context = {'users':username,'user_email':user_email}
     return render(request,'my_account.html',context)
+
+
 
 class PasswordsChangeView(PasswordChangeView):
     form_class = PasswordChangingForm

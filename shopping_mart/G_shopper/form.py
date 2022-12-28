@@ -1,4 +1,5 @@
 from django import forms
+from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import PasswordChangeForm
 from customAdminPanel.models import *
@@ -16,30 +17,42 @@ class PasswordChangingForm(PasswordChangeForm):
 
 class UserRegistraionForm(forms.ModelForm):  
     first_name = forms.CharField(label='First Name', min_length=5, max_length=150)  
-    last_name = forms.CharField(label='Last Name', min_length=5, max_length=150) 
-    username = forms.CharField(label='UserName', min_length=5, max_length=150)   
-    email = forms.EmailField(label='Email Address')  
+    last_name = forms.CharField(label='Last Name', min_length=5, max_length=150)   
+    email = models.EmailField(max_length=254, blank=False, unique=True, validators=[validate_email])
+    username = forms.CharField(label='UserName', min_length=5, max_length=150) 
     mobile_no = forms.IntegerField(label='Mobile Number')
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)  
     password2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput) 
 
     class Meta:
         model = User
-        fields = ["first_name", "last_name", "username", "email", "mobile_no", "password1","password2"]
+        fields = ["first_name", "last_name", "email",'username', "mobile_no", "password1","password2"]
 
+
+    # def email_clean(self):
+    #     email = self.cleaned_data.get('email')
+    #     if email and User.objects.filter(email=email):
+    #         raise forms.ValidationError('This email address is already in use. Please supply a different email address.')
+    #     return email
+  
+    def email_clean(self):  
+        breakpoint()
+        email = self.cleaned_data['email'].lower()  
+        new = User.objects.filter(email=email)
+        if new.count():  
+            raise forms.ValidationError(" Email Already Exist")  
+        return email  
+    # def clean_email(self):
+    #         email = self.cleaned_data.get('email')
+    #         if email in User.objects.all():
+    #             raise forms.ValidationError("This email is already register")
+    #         return email
     def username_clean(self):  
         username = self.cleaned_data['username'].lower()  
         new = User.objects.filter(username = username)  
         if new.count():  
             raise ValidationError("User Already Exist")  
         return username  
-  
-    def email_clean(self):  
-        email = self.cleaned_data['email'].lower()  
-        new = User.objects.filter(email=email)  
-        if new.count():  
-            raise ValidationError(" Email Already Exist")  
-        return email  
 
     def mobile_no_clean(self):
         mobile_no = self.cleaned_data['mobile_no']

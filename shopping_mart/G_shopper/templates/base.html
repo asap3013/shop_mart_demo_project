@@ -86,10 +86,17 @@
 					<div class="col-sm-8">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
-								<!-- <li><a href="#"><i class="fa fa-user"></i> Account</a></li>
-								<li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li> -->
-								<!-- <li><a href="{% url 'G_shopper:checkout' %}"><i class="fa fa-crosshairs"></i> Checkout</a></li> -->
-								<!-- <li><a href="{% url 'G_shopper:cart' %}"><i class="fa fa-shopping-cart"></i> Cart({{totalitems}})</a></li> -->
+								<li><a href="{% url 'G_shopper:my_account' %}"><i class="fa fa-user"></i> My Account</a>
+                                </li>
+                                <li><a href="{% url 'G_shopper:my_order' %}"><i class="fa fa-user"></i> My Order</a>
+                                </li>
+                                <li><a href="{% url 'G_shopper:my_wishlist' %}"><i class="fa fa-star"></i> Wishlist</a>
+                                </li>
+                                <!-- <li><a href="{% url 'G_shopper:checkout' %}"><i class="fa fa-crosshairs"></i>
+                                        Checkout</a></li> -->
+                                <li><a href="{% url 'G_shopper:addcart' %}"><i class="fa fa-shopping-cart"></i>
+                                        Cart(<span class="cart-list">{{request.session.cartdata|length}}</span>)</a>
+                                </li>
 								<!-- <li><a href=""><i class="fa fa-lock"></i> log in</a></li> -->
 							</ul>
 						</div>
@@ -282,14 +289,14 @@
 						</div>
 					</div>
 					<div class="col-sm-3 col-sm-offset-1">
-						<div class="single-widget">
+						<!-- <div class="single-widget">
 							<h2>About Shopper</h2>
 							<form action="#" class="searchform">
 								<input type="text" placeholder="Your email address" />
 								<button type="submit" class="btn btn-default"><i class="fa fa-arrow-circle-o-right"></i></button>
 								<p>Get the most recent updates from <br />our site and be updated your self...</p>
 							</form>
-						</div>
+						</div> -->
 					</div>
 					
 				</div>

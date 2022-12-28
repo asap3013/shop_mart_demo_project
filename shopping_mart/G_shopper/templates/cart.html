@@ -25,14 +25,14 @@
 				<td>
 					<div class="cart_quantity_button">
 						<div class="cart_quantity_button">
-							<!-- <input type="button"  onclick="decrementValue('{{prod.id}}')" value=" - " /> -->
-							<input type="text" id="product-qty-{{prod.id}}" name="quantity" value="{{item.qty}}" maxlength="2" max="10" size="1" readonly/>
-							<!-- <input type="button" onclick="incrementValue('{{prod.id}}')" value="+" /> -->
+							<input type="button"  onclick="decrementValue('{{product_id}}')" value=" - " />
+							<input type="text" id="product-qty-{{product_id}}" name="quantity" value="{{item.qty}}" maxlength="2" max="10" size="1" readonly/>
+							<input type="button" onclick="incrementValue('{{product_id}}')" value="+" />
 						</div>
 					</div>
 				</td>
-				<td>$ {{item.price}}</td>
-				<td>$ {% widthratio item.price 1 item.qty %}</td>
+				<td >$ {{item.price}}</td>
+				<td class="price">$ {% widthratio item.price 1 item.qty %}</td>
 			</tr>
 			{% endfor %}
 		</tbody>
@@ -40,7 +40,7 @@
 			<tr>
 				<td colspan="2"></td>
 				<th>Total</th>
-				<th>Rs. {{total_amt}}</th>
+				<th class="price">Rs. {{total_amt}}</th>
 				{% if totalitems %}
 				<tr>
 					<!-- <td colspan="4">
@@ -87,7 +87,7 @@
 				<div class="col-sm-6">
 					<div class="total_area coupon">
 						<ul>
-							<li>Cart Sub Total <span id="prd_amt">{{total_amt}}</span></li>
+							<li >Cart Sub Total <span id="prd_amt" class="price">{{total_amt}}</span></li>
 							{% if total_amt > 500 %}
 							<li>Shipping Cost <span id="zero">0</span></li>
 							{% else %}
@@ -96,7 +96,7 @@
 							<li id="dist">Discount<span id="msg"></span></li>
 
 							<form action="checkout.html" method="POST">
-							<li>Total <span id="ftotal" name="ftotal" >{{total_amt}}</span></li>
+							<li>Total <span id="ftotal" name="ftotal" class="price" >{{total_amt}}</span></li>
 						
 							
 						</ul>
