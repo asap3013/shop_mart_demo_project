@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<h1 style="text-align:center;">My Order's</h1> <br>
 <div class="content-wrapper">
     <section class="content">
         <div class="container-fluid">
@@ -9,10 +9,7 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="col-sm-12">
-                            <ol class="breadcrumb float-sm-right">
-                                <!-- <li class="breadcrumb-item"><a href="#">Home</a></li> -->
-                                <li class="breadcrumb-item active">My Order</li>
-                            </ol>
+                          
                         </div>
                         <!-- <form action="{% url 'customAdminPanel:userOrder_form' %}">
                             <button  type="submit" class="btn btn-primary btn-block">Sign Out</button>
@@ -25,6 +22,7 @@
                                 <tr>
                                   <!-- <th>id</th> -->
                                   <th>order_id</th>
+                                  <th>Image</th>
                                   <th>Product Name</th>
                                   <th>Product Price</th>
                                   <th>Quantity</th>
@@ -37,13 +35,13 @@
                                 <tr>
                                   <!-- <td>{{i.id}}</td> -->
                                   <td>{{i.order_id}}</td>
+                                  
+                                  <td><img src="{{ i.image_path.url }}" style="height: 30px" width="30px" alt=""></td>
+                                  
                                   <td>{{i.product_id}}</td> 
                                   <td>{{i.amount}}</td>
                                   <td>{{i.quantity}}</td>
-                                  <!-- <td>
-                                    <a href="{% url 'customAdminPanel:Edit_userOrder' i.id %}"><button class="btn btn-default btn-sm"><i
-                                          class="fas fa-edit"></i></button></a>
-                                  </td> -->
+                                  
 
                                   <!-- <td>
                                     <button type="submit" value="Delete" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deletemodal">

@@ -445,8 +445,19 @@ class OrderDetailField(LoginRequiredMixin, View):
 
 @login_required(redirect_field_name='login', login_url='/adminpanel/login')
 def orderDetail_check(request):
-    fm = OrderDetails.objects.all()
-    context = {'form': fm}
+    order_data = OrderDetails.objects.all()
+    image=ProductImages.objects.filter(product_id=order_data[0].product_id_id)
+    c=[]
+    d = {}
+    for i in order_data:
+        d['order_id']=i.order_id
+        d['product_id']=i.product_id
+        d['quantity']=i.quantity
+        d['amount']=i.amount
+        d['image_path']=ProductImages.objects.filter(product_id=i.product_id_id).first().image_path
+        c.append(d)
+        d={}
+    context={'order_data':c}
     return render(request, "orderDetail.html", context)
 
 

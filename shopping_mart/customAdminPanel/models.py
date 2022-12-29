@@ -333,7 +333,7 @@ class UserOrder(models.Model):
     status = models.CharField(max_length=255, choices=CHOICES, default=OUT_FOR_DELIVERY)
     grand_total = models.FloatField()
     shipping_charges = models.FloatField()
-    coupon_id = models.ForeignKey(Coupon,on_delete=models.CASCADE)
+    coupon_id = models.ForeignKey(Coupon,null=True,on_delete=models.CASCADE)
     billing_address_1 = models.CharField(max_length=100)
     billing_address_2 = models.CharField(max_length=100)
     billing_city = models.CharField(max_length=100)

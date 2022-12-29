@@ -24,6 +24,7 @@
                               <thead>
                                 <tr>
                                   <th>order_id</th>
+                                  <th>Product Image</th>
                                   <th>quantity</th>
                                   <th>amount</th>
 
@@ -31,16 +32,16 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                {% for i in form %}
+                                {% for i in order_data %}
                                 <tr>
                                   <!-- <td>{{ban.id}}</td> -->
                                   <td>{{i.order_id}}</td>
+                                  <td><img src="{{ i.image_path.url }}" style="height: 30px" width="30px" alt=""></td>
                                   <td>{{i.quantity}}</td>
                                   <td>{{i.amount}}</td> 
                                   <!-- <td>{{i.coupon_id}}</td>  -->
                                   <!-- <td>
-                                    <a href="{% url 'customAdminPanel:Edit_userOrder' i.id %}"><button class="btn btn-default btn-sm"><i
-                                          class="fas fa-edit"></i></button></a>
+                                    
                                   </td>
 
                                   <td>

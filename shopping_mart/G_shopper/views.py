@@ -423,6 +423,7 @@ def stripe_order(request):
 @csrf_exempt
 @login_required(redirect_field_name='register', login_url='/registration')
 def cashondelivery(request):
+    breakpoint()
     cart = request.session['cartdata'] 
     # user_email = User.objects.first()
     coupon = request.session['coupon_data'] 
@@ -535,7 +536,18 @@ def contact_us(request):
 @login_required(redirect_field_name='register', login_url='/registration')
 def my_order(request):
     order_data = OrderDetails.objects.all()
-    context={'order_data':order_data}
+    image=ProductImages.objects.filter(product_id=order_data[0].product_id_id)
+    c=[]
+    d = {}
+    for i in order_data:
+        d['order_id']=i.order_id
+        d['product_id']=i.product_id
+        d['quantity']=i.quantity
+        d['amount']=i.amount
+        d['image_path']=ProductImages.objects.filter(product_id=i.product_id_id).first().image_path
+        c.append(d)
+        d={}
+    context={'order_data':c}
     return render(request,'my_order.html',context)
 
 
