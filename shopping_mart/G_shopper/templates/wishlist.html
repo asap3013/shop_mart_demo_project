@@ -10,7 +10,7 @@
                 <th>Title</th>
                 <th>Image</th>
                 <th>Price</th>
-                <!-- <th>Action</th> -->
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -22,14 +22,55 @@
                         alt="{{wl.product_id.title}}">
                 </td>
                 <td>{{wl.product_id.price}}</td>
-                <!-- <td>
-                    <input type="button"  onclick="decrementValue('{{wl.id}}')" value="Remove"/>
-
-                </td> -->
+                
+                <!-- <input type="button"  onclick="decrementValue('{{product_id}}')" value="Remove"/> -->
+                <!-- <td><button onclick="deleteWishlist('{{product_id}}')"> <i class="fa fa-trash-o" style="font-size:20px;color:red"></i></button></td> -->
+                <td>
+                    <button type="submit" value="Delete" class="btn btn-danger btn-sm" data-toggle="modal"
+                      data-target="#deletemodal">
+                      Delete
+                    </button>
+                    <div class="modal fade" id="deletemodal">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h4 class="modal-title">Delete</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <form action="{% url 'G_shopper:DeleteWishlist' %}" method="POST">
+                            {% csrf_token %}
+                            <div class="modal6-body">
+                              <input type="hidden" name="id" value={{wl.product_id.id}}>
+                              <h4>Do you want to delete this data??</h4>
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                              <button type="submit" class="btn btn-danger">Ok
+                              </button>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                    </form>
+                  </td>
+                
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </main>
 
+{% endblock %}
+
+
+{% block script %}
+
+<script>
+function deleteWishlist(product_id){
+
+
+}
+</script>
 {% endblock %}

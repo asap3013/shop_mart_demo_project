@@ -235,6 +235,15 @@ def add_wishlist(request):
         }
     return JsonResponse(data)
 
+class DeleteWishlist(View):
+    def post(self, request):
+        breakpoint()
+        data = request.POST
+        id = data.get('id')
+        fm = UserWishList.objects.get(product_id=id)
+        fm.delete()
+        return redirect('G_shopper:my_wishlist')
+
 @csrf_exempt
 @login_required(redirect_field_name='register', login_url='/registration')
 def my_wishlist(request):

@@ -19,6 +19,7 @@ urlpatterns = [
     path('updatecart/',views.update_cart_item,name='update-cart'),
     path('add-wishlist/',views.add_wishlist, name='add_wishlist'),
     path('my-wishlist/',views.my_wishlist, name='my_wishlist'),
+    path("delete/",views.DeleteWishlist.as_view(),name="DeleteWishlist"),
     path('product/<int:product_id>',views.product_detail, name='product_detail'),
     path('coupon/',views.couponcalculate, name='couponcal'),
     path('checkout/',views.checkout,name='checkout'),

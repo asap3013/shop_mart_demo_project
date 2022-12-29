@@ -188,7 +188,7 @@
                                     <h2>Free E-Commerce Template</h2>
                                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
                                         incididunt ut labore et dolore magna aliqua. </p>
-                                    <button type="button" class="btn btn-default get">Get it now</button>
+                                    <!-- <button type="button" class="btn btn-default get">Get it now</button> -->
                                 </div>
                                 {% for ban in form %}
                                 {% if forloop.first %}
@@ -204,7 +204,7 @@
                                     <h2>100% Responsive Design</h2>
                                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
                                         incididunt ut labore et dolore magna aliqua. </p>
-                                    <button type="button" class="btn btn-default get">Get it now</button>
+                                    <!-- <button type="button" class="btn btn-default get">Get it now</button> -->
                                 </div>
                                 <div class="col-sm-6">
                                     <img src="{{ban.banner_path.url}}" />
@@ -446,7 +446,7 @@
                                         <img src="{{prod.productimages_set.first.image_path.url}}" alt="" />
                                         <input type="hidden" class="product-image-{{prod.id}}"
                                             value="{{prod.productimages_set.first.image_path.url}}" />
-                                        <th>$ <span class="product-price-{{prod.id}}">{{prod.price}}</span></th>
+                                        <th>Rs <span class="product-price-{{prod.id}}">{{prod.price}}</span></th>
                                         <p>{{prod.name}}</p>
                                         <input type="hidden" class="product_id-{{prod.id}}" value="{{prod.id}}">
                                         <input type="hidden" class="meta_title-{{prod.id}}" value="{{prod.meta_title}}">

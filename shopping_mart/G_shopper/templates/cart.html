@@ -12,6 +12,7 @@
 				<th>Qty</th>
 				<th>Price</th>
 				<th>Total</th>
+				<th>Remove</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -25,14 +26,15 @@
 				<td>
 					<div class="cart_quantity_button">
 						<div class="cart_quantity_button">
-							<input type="button"  onclick="decrementValue('{{product_id}}')" value=" - " />
-							<input type="text" id="product-qty-{{product_id}}" name="quantity" value="{{item.qty}}" maxlength="2" max="10" size="1" readonly/>
+							<input type="button" minlength="1"  onclick="decrementValue('{{product_id}}')" value=" - " />
+							<input type="text" id="product-qty-{{product_id}}" name="quantity" value="{{item.qty}}" minlength="1" maxlength="2" max="10" size="1" readonly/>
 							<input type="button" onclick="incrementValue('{{product_id}}')" value="+" />
 						</div>
 					</div>
 				</td>
 				<td >$ {{item.price}}</td>
 				<td class="price">$ {% widthratio item.price 1 item.qty %}</td>
+				<td><button> <i class="fa fa-trash-o" style="font-size:20px;color:red"></i></button></td>
 			</tr>
 			{% endfor %}
 		</tbody>
