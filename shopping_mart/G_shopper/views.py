@@ -2,7 +2,7 @@ from multiprocessing import context
 from unicodedata import category
 import json
 from django.shortcuts import render
-from django.core.mail import send_mail ,BadHeaderError
+from django.core.mail import send_mail, BadHeaderError
 from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
@@ -10,7 +10,7 @@ from django.contrib import messages
 from .form import *
 from django.shortcuts import render, redirect
 from customAdminPanel.models import *
-from django.http import HttpResponse,JsonResponse 
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import login, logout
 from django.template.loader import render_to_string
 from django.contrib.auth.views import PasswordChangeView
@@ -43,7 +43,6 @@ def userLogin(request):
         if username and password:
             user = authenticate(request, username=username, password=password)
 
-
             if user is not None:
                 login(request, user)
                 return redirect('G_shopper:home')
@@ -52,27 +51,29 @@ def userLogin(request):
         else:
             messages.error(request, 'Please enter correct credentials')
     obj = UserRegistraionForm()
-    return render(request, "register/register_form.html", {'form': obj})
+    return render(request, "register/login.html", {'form': obj})
 
 # def base_page(request):
 #     return render(request, 'base.html', {})
 
+
 @csrf_exempt
-@login_required(redirect_field_name='register', login_url='/registration')
+@login_required(redirect_field_name='login', login_url='/login')
 def home_page(request):
     banners = Banners.objects.all()
-    total_data=Product.objects.count()
+    total_data = Product.objects.count()
     products = Product.objects.all().order_by('id')[:3]
     category = Category.objects.all()
     prodcat = ProductCategories.objects.all()
-    context={'form':banners,'obj':products,'total_data':total_data,'cat':category,'prodcat':prodcat}
-    return render(request, 'register/home.html',context)
+    context = {'form': banners, 'obj': products,
+               'total_data': total_data, 'cat': category, 'prodcat': prodcat}
+    return render(request, 'register/home.html', context)
 
 
 # def load_more_data(request):
 #         offset=int(request.GET['offset'])
 #         limit=int(request.GET['limit'])
-        
+
 #         data=Product.objects.all().order_by('-id')[offset:offset+limit]
 #         t=render_to_string('register/products_list.html',{'data':data})
 #         return JsonResponse({'data':t}
@@ -81,28 +82,34 @@ def home_page(request):
 def logoutuser(request):
     logout(request)
     obj = UserRegistraionForm()
-    return render(request, 'register/register_form.html', {'form': obj})
+    return render(request, 'register/login.html', {'form': obj})
+
 
 @csrf_exempt
-@login_required(redirect_field_name='register', login_url='/registration')
+@login_required(redirect_field_name='login', login_url='/login')
 def category_filter(request):
     category_id = request.GET.get('category_id')
     request.session['category'] = category_id
-    product_id = ProductCategories.objects.filter(category_id=category_id).values('product_id')
-    product = Product.objects.filter(pk = product_id[0]['product_id']).values('name','price')
-    product_img = ProductImages.objects.filter(product_id=product_id[0]['product_id']).values('image_path')
+    product_id = ProductCategories.objects.filter(
+        category_id=category_id).values('product_id')
+    product = Product.objects.filter(
+        pk=product_id[0]['product_id']).values('name', 'price')
+    product_img = ProductImages.objects.filter(
+        product_id=product_id[0]['product_id']).values('image_path')
 
-    return JsonResponse({'product':list(product),'product_img':list(product_img)})
+    return JsonResponse({'product': list(product), 'product_img': list(product_img)})
+
 
 @csrf_exempt
-@login_required(redirect_field_name='register', login_url='/registration')
+@login_required(redirect_field_name='login', login_url='/login')
 def price_filter(request):
-    min_value = request.GET.get('min_price') 
+    min_value = request.GET.get('min_price')
     max_value = request.GET.get('max_price')
     min_price = int(min_value)
     max_price = int(max_value)
-    product = Product.objects.filter(price__gte=min_price, price__lte=max_price).values('id','name','price','productimages')
-    product_img = ProductImages.objects.filter().values('product_id_id','image_path')
+    product = Product.objects.filter(price__gte=min_price, price__lte=max_price).values(
+        'id', 'name', 'price', 'productimages')
+    product_img = ProductImages.objects.filter().values('product_id_id', 'image_path')
     nme = []
     price = []
     image = []
@@ -115,16 +122,16 @@ def price_filter(request):
                     image.append(j['image_path'])
                     continue
     for i in product:
-        if i['name'] not in nme :
+        if i['name'] not in nme:
             nme.append(i['name'])
             continue
     for i in product:
         if i['price'] not in price:
             price.append(i['price'])
             continue
-    prods = [nme,price,image]
-    return JsonResponse({'product':list(prods)})
-    
+    prods = [nme, price, image]
+    return JsonResponse({'product': list(prods)})
+
 
 class UserRegister(View):
     def get(self, request):
@@ -137,11 +144,11 @@ class UserRegister(View):
             obj.save()
             user_mail = obj.__dict__['cleaned_data']['email']
             send_mail(
-            'Thanks for Register',
-            'HEY you are now successfully register in our e-shopper website',
-            settings.EMAIL_HOST_USER,
-            [user_mail],
-            fail_silently=False,
+                'Thanks for Register',
+                'HEY you are now successfully register in our e-shopper website',
+                settings.EMAIL_HOST_USER,
+                [user_mail],
+                fail_silently=False,
             )
             messages.success(request, "User Register Successfully")
             return redirect('G_shopper:home')
@@ -151,8 +158,8 @@ class UserRegister(View):
 
 
 @csrf_exempt
-@login_required(redirect_field_name='register', login_url='/registration')
-#Add to cart
+@login_required(redirect_field_name='login', login_url='/login')
+# Add to cart
 def add_cart(request):
     cart_p = {}
     cart_p[str(request.GET['id'])] = {
@@ -176,8 +183,9 @@ def add_cart(request):
         request.session['cartdata'] = cart_p
     return JsonResponse({'data': request.session['cartdata'], 'totalitems': len(request.session['cartdata'])})
 
+
 @csrf_exempt
-@login_required(redirect_field_name='register', login_url='/registration')
+@login_required(redirect_field_name='login', login_url='/login')
 def cart_list(request):
     total_amt = 0
 
@@ -189,8 +197,9 @@ def cart_list(request):
     else:
         return render(request, 'cart.html', {'cart_data': '', 'totalitems': 0, 'total_amt': total_amt})
 
+
 @csrf_exempt
-@login_required(redirect_field_name='register', login_url='/registration')
+@login_required(redirect_field_name='login', login_url='/login')
 def delete_cart_item(request):
     prod_id = str(request.GET['id'])
     p_qty = request.GET['qty']
@@ -206,8 +215,9 @@ def delete_cart_item(request):
     context = {'total_amt': total_amt}
     return JsonResponse({'data': context, 'totalitems': len(request.session['cartdata'])})
 
+
 @csrf_exempt
-@login_required(redirect_field_name='register', login_url='/registration')
+@login_required(redirect_field_name='login', login_url='/login')
 def update_cart_item(request):
     p_id = str(request.GET['id'])
     p_qty = request.GET['qty']
@@ -222,23 +232,25 @@ def update_cart_item(request):
     context = {'total_amt': total_amt}
     return JsonResponse({'data': context, 'totalitems': len(request.session['cartdata'])})
 
+
 class DeleteCart(View):
     def post(self, request):
         data = request.POST
         id = data.get('id')
-        fm=request.session['cartdata']
+        fm = request.session['cartdata']
         fm.delete()
         return redirect('G_shopper:my_wishlist')
 
 
 @csrf_exempt
-@login_required(redirect_field_name='register', login_url='/registration')
+@login_required(redirect_field_name='login', login_url='/login')
 # Wishlist
 def add_wishlist(request):
     pid = request.GET['product']
     product = Product.objects.get(pk=pid)
     data = {}
-    checkw = UserWishList.objects.filter(product_id=product, user_id=request.user).count()
+    checkw = UserWishList.objects.filter(
+        product_id=product, user_id=request.user).count()
     if checkw > 0:
         data = {
             'bool': False
@@ -253,6 +265,7 @@ def add_wishlist(request):
         }
     return JsonResponse(data)
 
+
 class DeleteWishlist(View):
     def post(self, request):
         data = request.POST
@@ -261,8 +274,9 @@ class DeleteWishlist(View):
         fm.delete()
         return redirect('G_shopper:my_wishlist')
 
+
 @csrf_exempt
-@login_required(redirect_field_name='register', login_url='/registration')
+@login_required(redirect_field_name='login', login_url='/login')
 def my_wishlist(request):
     wlist = UserWishList.objects.filter(user_id=request.user.id).order_by('id')
     return render(request, 'wishlist.html', {'wlist': wlist})
@@ -273,33 +287,35 @@ def my_wishlist(request):
 #     UserWishList.delete()
 #     return HttpResponseRedirect('/my-wishlist')
 
+
 @csrf_exempt
-@login_required(redirect_field_name='register', login_url='/registration')
-def product_detail(request,product_id):
+@login_required(redirect_field_name='login', login_url='/login')
+def product_detail(request, product_id):
     product = Product.objects.get(id=product_id)
-    return render(request,'productDetails.html',{'product':product})
+    return render(request, 'productDetails.html', {'product': product})
 
 
 @csrf_exempt
-@login_required(redirect_field_name='register', login_url='/registration')
+@login_required(redirect_field_name='login', login_url='/login')
 def couponcalculate(request):
-    data={
-        'id':'',
-        'coupon_code':'',
-        'percent_off':'',
+    data = {
+        'id': '',
+        'coupon_code': '',
+        'percent_off': '',
     }
     pid = request.GET['cart_coupon']
-    coupon = Coupon.objects.all().values('pk','code','percent_off')
+    coupon = Coupon.objects.all().values('pk', 'code', 'percent_off')
     for i in coupon:
-        if (i['code']==pid):
-            data['id']=i['pk'] 
-            data['percent_off']=i['percent_off']
-            data['coupon_code']=i['code'] 
-            request.session['coupon_data']=data
-    return JsonResponse(data,safe=False)
+        if (i['code'] == pid):
+            data['id'] = i['pk']
+            data['percent_off'] = i['percent_off']
+            data['coupon_code'] = i['code']
+            request.session['coupon_data'] = data
+    return JsonResponse(data, safe=False)
+
 
 @csrf_exempt
-@login_required(redirect_field_name='register', login_url='/registration')
+@login_required(redirect_field_name='login', login_url='/login')
 def checkout(request):
     address = UserAddress.objects.all()
     # request.session['address'] = address
@@ -307,9 +323,9 @@ def checkout(request):
     if 'cartdata' in request.session:
         for item in request.session['cartdata'].items():
             total_amt += (int(item[1]['qty']))*float(item[1]['price'])
-        return render(request, 'checkout.html', {'cart_data': request.session['cartdata'], 'totalitems': len(request.session['cartdata']), 'total_amt': total_amt,'address':address})
+        return render(request, 'checkout.html', {'cart_data': request.session['cartdata'], 'totalitems': len(request.session['cartdata']), 'total_amt': total_amt, 'address': address})
     else:
-        return render(request, 'checkout.html', {'cart_data': '', 'totalitems': 0, 'total_amt': total_amt,'address':address})
+        return render(request, 'checkout.html', {'cart_data': '', 'totalitems': 0, 'total_amt': total_amt, 'address': address})
 
 
 class Add_address(View):
@@ -318,72 +334,75 @@ class Add_address(View):
         return render(request, "register/address_form.html", {'form': obj})
 
     def post(self, request):
-        obj = Address_form(request.POST,user = request.user)
+        obj = Address_form(request.POST, user=request.user)
         if obj.is_valid():
             obj.save()
             return redirect('G_shopper:addcart')
         else:
             return render(request, "register/address_form.html", {'form': obj})
+
+
 @csrf_exempt
-@login_required(redirect_field_name='register', login_url='/registration')
-@csrf_exempt  
+@login_required(redirect_field_name='login', login_url='/login')
+@csrf_exempt
 def placeorder(request):
-    cart = request.session['cartdata'] 
-    coupon = request.session['coupon_data'] 
+    cart = request.session['cartdata']
+    coupon = request.session['coupon_data']
     address_id = request.session['address_id']
     address = UserAddress.objects.get(pk=address_id)
     final_amount = request.session['final_total']
     ship_amount = request.session['ship_amount']
 
     order = UserOrder(
-            user_id = request.user,
-            transaction_id = random.random()*100000000000000000,
-            shipping_charges = ship_amount,
-            coupon_id_id = coupon['id'],
-            billing_address_1 = address.address_1,
-            billing_address_2 = address.address_2,
-            billing_city = address.city,
-            billing_state = address.state,
-            billing_country = address.country,
-            billing_zipcode = address.zip_code,
-            shipping_address_1 = address.address_1,
-            shipping_address_2 = address.address_2,
-            shipping_city = address.city,
-            shipping_country = address.country,
-            shipping_zipcode = address.zip_code,
-            grand_total = final_amount,
-        )
+        user_id=request.user,
+        transaction_id=random.random()*100000000000000000,
+        shipping_charges=ship_amount,
+        coupon_id_id=coupon['id'],
+        billing_address_1=address.address_1,
+        billing_address_2=address.address_2,
+        billing_city=address.city,
+        billing_state=address.state,
+        billing_country=address.country,
+        billing_zipcode=address.zip_code,
+        shipping_address_1=address.address_1,
+        shipping_address_2=address.address_2,
+        shipping_city=address.city,
+        shipping_country=address.country,
+        shipping_zipcode=address.zip_code,
+        grand_total=final_amount,
+    )
     order.save()
     order_ids = order.id
     if order.save:
         order_id = order_ids
         cart_details = request.session['cartdata']
-        for key,value in cart_details.items():
+        for key, value in cart_details.items():
             print(value)
             order_details = OrderDetails(
-                order_id = order_id,
-                product_id_id = key,
-                amount = cart_details[key]['price'],
-                quantity = cart_details[key]['qty']
+                order_id=order_id,
+                product_id_id=key,
+                amount=cart_details[key]['price'],
+                quantity=cart_details[key]['qty']
             )
             order_details.save()
     user_email = request.user.email
     send_mail(
-            'Thank You for Order',
-            'HEY you are now successfully placed your order in our E-shopper website',
-            settings.EMAIL_HOST_USER,
-            [user_email],
-            fail_silently=False,
-            )
+        'Thank You for Order',
+        'HEY you are now successfully placed your order in our E-shopper website',
+        settings.EMAIL_HOST_USER,
+        [user_email],
+        fail_silently=False,
+    )
     cart.clear()
     return redirect('G_shopper:home')
 
+
 @csrf_exempt
-@login_required(redirect_field_name='register', login_url='/registration')
+@login_required(redirect_field_name='login', login_url='/login')
 @csrf_exempt
 def stripe_order(request):
-    cart = request.session['cartdata'] 
-    coupon = request.session['coupon_data'] 
+    cart = request.session['cartdata']
+    coupon = request.session['coupon_data']
     json_data = json.loads(request.body.decode("utf-8"))
     address_id = json_data.get('address_id')
     request.session['address_id'] = address_id
@@ -395,73 +414,72 @@ def stripe_order(request):
 
     stripe.api_key = "sk_test_51LsPV8SFVCTJbUjWsE8cslsMCnNNp3PUS7mQIoUAzsgKKFaMokZ5rIXaLyiSUSPgOpcZTD02FGjDMgFXOwjrHY7200sqNGxgu1"
     product = stripe.Product.create(name="product")
-    
+
     price = stripe.Price.create(
-            unit_amount_decimal = total * 100 ,
-            currency="INR",
-            product=product.id,
-            )
+        unit_amount_decimal=total * 100,
+        currency="INR",
+        product=product.id,
+    )
     checkout_session = stripe.checkout.Session.create(
-       
+
         line_items=[
             {
-            'price': price.id,
-            'quantity': 1,
-            
+                'price': price.id,
+                'quantity': 1,
+
             },
         ],
-        
+
         mode='payment',
-        
-        success_url= 'http://127.0.0.1:8000' + '/placeorder',
-        cancel_url= 'http://localhost:8000' + '/cancel.html',
-        )
-    
-    return JsonResponse(checkout_session.url,safe=False)
+
+        success_url='http://127.0.0.1:8000' + '/placeorder',
+        cancel_url='http://localhost:8000' + '/cancel.html',
+    )
+
+    return JsonResponse(checkout_session.url, safe=False)
 
 
 @csrf_exempt
-@login_required(redirect_field_name='register', login_url='/registration')
+@login_required(redirect_field_name='login', login_url='/login')
 def cashondelivery(request):
-    breakpoint()
-    cart = request.session['cartdata'] 
+    cart = request.session['cartdata']
     # user_email = User.objects.first()
-    coupon = request.session['coupon_data'] 
+    coupon = request.session['coupon_data']
     address_id = request.POST.get('address_id')
     address = UserAddress.objects.get(pk=address_id)
     final_amount = request.POST.get('TOTAL')
     ship_amount = request.POST.get('ship_amt')
 
     order = UserOrder(
-            user_id = request.user,
-            transaction_id = random.random()*100000000000000000,
-            shipping_charges = ship_amount,
-            coupon_id_id = coupon['id'],
-            billing_address_1 = address.address_1,
-            billing_address_2 = address.address_2,
-            billing_city = address.city,
-            billing_state = address.state,
-            billing_country = address.country,
-            billing_zipcode = address.zip_code,
-            shipping_address_1 = address.address_1,
-            shipping_address_2 = address.address_2,
-            shipping_city = address.city,
-            shipping_country = address.country,
-            shipping_zipcode = address.zip_code,
-            grand_total = final_amount
-        )
+        user_id=request.user,
+        transaction_id=random.random()*100000000000000000,
+        shipping_charges=ship_amount,
+        coupon_id_id=coupon['id'],
+        billing_address_1=address.address_1,
+        billing_address_2=address.address_2,
+        billing_city=address.city,
+        billing_state=address.state,
+        billing_country=address.country,
+        billing_zipcode=address.zip_code,
+        shipping_address_1=address.address_1,
+        shipping_address_2=address.address_2,
+        shipping_city=address.city,
+        shipping_country=address.country,
+        shipping_zipcode=address.zip_code,
+        grand_total=final_amount
+    )
     order.save()
     order_ids = order.id
     if order.save:
         order_id = order_ids
         cart_details = request.session['cartdata']
-        for key,value in cart_details.items():
+        for key, value in cart_details.items():
             print(value)
             order_details = OrderDetails(
-                order_id = order_id,
-                product_id_id = key,
-                amount = cart_details[key]['price'],
-                quantity = cart_details[key]['qty']
+                order_id=order_id,
+                product_id_id=key,
+                amount=cart_details[key]['price'],
+                quantity=cart_details[key]['qty']
             )
 
             order_details.save()
@@ -478,16 +496,17 @@ def cashondelivery(request):
     # )
     # mail.content_subtype = "html"
     # return mail.send()
-    user_email =  request.user.email
+    user_email = request.user.email
     send_mail(
-            'Thank You for Order',
-            'HEY you are now successfully placed your order in our E-shopper website',
-            settings.EMAIL_HOST_USER,
-            [user_email],
-            fail_silently=False,
-            )
+        'Thank You for Order',
+        'HEY you are now successfully placed your order in our E-shopper website',
+        settings.EMAIL_HOST_USER,
+        [user_email],
+        fail_silently=False,
+    )
     subject = 'Thank You for Order'
-    html_message = render_to_string('product_order.html', {'context': 'values'})
+    html_message = render_to_string(
+        'product_order.html', {'context': 'values'})
     # plain_message = strip_tags(html_message)
     from_email = settings.EMAIL_HOST_USER
     to = [user_email]
@@ -495,82 +514,90 @@ def cashondelivery(request):
     return redirect('G_shopper:home')
 
 
-
 @csrf_exempt
-@login_required(redirect_field_name='register', login_url='/registration')
+@login_required(redirect_field_name='login', login_url='/login')
 def tracking_order(request):
     email_id = request.POST.get('email')
     order_id = request.POST.get('order_id')
     # order = int(order_id)
-    user_email =request.user.email
-    user_order = UserOrder.objects.filter(user_id__email=email_id, id=order_id).values('id','status').first()
-    if email_id == user_email and  int(order_id) == user_order['id']:
+    user_email = request.user.email
+    user_order = UserOrder.objects.filter(
+        user_id__email=email_id, id=order_id).values('id', 'status').first()
+    if email_id == user_email and int(order_id) == user_order['id']:
         status = user_order['status']
-        context = {'status':status}
-        return render(request,'order_status.html',context)
+        context = {'status': status}
+        return render(request, 'order_status.html', context)
     else:
         messages.error(request, 'Please enter correct credentials')
-    return render(request,'track_order.html')
+    return render(request, 'track_order.html')
 
 
 @csrf_exempt
-@login_required(redirect_field_name='register', login_url='/registration')
+@login_required(redirect_field_name='login', login_url='/login')
 def contact_us(request):
     if request.method == "GET":
         form = ContactForm()
     else:
         form = ContactForm(request.POST)
         if form.is_valid():
-            name=form.cleaned_data['name']
+            name = form.cleaned_data['name']
             email = form.cleaned_data["email"]
             message = form.cleaned_data['message']
             form.save()
             try:
-                send_mail('Feedback',message, email, ["abhisheksapkal1316@gmail.com"],fail_silently=False)
+                send_mail('Feedback', message, email, [
+                          "abhisheksapkal1316@gmail.com"], fail_silently=False)
             except BadHeaderError:
                 return HttpResponse(" found.")
         return redirect('G_shopper:contact')
-    return render(request,"contact_us.html",{})
+    return render(request, "contact_us.html", {})
+
 
 @csrf_exempt
-@login_required(redirect_field_name='register', login_url='/registration')
+@login_required(redirect_field_name='login', login_url='/login')
 def my_order(request):
     order_data = OrderDetails.objects.all()
-    image=ProductImages.objects.filter(product_id=order_data[0].product_id_id)
-    c=[]
+    image = ProductImages.objects.filter(
+        product_id=order_data[0].product_id_id)
+    c = []
     d = {}
     for i in order_data:
-        d['order_id']=i.order_id
-        d['product_id']=i.product_id
-        d['quantity']=i.quantity
-        d['amount']=i.amount
-        d['image_path']=ProductImages.objects.filter(product_id=i.product_id_id).first().image_path
+        d['order_id'] = i.order_id
+        d['product_id'] = i.product_id
+        d['quantity'] = i.quantity
+        d['amount'] = i.amount
+        d['image_path'] = ProductImages.objects.filter(
+            product_id=i.product_id_id).first().image_path
         c.append(d)
-        d={}
-    context={'order_data':c}
-    return render(request,'my_order.html',context)
+        d = {}
+    context = {'order_data': c}
+    return render(request, 'my_order.html', context)
 
 
 @csrf_exempt
-@login_required(redirect_field_name='register', login_url='/registration')
+@login_required(redirect_field_name='login', login_url='/login')
 def my_account(request):
     username = request.user.username
     user_email = request.user.email
     user_first_name = request.user.first_name
     user_last_name = request.user.last_name
-    context = {'users':username,'user_email':user_email,'first_name':user_first_name,'last_name':user_last_name}
-    return render(request,'my_account.html',context)
+    user_address = UserAddress.objects.all()
+    context = {'users': username, 'user_email': user_email,
+               'first_name': user_first_name, 'last_name': user_last_name, 'address': user_address}
+    return render(request, 'my_account.html', context)
 
 
 def edit_profile(request):
-	msg=None
-	if request.method=='POST':
-		form=Updateuser_form(request.POST,instance=request.user)
-		if form.is_valid():
-			form.save()
-			msg='Data has been saved'
-	form=Updateuser_form(instance=request.user)
-	return render(request, 'update_user.html',{'form':form,'msg':msg})
+    msg = None
+    if request.method == 'POST':
+        form = Updateuser_form(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            msg = 'Data has been saved'
+        else:
+            msg = 'Username already taken'
+    form = Updateuser_form(instance=request.user)
+    return render(request, 'update_user.html', {'form': form, 'msg': msg})
 
 
 class PasswordsChangeView(PasswordChangeView):
@@ -578,9 +605,11 @@ class PasswordsChangeView(PasswordChangeView):
     success_url = reverse_lazy('G_shopper:password_success')
 
 # view for password success of user.
+
+
 def password_success(request):
     """
     :param request:
     :return: password success page:
     """
-    return render(request, 'password_success.html',{})
+    return render(request, 'password_success.html', {})

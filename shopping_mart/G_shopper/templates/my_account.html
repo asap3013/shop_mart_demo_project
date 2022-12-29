@@ -10,7 +10,14 @@
 <h5 align="center">{{users}}</h5>
 <h3 align="center">User_Email</h3>
 <h5 align="center">{{user_email}}</h5>
-<div div class="text-center">
-<a href="{% url 'G_shopper:edit-profile' %}"><button class="btn btn-primary">Update Info</button></a>
+<h3 align="center">User_Address</h3>
+{% for i in address %}
+<div class="text-center">
+    <label for="addressd">{{i.address_1}} {{i.address_2}} {{i.city}} {{i.state}} {{i.zip_code}} </label>
+    <br>
+</div>
+{% endfor %}
+<div class="text-center">
+    <a href="{% url 'G_shopper:edit-profile' %}"><button class="btn btn-primary">Update Info</button></a>
 </div>
 {% endblock %}

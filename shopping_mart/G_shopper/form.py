@@ -36,7 +36,6 @@ class UserRegistraionForm(forms.ModelForm):
     #     return email
   
     def email_clean(self):  
-        breakpoint()
         email = self.cleaned_data['email'].lower()  
         new = User.objects.filter(email=email)
         if new.count():  

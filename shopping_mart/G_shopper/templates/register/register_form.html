@@ -1,76 +1,56 @@
 {% extends 'base.html' %}
 
 {% block content %}
-	
-	<section id="form"><!--form-->
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-4 col-sm-offset-1">
-					<div class="login-form"><!--login form-->
-						<h2>Login to your account</h2>
-						{% for message in messages  %}
-								<b>{{message}}</b>
-							{% endfor %}
-						<form action="{%url 'G_shopper:user_login' %}" method="post" name="Login",value="Login">
-							{% csrf_token %}
-							<label for="usernameLogin" name="Login",value="Login" id="username">username</label>
-							{{ form.username }}
-							<label for="passwordlogin" name="Login",value="Login" id="password1">password</label>
-							{{ form.password1 }}
-							<span>
-								<input type="checkbox" class="checkbox"> 
-								Keep me signed in
-							</span>
-							
-							<button type="submit" class="btn btn-default" name="Login",value="Login">Login</button>
-						</form>
-						<a href="{% url 'G_shopper:password_reset' %}">Forgot Password</a>
-					</div><!--/login form-->
-				</div>
-				<div class="col-sm-1">
-					<h2 class="or">OR</h2>
-				</div>
-				
-				<div class="col-sm-4">
-					<div class="signup-form"><!--sign up form-->
-						<h2>New User Signup!</h2>
-						{% for message in messages  %}
-								{{message}}
-							{% endfor %}
-						<form action="" method="post" name="Register" value="Register">
-							{% csrf_token %}
-							<!-- <input type="text" placeholder="First Name"/> -->
-							<label for="first_name">first_name</label>
-							{{ form.first_name }}
-							<!-- {{ form.errors }} -->
-							<label for="last_name">last_name</label>
-							{{ form.last_name }}
-							<!-- {{ form.errors }} -->
-							<label for="username" name="Register" value="Register">username</label>
-							{{ form.username }}
-							<!-- {{ form.errors }} -->
-							<label for="email">email</label>
-							{{ form.email }}
-							<!-- {{ form.errors }} -->
-							<label for="mobile_no">mobile_no</label>
-							{{ form.mobile_no }}
-							<!-- {{ form.errors }} -->
-							<label for="password1" name="Register" value="Register">password</label>
-							{{ form.password1 }}
-							<!-- {{ form.errors }} -->
-							<label for="password2">confirm password</label>
-							{{ form.password2 }}
 
-							{{ form.errors }}
+<section id="form">
+	<!--form-->
+	<h1 style="text-align:center;">Registration Form....</h1>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-5 col-sm-offset-3">
+				<div class="signup-form">
+					<!--sign up form-->
+					<h2>New User Signup!</h2>
+					{% for message in messages %}
+					{{message}}
+					{% endfor %}
+					<form action="" method="post" name="Register" value="Register">
+						{% csrf_token %}
+						<!-- <input type="text" placeholder="First Name"/> -->
+						<label for="first_name">first_name</label>
+						{{ form.first_name }}
+						<!-- {{ form.errors }} -->
+						<label for="last_name">last_name</label>
+						{{ form.last_name }}
+						<!-- {{ form.errors }} -->
+						<label for="username" name="Register" value="Register">username</label>
+						{{ form.username }}
+						<!-- {{ form.errors }} -->
+						<label for="email">email</label>
+						{{ form.email }}
+						<!-- {{ form.errors }} -->
+						<label for="mobile_no">mobile_no</label>
+						{{ form.mobile_no }}
+						<!-- {{ form.errors }} -->
+						<label for="password1" name="Register" value="Register">password</label>
+						{{ form.password1 }}
+						<!-- {{ form.errors }} -->
+						<label for="password2">confirm password</label>
+						{{ form.password2 }}
 
-							<button type="submit" class="btn btn-default" name="Register" value="Register">Signup</button>
-						</form>
-					</div><!--/sign up form-->
+						{{ form.errors }}
+
+						<button type="submit" class="btn btn-default" name="Register" value="Register">Signup</button>
+					</form>
 				</div>
+				<!--/sign up form-->
+				<br>
+				<label>If already have an account</label>
+				<a href="{% url 'G_shopper:login' %}">Log In</a>
 			</div>
 		</div>
-	</section><!--/form-->
-	
-{% endblock %}
+	</div>
+</section>
+<!--/form-->
 
-	
+{% endblock %}

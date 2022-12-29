@@ -8,7 +8,7 @@ from django.contrib.auth import views as auth_views
 app_name = 'G_shopper'
 
 urlpatterns = [
-    path('userlogin/', views.userLogin, name='user_login'),
+    path('login/', views.userLogin, name='login'),
     # path('',views.base_page,name='base'),
     path('home/',views.home_page,name='home'),
     # path('load-more-data',views.load_more_data,name='load_more_data'),
