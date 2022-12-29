@@ -1,7 +1,7 @@
 from django import forms
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
-from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.forms import PasswordChangeForm , UserChangeForm
 from customAdminPanel.models import *
 
 class PasswordChangingForm(PasswordChangeForm):
@@ -79,6 +79,11 @@ class UserRegistraionForm(forms.ModelForm):
             # password2=self.cleaned_data['password2']
         )  
         return user  
+
+class Updateuser_form(UserChangeForm):
+    class Meta:
+        model = User
+        fields = ["first_name", "last_name", "email",'username']
 
 class Address_form(forms.ModelForm):
     # user_id = forms.CharField(label='user_id')   

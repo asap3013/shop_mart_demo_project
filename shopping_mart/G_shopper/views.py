@@ -61,13 +61,22 @@ def userLogin(request):
 @login_required(redirect_field_name='register', login_url='/registration')
 def home_page(request):
     banners = Banners.objects.all()
-    products = Product.objects.all()
+    total_data=Product.objects.count()
+    products = Product.objects.all().order_by('id')[:3]
     category = Category.objects.all()
     prodcat = ProductCategories.objects.all()
-
-    context={'form':banners,'obj':products,'cat':category,'prodcat':prodcat}
+    context={'form':banners,'obj':products,'total_data':total_data,'cat':category,'prodcat':prodcat}
     return render(request, 'register/home.html',context)
 
+
+# def load_more_data(request):
+#         offset=int(request.GET['offset'])
+#         limit=int(request.GET['limit'])
+        
+#         data=Product.objects.all().order_by('-id')[offset:offset+limit]
+#         t=render_to_string('register/products_list.html',{'data':data})
+#         return JsonResponse({'data':t}
+# )
 
 def logoutuser(request):
     logout(request)
@@ -213,6 +222,15 @@ def update_cart_item(request):
     context = {'total_amt': total_amt}
     return JsonResponse({'data': context, 'totalitems': len(request.session['cartdata'])})
 
+class DeleteCart(View):
+    def post(self, request):
+        data = request.POST
+        id = data.get('id')
+        fm=request.session['cartdata']
+        fm.delete()
+        return redirect('G_shopper:my_wishlist')
+
+
 @csrf_exempt
 @login_required(redirect_field_name='register', login_url='/registration')
 # Wishlist
@@ -237,7 +255,6 @@ def add_wishlist(request):
 
 class DeleteWishlist(View):
     def post(self, request):
-        breakpoint()
         data = request.POST
         id = data.get('id')
         fm = UserWishList.objects.get(product_id=id)
@@ -527,9 +544,21 @@ def my_order(request):
 def my_account(request):
     username = request.user.username
     user_email = request.user.email
-    context = {'users':username,'user_email':user_email}
+    user_first_name = request.user.first_name
+    user_last_name = request.user.last_name
+    context = {'users':username,'user_email':user_email,'first_name':user_first_name,'last_name':user_last_name}
     return render(request,'my_account.html',context)
 
+
+def edit_profile(request):
+	msg=None
+	if request.method=='POST':
+		form=Updateuser_form(request.POST,instance=request.user)
+		if form.is_valid():
+			form.save()
+			msg='Data has been saved'
+	form=Updateuser_form(instance=request.user)
+	return render(request, 'update_user.html',{'form':form,'msg':msg})
 
 
 class PasswordsChangeView(PasswordChangeView):

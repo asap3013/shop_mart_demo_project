@@ -555,7 +555,6 @@ def product_check(request):
 
 class DeleteProduct(View):
     def post(self, request):
-        import pdb;pdb.set_trace()
         data = request.POST
         id = data.get('id')
         fm = Product.objects.get(id=id)
