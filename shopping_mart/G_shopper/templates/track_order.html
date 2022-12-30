@@ -9,10 +9,10 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="col-sm-12">
-                            <form method="post">
+                            <form action="{% url 'G_shopper:check_order' %}" method="post">
                                 {% csrf_token %}
-                            <h4>Email Id</h4>
-                            <input type="email" name="email" class="email_id" placeholder="Enter Email Id">
+                            <!-- <h4>Email Id</h4>
+                            <input type="email" name="email" class="email_id" placeholder="Enter Email Id"> -->
                             <h4>Order Id</h4>
                             <input type="number" name="order_id" class="order_id" placeholder="Enter Order Id"> <br><br>
                             <button type="submit" class="btn btn-primary" id="order_trace">Submit</button>

@@ -47,7 +47,7 @@ def userLogin(request):
                 login(request, user)
                 return redirect('G_shopper:home')
             else:
-                messages.error(request, "invalid credentials")
+                messages.error(request, "Invalid Credentials")
         else:
             messages.error(request, 'Please enter correct credentials')
     obj = UserRegistraionForm()
@@ -65,10 +65,16 @@ def home_page(request):
     products = Product.objects.all().order_by('id')[:3]
     category = Category.objects.all()
     prodcat = ProductCategories.objects.all()
+    # cms = Cms.objects.all()
     context = {'form': banners, 'obj': products,
                'total_data': total_data, 'cat': category, 'prodcat': prodcat}
     return render(request, 'register/home.html', context)
 
+
+def cms_content(request):
+    cms = Cms.objects.all()
+    context = {'cms':cms}
+    return render(request, 'about_us.html', context)
 
 # def load_more_data(request):
 #         offset=int(request.GET['offset'])
@@ -151,7 +157,7 @@ class UserRegister(View):
                 fail_silently=False,
             )
             messages.success(request, "User Register Successfully")
-            return redirect('G_shopper:home')
+            return redirect('G_shopper:register')
         else:
             messages.error("invalid Credientials")
             return render(request, "register/register_form.html", {'form': obj})
@@ -175,13 +181,14 @@ def add_cart(request):
                 cart_p[str(request.GET['id'])]['qty'])
             cart_data.update(cart_data)
             request.session['cartdata'] = cart_data
+            msg = 'Product added to cart'
         else:
             cart_data = request.session['cartdata']
             cart_data.update(cart_p)
             request.session['cartdata'] = cart_data
     else:
         request.session['cartdata'] = cart_p
-    return JsonResponse({'data': request.session['cartdata'], 'totalitems': len(request.session['cartdata'])})
+    return JsonResponse({'data': request.session['cartdata'], 'totalitems': len(request.session['cartdata']),'msg': msg})
 
 
 @csrf_exempt
@@ -260,8 +267,10 @@ def add_wishlist(request):
             product_id=product,
             user_id=request.user
         )
+        
         data = {
-            'bool': True
+            'bool': True,
+            
         }
     return JsonResponse(data)
 
@@ -337,9 +346,11 @@ class Add_address(View):
         obj = Address_form(request.POST, user=request.user)
         if obj.is_valid():
             obj.save()
-            return redirect('G_shopper:addcart')
+            msg = 'Address added successfully'
+            return redirect('G_shopper:addcart',{'msg': msg})
         else:
-            return render(request, "register/address_form.html", {'form': obj})
+            msg = 'Check details'
+            return render(request, "register/address_form.html", {'form': obj,'msg': msg})
 
 
 @csrf_exempt
@@ -372,6 +383,7 @@ def placeorder(request):
         grand_total=final_amount,
     )
     order.save()
+    msg = 'Order has been Placed'
     order_ids = order.id
     if order.save:
         order_id = order_ids
@@ -394,7 +406,7 @@ def placeorder(request):
         fail_silently=False,
     )
     cart.clear()
-    return redirect('G_shopper:home')
+    return redirect('G_shopper:home',{'msg': msg})
 
 
 @csrf_exempt
@@ -517,20 +529,24 @@ def cashondelivery(request):
 @csrf_exempt
 @login_required(redirect_field_name='login', login_url='/login')
 def tracking_order(request):
-    email_id = request.POST.get('email')
+    return render(request, 'track_order.html')
+
+def check_order(request):
+    
+    # email_id = request.POST.get('email')
     order_id = request.POST.get('order_id')
+    print(order_id)
     # order = int(order_id)
-    user_email = request.user.email
-    user_order = UserOrder.objects.filter(
-        user_id__email=email_id, id=order_id).values('id', 'status').first()
-    if email_id == user_email and int(order_id) == user_order['id']:
+    # user_email = request.user.email
+    user_order = UserOrder.objects.filter(id=order_id).values('id', 'status').first()
+    if user_order:
+    # if int(order_id) == user_order['id']:
         status = user_order['status']
         context = {'status': status}
         return render(request, 'order_status.html', context)
     else:
-        messages.error(request, 'Please enter correct credentials')
-    return render(request, 'track_order.html')
-
+        msg='Invalid Order Id'
+        return render(request, 'track_order.html', {'msg':msg})
 
 @csrf_exempt
 @login_required(redirect_field_name='login', login_url='/login')

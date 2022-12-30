@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<section id="form">
+<!-- <section id="form"> -->
 	<!--form-->
 	<h1 style="text-align:center;">Registration Form....</h1>
 	<div class="container">
@@ -11,9 +11,7 @@
 				<div class="signup-form">
 					<!--sign up form-->
 					<h2>New User Signup!</h2>
-					{% for message in messages %}
 					{{message}}
-					{% endfor %}
 					<form action="" method="post" name="Register" value="Register">
 						{% csrf_token %}
 						<!-- <input type="text" placeholder="First Name"/> -->
@@ -50,7 +48,7 @@
 			</div>
 		</div>
 	</div>
-</section>
+
 <!--/form-->
 
 {% endblock %}

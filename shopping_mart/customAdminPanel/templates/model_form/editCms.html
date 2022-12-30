@@ -1,0 +1,91 @@
+{% extends 'starter.html' %}
+
+{% block content %}
+{% load static %}
+
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+<div align="center">
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <!-- <h1>General Form</h1> -->
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active">Update Cms</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div><!-- /.container-fluid -->
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <!-- left column -->
+                        <div class="col-md-11" style="left: 50px;">
+                            <!-- general form elements -->
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Edit Cms</h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <!-- form start -->
+
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="banner_name">Title</label>
+                                        {{ form.title }}
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="Content" >content</label><br>
+                                        {{ form.content }}
+                                      </div>
+                                      <div class="form-group">
+                                        <label  for="meta_title">Meta title</label><br>
+                                        {{ form.meta_title }}
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="meta_description">Meta Description</label><br>
+                                        {{ form.meta_description }}
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="meta_keywords">Meta Keywords</label><br>
+                                        {{ form.meta_keywords }}
+                                      </div>
+                                </div>
+                                <!-- /.card-body -->
+
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </form>
+</div>
+{% endblock %}
+{% block script %}
+<script>
+    $(document).ready(function () {
+        setNavBar()
+    });
+
+    // set navebar
+    function setNavBar() {
+        $(".nav-link").removeClass("active")
+        $(".cms-menu").addClass("active")
+    }
+</script>
+{% endblock %}

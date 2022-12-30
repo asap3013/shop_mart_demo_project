@@ -3,6 +3,8 @@ from django.db import models
 from django_mysql.models import EnumField
 # from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractUser
+from ckeditor.fields import RichTextField
+
 
 
 class User(AbstractUser):
@@ -44,13 +46,13 @@ class Configuration(models.Model):
 
 class Cms(models.Model):
     title = models.CharField(max_length=255)
-    content = models.TextField()
+    content =RichTextField(blank=True,null=True)
     meta_title = models.TextField()
     meta_description = models.TextField()
     meta_keywords = models.TextField()
-    created_by = models.IntegerField()
+    created_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='Cms_created_by')
     created_date = models.DateTimeField(auto_now_add=True)
-    modify_by = models.IntegerField()
+    modify_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='Cms_modified_by')
     modify_date = models.DateTimeField(auto_now=True)
 
 

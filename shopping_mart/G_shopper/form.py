@@ -35,10 +35,12 @@ class UserRegistraionForm(forms.ModelForm):
     #         raise forms.ValidationError('This email address is already in use. Please supply a different email address.')
     #     return email
   
-    def email_clean(self):  
-        email = self.cleaned_data['email'].lower()  
-        new = User.objects.filter(email=email)
-        if new.count():  
+    def email_clean(self): 
+        breakpoint() 
+        email = self.cleaned_data['email']  
+        print(email,'gfdgffdh')
+        new = User.objects.filter(email=email).first()
+        if new:  
             raise forms.ValidationError(" Email Already Exist")  
         return email  
     # def clean_email(self):
@@ -47,9 +49,9 @@ class UserRegistraionForm(forms.ModelForm):
     #             raise forms.ValidationError("This email is already register")
     #         return email
     def username_clean(self):  
-        username = self.cleaned_data['username'].lower()  
-        new = User.objects.filter(username = username)  
-        if new.count():  
+        username = self.cleaned_data['username']  
+        new = User.objects.filter(username = username).first()  
+        if new:  
             raise ValidationError("User Already Exist")  
         return username  
 

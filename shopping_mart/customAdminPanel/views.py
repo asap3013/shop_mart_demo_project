@@ -199,7 +199,9 @@ class CmsField(LoginRequiredMixin, View):
         obj = CmsForm(request.POST, request.FILES)
         if obj.is_valid():
             instance = obj.save()
-            print(instance.banner_path.path)
+            instance.created_by = request.user
+            instance.modify_by = request.user
+            instance.save()
             return redirect('customAdminPanel:cms')
         else:
             return render(request, "model_form/cms_form.html", {'form': obj})
@@ -210,6 +212,36 @@ def cms_check(request):
     fm = Cms.objects.all()
     context = {'form': fm}
     return render(request, "cms.html", context)
+
+class DeleteCms(View):
+    def post(self, request):
+        data = request.POST
+        id = data.get('id')
+        fm = Cms.objects.get(id=id)
+        fm.delete()
+        return redirect('customAdminPanel:cms')
+
+
+class EditCms(View):
+    """_summary_
+
+    Args:
+        View (_type_): _description_
+    """
+
+    def get(self, request, id):
+        obj = Cms.objects.get(id=id)
+        fm = CmsForm(instance=obj)
+        return render(request, "model_form/editCms.html", {'form': fm})
+
+    def post(self, request, id):
+        ban = Cms.objects.get(id=id)
+        fm = CmsForm(request.POST, request.FILES, instance=ban)
+        if fm.is_valid():
+            fm.save()
+        # else:
+        #     messages.error(request,'Invalid format Uploads')
+            return redirect('customAdminPanel:cms')
 
 
 class ContactUsField(LoginRequiredMixin, View):

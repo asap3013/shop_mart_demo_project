@@ -22,6 +22,8 @@ urlpatterns = [
     path("editCategory/<int:id>" ,views.EditCategory.as_view(),name="EditCategory"),
     path('cms/',views.cms_check, name='cms'),
     path('cms_form/',views.CmsField.as_view(),name='cms_form'),
+    path("Delete_cms/",views.DeleteCms.as_view(),name="Delete_cms"),
+    path("editCms/<int:id>" ,views.EditCms.as_view(),name="EditCms"),
     path('configuration/',views.configuration_check, name='configuration'),
     path('configuration_form/',views.ConfigurationField.as_view(),name='configuration_form'),
     path('contactUs/',views.contactUs_check, name='contactUs'),
@@ -73,6 +75,7 @@ urlpatterns = [
     path('userWishlist/',views.userWishlist_check, name='userWishlist'),
     path('userWishlist_form/',views.UserWishlistField.as_view(),name='userWishlist_form'),
     path("userWishlistdelete/",views.DeleteuserWishlist.as_view(),name="Delete_userWishlist"),
+    
 
 ]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 
