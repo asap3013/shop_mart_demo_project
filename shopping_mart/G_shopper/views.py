@@ -1,6 +1,8 @@
 from multiprocessing import context
 from unicodedata import category
 import json
+from django.utils.html import strip_tags
+from django.template import Template
 from django.shortcuts import render
 from django.core.mail import send_mail, BadHeaderError
 from django.views import View
@@ -146,22 +148,33 @@ class UserRegister(View):
 
     def post(self, request):
         obj = UserRegistraionForm(request.POST)
+        email_template = EmailTemplate.objects.filter(title='User Registration').first()
         if obj.is_valid():
             obj.save()
             user_mail = obj.__dict__['cleaned_data']['email']
+            subject = 'Thanks for Register'
+            context = {'data':email_template.content}
+            html_message = render_to_string('mail_template.html',context)
+            plain_message = strip_tags(html_message)
             send_mail(
-                'Thanks for Register',
-                'HEY you are now successfully register in our e-shopper website',
-                settings.EMAIL_HOST_USER,
-                [user_mail],
+                subject=subject,
+                message=plain_message,
+                # html_message=html_message,
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list = [user_mail],
                 fail_silently=False,
             )
             messages.success(request, "User Register Successfully")
             return redirect('G_shopper:register')
         else:
-            messages.error("invalid Credientials")
+            messages.error(request,"invalid Credientials")
             return render(request, "register/register_form.html", {'form': obj})
 
+def mail_template(request):
+    email_template = EmailTemplate.objects.filter(title='User Registration').first()
+    email = email_template.content
+    context = {'data':email}
+    return render(request, 'mail_template.html', context)
 
 @csrf_exempt
 @login_required(redirect_field_name='login', login_url='/login')
@@ -397,16 +410,29 @@ def placeorder(request):
                 quantity=cart_details[key]['qty']
             )
             order_details.save()
-    user_email = request.user.email
-    send_mail(
-        'Thank You for Order',
-        'HEY you are now successfully placed your order in our E-shopper website',
-        settings.EMAIL_HOST_USER,
-        [user_email],
-        fail_silently=False,
-    )
+        user_email = request.user.email
+        email_template = EmailTemplate.objects.filter(title='Order placed').first()
+        subject = 'Order Placed Successfully'
+        context = {'data':email_template.content}
+        html_message = render_to_string('order_mail_template.html',context)
+        plain_message = strip_tags(html_message)
+        send_mail(
+            subject=subject,
+            message=plain_message,
+            # html_message=html_message,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list = [user_email],
+            fail_silently=False,
+        )
     cart.clear()
     return redirect('G_shopper:home',{'msg': msg})
+
+def order_mail_template(request):
+    email_template = EmailTemplate.objects.filter(title='Order placed').first()
+    email = email_template.content
+    context = {'data':email}
+    return render(request, 'order_mail_template.html', context)
+
 
 
 @csrf_exempt
@@ -495,33 +521,20 @@ def cashondelivery(request):
             )
 
             order_details.save()
-    # user_email =  request.user.email
-    # # order = instance
-    # context = {'order': order}
-    # message = get_template("product_order.html").render(context)
-    # mail = EmailMessage(
-    #     subject="Order confirmation",
-    #     body=message,
-    #     from_email=settings.EMAIL_HOST_USER,
-    #     to=[user_email],
-    #     # reply_to=[user_email],
-    # )
-    # mail.content_subtype = "html"
-    # return mail.send()
+    
     user_email = request.user.email
+    email_template = EmailTemplate.objects.filter(title='Order placed').first()
+    subject = 'Order Placed Successfully'
+    context = {'data':email_template.content}
+    html_message = render_to_string('order_mail_template.html',context)
+    plain_message = strip_tags(html_message)
     send_mail(
-        'Thank You for Order',
-        'HEY you are now successfully placed your order in our E-shopper website',
-        settings.EMAIL_HOST_USER,
-        [user_email],
+        subject=subject,
+        message=plain_message,
+        from_email=settings.EMAIL_HOST_USER,
+        recipient_list = [user_email],
         fail_silently=False,
     )
-    subject = 'Thank You for Order'
-    html_message = render_to_string(
-        'product_order.html', {'context': 'values'})
-    # plain_message = strip_tags(html_message)
-    from_email = settings.EMAIL_HOST_USER
-    to = [user_email]
     request.session['cartdata'].clear()
     return redirect('G_shopper:home')
 

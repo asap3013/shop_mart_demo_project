@@ -1,7 +1,7 @@
 {% extends 'starter.html' %}
 
 {% block content %}
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <div class="content-wrapper">
     <section class="content">
         <div class="container-fluid">
@@ -25,7 +25,7 @@
                                     <tr>
                                         <th>title</th>
                                         <th>subject</th>
-                                        <th>content</th>
+                                        <!-- <th>content</th> -->
                                         <th>created_by</th>
                                         <th>created_date</th>
                                         <th>modify_by</th>
@@ -38,7 +38,7 @@
                                     <tr>
                                         <td>{{i.title}}</td>
                                         <td>{{i.subject}}</td>
-                                        <td>{{i.content}}</td>
+                                        <!-- <td>{{i.content}}</td> -->
                                         <td>{{i.created_by}}</td>
                                         <td>{{i.created_date}}</td>
                                         <td>{{i.modify_by}}</td>

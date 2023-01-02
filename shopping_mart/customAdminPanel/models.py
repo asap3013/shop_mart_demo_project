@@ -79,7 +79,7 @@ class Banners(models.Model):
 class EmailTemplate(models.Model):
     title = models.CharField(max_length=45)
     subject = models.CharField(max_length=255)
-    content = models.TextField()
+    content = RichTextField(blank=True,null=True)
     created_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='EmailTemplate_created_by')
     created_date = models.DateTimeField(auto_now_add=True)
     modify_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True,related_name='EmailTemplate_modified_by')

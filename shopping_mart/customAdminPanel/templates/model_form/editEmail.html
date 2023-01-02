@@ -1,6 +1,10 @@
 {% extends 'starter.html' %}
 
 {% block content %}
+{% load static %}
+
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
 <div align="center">
     <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
@@ -27,7 +31,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <!-- left column -->
-                        <div class="col-md-6" style="position: relative; left: 250px;">
+                        <div class="col-md-11" style="left: 50px;">
                             <!-- general form elements -->
                             <div class="card card-primary">
                                 <div class="card-header">
