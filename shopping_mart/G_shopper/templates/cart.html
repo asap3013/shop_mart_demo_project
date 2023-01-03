@@ -9,10 +9,10 @@
 		<thead>
 			<tr>
 				<th>Product</th>
+				<th>Name</th>
 				<th>Qty</th>
-				<th>Price</th>
 				<th>Total</th>
-				<th>Remove</th>
+				<th>Final Price</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -35,7 +35,7 @@
 				</td>
 				<td >$ {{item.price}}</td>
 				<td class="price">$ {% widthratio item.price 1 item.qty %}</td>
-				<td><button> <i class="fa fa-trash-o" style="font-size:20px;color:red"></i></button></td>
+				<!-- <td><button> <i class="fa fa-trash-o" style="font-size:20px;color:red"></i></button></td> -->
 			</tr>
 			{% endfor %}
 		</tbody>

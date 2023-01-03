@@ -4,26 +4,30 @@
 
 <!-- <section id="form"> -->
 	<!--form-->
-	<h1 style="text-align:center;">Registration Form....</h1>
+	<h2 style="text-align:center;">Registration Form.</h2>
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-5 col-sm-offset-3">
+			<div class="col-sm-5 col-sm-offset-4">
 				<div class="signup-form">
 					<!--sign up form-->
 					<h2>New User Signup!</h2>
+					{% for message in messages %}
+                <div class="alert alert-{{ message.tags }} " id="msg" role="alert">
+                    {{ message }}</div>
+                    {% endfor %}
 					<form action="" method="post" name="Register" value="Register">
 						{% csrf_token %}
-						<label for="first_name">first_name</label>
+						<label for="first_name">First Name</label>
 						{{ form.first_name }}
-						<label for="last_name">last_name</label>
+						<label for="last_name">Last Name</label>
 						{{ form.last_name }}
-						<label for="email" name="Register" value="Register">email</label>
+						<label for="email" >Email</label>
 						{{ form.email }}
 						{{ form.errors.email }}
-						<label for="username" name="Register" value="Register">username</label>
+						<label for="username" name="Register" value="Register">Username</label>
 						{{ form.username }}
 						{{ form.errors.username }}
-						<label for="password1" name="Register" value="Register">password</label>
+						<label for="password1" name="Register" value="Register">Password</label>
 						{{ form.password1 }}
 						{{ form.errors.password1 }}
 						<label for="password2">confirm password</label>

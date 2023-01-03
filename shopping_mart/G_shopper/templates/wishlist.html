@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script src="/static/js/custom.js"></script>
 <main class="container my-4">
     <!-- Featured Products -->
     <h3 class="my-4 border-bottom pb-1">Wishlist</h3>
@@ -11,10 +13,12 @@
                 <th>Image</th>
                 <th>Price</th>
                 <th>Action</th>
+                <!-- <th>Add To Cart</th> -->
             </tr>
         </thead>
         <tbody>
             {% for wl in wlist %}
+            <!-- {{wl.product_id.id}} -->
             <tr>
                 <!-- <td><a href="/product/{{wl.product_id.slug}}/{{wl.product_id.id}}">{{wl.product_id.name}}</a></td> -->
                 <td>{{wl.product_id.name}}</td>
@@ -23,7 +27,8 @@
                         alt="{{wl.product_id.title}}">
                 </td>
                 <td>{{wl.product_id.price}}</td>
-                
+                <!-- <td><button class="btn btn-default add-to-cart" id="{{wl.product_id.id}}"><i
+                  class="fa fa-shopping-cart addcart"></i>Add to cart</button></td> -->
                 <!-- <input type="button"  onclick="decrementValue('{{product_id}}')" value="Remove"/> -->
                 <!-- <td><button onclick="deleteWishlist('{{product_id}}')"> <i class="fa fa-trash-o" style="font-size:20px;color:red"></i></button></td> -->
                 <!-- <td>

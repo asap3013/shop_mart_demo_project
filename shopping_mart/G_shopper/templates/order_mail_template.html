@@ -11,6 +11,21 @@
 <body>
     <p>
         {{data|safe}}
+        <table>
+            <tr>
+              <th>Sr No</th>
+              <th>Product Id</th>
+              <th>Quantity</th>
+              <th>Total</th>
+            </tr>
+            <tr>
+              <td>{{order_details.order_id}}</td>
+              <td>{{order_details.product_id}}</td>
+              <td>{{order_details.quantity}}</td>
+              <td>{{order_details.amount}}</td>
+            </tr>
+
+          </table>
     </p>
 </body>
 

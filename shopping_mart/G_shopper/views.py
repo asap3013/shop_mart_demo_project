@@ -1,8 +1,5 @@
-from multiprocessing import context
-from unicodedata import category
 import json
 from django.utils.html import strip_tags
-from django.template import Template
 from django.shortcuts import render
 from django.core.mail import send_mail, BadHeaderError
 from django.views import View
@@ -16,16 +13,14 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import login, logout
 from django.template.loader import render_to_string
 from django.contrib.auth.views import PasswordChangeView
-from django.contrib.auth.forms import PasswordChangeForm
 from django.urls import reverse_lazy
-# from forms import PasswordChangingForm
 import random
 import stripe
-from django.core.mail import EmailMessage
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from django.template import Context
-from django.template.loader import get_template
+# from django.core.mail import EmailMessage
+# from django.db.models.signals import post_save
+# from django.dispatch import receiver
+# from django.template import Context
+# from django.template.loader import get_template
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 
@@ -49,9 +44,9 @@ def userLogin(request):
                 login(request, user)
                 return redirect('G_shopper:home')
             else:
-                messages.error(request, "Invalid Credentials")
+                messages.info(request, 'Incorrect Username or Password')
         else:
-            messages.error(request, 'Please enter correct credentials')
+            messages.info(request, 'Incorrect Username or Password')
     obj = UserRegistraionForm()
     return render(request, "register/login.html", {'form': obj})
 
@@ -75,7 +70,7 @@ def home_page(request):
 
 def cms_content(request):
     cms = Cms.objects.all()
-    context = {'cms':cms}
+    context = {'cms': cms}
     return render(request, 'about_us.html', context)
 
 # def load_more_data(request):
@@ -86,6 +81,7 @@ def cms_content(request):
 #         t=render_to_string('register/products_list.html',{'data':data})
 #         return JsonResponse({'data':t}
 # )
+
 
 def logoutuser(request):
     logout(request)
@@ -148,33 +144,40 @@ class UserRegister(View):
 
     def post(self, request):
         obj = UserRegistraionForm(request.POST)
-        email_template = EmailTemplate.objects.filter(title='User Registration').first()
+        user_mail = request.POST['email']
+        email_template = EmailTemplate.objects.filter(
+            title='User Registration').first()
         if obj.is_valid():
             obj.save()
-            user_mail = obj.__dict__['cleaned_data']['email']
+            # user_mail = obj.__dict__['cleaned_data']['email']
             subject = 'Thanks for Register'
-            context = {'data':email_template.content}
-            html_message = render_to_string('mail_template.html',context)
+            context = {'data': email_template.content}
+            html_message = render_to_string('mail_template.html', context)
             plain_message = strip_tags(html_message)
+            # t = loader.get_template('mail_template.html')
+            # html = t.render(context={'data':email_template.content})
             send_mail(
                 subject=subject,
                 message=plain_message,
-                # html_message=html_message,
+                html_message=html_message,
                 from_email=settings.EMAIL_HOST_USER,
-                recipient_list = [user_mail],
+                recipient_list=[user_mail, ],
                 fail_silently=False,
             )
             messages.success(request, "User Register Successfully")
             return redirect('G_shopper:register')
         else:
-            messages.error(request,"invalid Credientials")
+            messages.error(request, "invalid Credientials")
             return render(request, "register/register_form.html", {'form': obj})
 
+
 def mail_template(request):
-    email_template = EmailTemplate.objects.filter(title='User Registration').first()
+    email_template = EmailTemplate.objects.filter(
+        title='User Registration').first()
     email = email_template.content
-    context = {'data':email}
+    context = {'data': email}
     return render(request, 'mail_template.html', context)
+
 
 @csrf_exempt
 @login_required(redirect_field_name='login', login_url='/login')
@@ -194,14 +197,13 @@ def add_cart(request):
                 cart_p[str(request.GET['id'])]['qty'])
             cart_data.update(cart_data)
             request.session['cartdata'] = cart_data
-            msg = 'Product added to cart'
         else:
             cart_data = request.session['cartdata']
             cart_data.update(cart_p)
             request.session['cartdata'] = cart_data
     else:
         request.session['cartdata'] = cart_p
-    return JsonResponse({'data': request.session['cartdata'], 'totalitems': len(request.session['cartdata']),'msg': msg})
+    return JsonResponse({'data': request.session['cartdata'], 'totalitems': len(request.session['cartdata'])})
 
 
 @csrf_exempt
@@ -280,10 +282,10 @@ def add_wishlist(request):
             product_id=product,
             user_id=request.user
         )
-        
+
         data = {
             'bool': True,
-            
+
         }
     return JsonResponse(data)
 
@@ -360,15 +362,14 @@ class Add_address(View):
         if obj.is_valid():
             obj.save()
             msg = 'Address added successfully'
-            return redirect('G_shopper:addcart',{'msg': msg})
+            return redirect('G_shopper:addcart', {'msg': msg})
         else:
             msg = 'Check details'
-            return render(request, "register/address_form.html", {'form': obj,'msg': msg})
+            return render(request, "register/address_form.html", {'form': obj, 'msg': msg})
 
 
 @csrf_exempt
 @login_required(redirect_field_name='login', login_url='/login')
-@csrf_exempt
 def placeorder(request):
     cart = request.session['cartdata']
     coupon = request.session['coupon_data']
@@ -396,8 +397,8 @@ def placeorder(request):
         grand_total=final_amount,
     )
     order.save()
-    msg = 'Order has been Placed'
     order_ids = order.id
+    messages.success(request, "Order placed Successfully")
     if order.save:
         order_id = order_ids
         cart_details = request.session['cartdata']
@@ -411,33 +412,34 @@ def placeorder(request):
             )
             order_details.save()
         user_email = request.user.email
-        email_template = EmailTemplate.objects.filter(title='Order placed').first()
+        email_template = EmailTemplate.objects.filter(
+            title='Order placed').first()
         subject = 'Order Placed Successfully'
-        context = {'data':email_template.content}
-        html_message = render_to_string('order_mail_template.html',context)
+        context = {'data': email_template.content,
+                   'order_details': order_details}
+        html_message = render_to_string('order_mail_template.html', context)
         plain_message = strip_tags(html_message)
         send_mail(
             subject=subject,
             message=plain_message,
-            # html_message=html_message,
+            html_message=html_message,
             from_email=settings.EMAIL_HOST_USER,
-            recipient_list = [user_email],
+            recipient_list=[user_email],
             fail_silently=False,
         )
-    cart.clear()
-    return redirect('G_shopper:home',{'msg': msg})
+
+    return redirect('G_shopper:home')
+
 
 def order_mail_template(request):
     email_template = EmailTemplate.objects.filter(title='Order placed').first()
     email = email_template.content
-    context = {'data':email}
+    context = {'data': email}
     return render(request, 'order_mail_template.html', context)
-
 
 
 @csrf_exempt
 @login_required(redirect_field_name='login', login_url='/login')
-@csrf_exempt
 def stripe_order(request):
     cart = request.session['cartdata']
     coupon = request.session['coupon_data']
@@ -478,7 +480,6 @@ def stripe_order(request):
 
 
 @csrf_exempt
-@login_required(redirect_field_name='login', login_url='/login')
 def cashondelivery(request):
     cart = request.session['cartdata']
     # user_email = User.objects.first()
@@ -519,47 +520,50 @@ def cashondelivery(request):
                 amount=cart_details[key]['price'],
                 quantity=cart_details[key]['qty']
             )
-
             order_details.save()
-    
-    user_email = request.user.email
-    email_template = EmailTemplate.objects.filter(title='Order placed').first()
-    subject = 'Order Placed Successfully'
-    context = {'data':email_template.content}
-    html_message = render_to_string('order_mail_template.html',context)
-    plain_message = strip_tags(html_message)
-    send_mail(
-        subject=subject,
-        message=plain_message,
-        from_email=settings.EMAIL_HOST_USER,
-        recipient_list = [user_email],
-        fail_silently=False,
-    )
-    request.session['cartdata'].clear()
+
+        user_email = request.user.email
+        email_template = EmailTemplate.objects.filter(
+            title='Order placed').first()
+        subject = 'Order Placed Successfully'
+        context = {'data': email_template.content,
+                   'order_details': order_details}
+        html_message = render_to_string('order_mail_template.html', context)
+        plain_message = strip_tags(html_message)
+        send_mail(
+            subject=subject,
+            message=plain_message,
+            html_message=html_message,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[user_email],
+            fail_silently=False,
+        )
     return redirect('G_shopper:home')
 
 
-@csrf_exempt
 @login_required(redirect_field_name='login', login_url='/login')
 def tracking_order(request):
     return render(request, 'track_order.html')
 
+
 def check_order(request):
-    
+
     # email_id = request.POST.get('email')
     order_id = request.POST.get('order_id')
     print(order_id)
     # order = int(order_id)
     # user_email = request.user.email
-    user_order = UserOrder.objects.filter(id=order_id).values('id', 'status').first()
+    user_order = UserOrder.objects.filter(
+        id=order_id).values('id', 'status').first()
     if user_order:
-    # if int(order_id) == user_order['id']:
+        # if int(order_id) == user_order['id']:
         status = user_order['status']
         context = {'status': status}
         return render(request, 'order_status.html', context)
     else:
-        msg='Invalid Order Id'
-        return render(request, 'track_order.html', {'msg':msg})
+        msg = 'Invalid Order Id'
+        return render(request, 'track_order.html', {'msg': msg})
+
 
 @csrf_exempt
 @login_required(redirect_field_name='login', login_url='/login')
@@ -642,3 +646,12 @@ def password_success(request):
     :return: password success page:
     """
     return render(request, 'password_success.html', {})
+
+
+def load_more_data(request):
+    offset = int(request.GET['offset'])
+    limit = int(request.GET['limit'])
+    data = Product.objects.all().order_by('id')[offset:offset+limit]
+    t = render_to_string('register/products_list.html', {'data': data})
+    return JsonResponse({'data': t}
+                        )

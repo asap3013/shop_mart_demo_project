@@ -74,7 +74,7 @@ class UserRegistraionForm(forms.ModelForm):
     def save(self, commit = True):  
         user = User.objects.create_user(  
             self.cleaned_data['username'],  
-            email=self.cleaned_data['email'],
+            self.cleaned_data['email'],
             # mobile_no=self.cleaned_data['mobile_no'],
             # password1=self.cleaned_data['password1'],
             # password2=self.cleaned_data['password2']

@@ -55,6 +55,7 @@ $(document).on('click','.order',function () {
     }
 
     else{
+        debugger;
         var rates = document.getElementsByClassName('hiddenaddress');
         var rate_value;
         for(var i = 0; i < rates.length; i++){
@@ -63,9 +64,11 @@ $(document).on('click','.order',function () {
         }}
         let final_total =sessionStorage.getItem('TOTAL');
         let ship_amt = document.getElementsByClassName('shipamt')[0].innerHTML;
-        
+        let csrftoken = '{{ csrf_token }}';
+
         $.ajax({
             type: "POST",
+            headers:{'X-CSRFToken':csrftoken},
             url: '/cod/',
             data: {
                 'address_id':rate_value,

@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% load static %}
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src={% static "JS/jquery-3.6.0.min.js" %}></script>
+<script type="text/javascript" src={% static "JS/scripts.js" %}></script>
 <script src="https://js.stripe.com/v3/"></script>
 <script src="/static/js/check.js"></script>
 <main class="container my-4" id="cartList" onload="checkCookies()">
@@ -100,6 +103,7 @@
         <div class="col-sm-6">
             <div class="total_area coupon">
                 <form action="" method="POST">
+                    {% csrf_token %}
                     <ul>
                         <li>Cart Sub Total <span id="prd_amt">{{total_amt}}</span></li>
                         {% if total_amt > 500 %}
@@ -125,4 +129,5 @@
     </section>
 </main>
 <br>
+
 {% endblock %}
