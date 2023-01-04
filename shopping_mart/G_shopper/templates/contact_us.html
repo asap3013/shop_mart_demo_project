@@ -17,10 +17,12 @@
                 <h2 class="title text-center">Feedback</h2>
                 <div class="status alert alert-success" style="display: none"></div>
                 <form method="post">
+                    {{form.errors}}
                     {% csrf_token %}
                     <div class="form-group col-md-6">
                         <input type="text" name="name" id="nameid" class="form-control" required="required" placeholder="Name">
                     </div>
+                    {{form.errors.name}}
                     <div class="form-group col-md-6">
                         <input type="email" name="email" id="emailid" class="form-control" required="required" placeholder="Email">
                     </div>

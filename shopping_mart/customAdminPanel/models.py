@@ -57,7 +57,7 @@ class Cms(models.Model):
 
 
     def __str__(self):
-        return self.CmsTitle
+        return self.title
 
     class Meta:
         verbose_name = "Cms"

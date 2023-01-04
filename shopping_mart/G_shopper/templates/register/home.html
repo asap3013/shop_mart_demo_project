@@ -96,7 +96,7 @@
                         </div>
                     </div>
                     <div class="col-sm-8">
-                        <div class="shop-menu pull-right">
+                        <!-- <div class="shop-menu pull-right">
                             <ul class="nav navbar-nav">
                                 <li class="dropdown"><a href="{% url 'G_shopper:my_account' %}"><i class="fa fa-user"></i> My Account</a>
                                 </li>
@@ -104,8 +104,6 @@
                                 </li>
                                 <li><a href="{% url 'G_shopper:my_wishlist' %}"><i class="fa fa-star"></i> Wishlist</a>
                                 </li>
-                                <!-- <li><a href="{% url 'G_shopper:mail_template' %}"><i class="fa fa-crosshairs"></i>
-                                        Checkout</a></li> -->
                                 <li><a href="{% url 'G_shopper:addcart' %}"><i class="fa fa-shopping-cart"></i>
                                         Cart(<span class="cart-list">{{request.session.cartdata|length}}</span>)</a>
                                 </li>
@@ -114,10 +112,51 @@
                                 <li><a href="{% url 'G_shopper:loggedout' %}"><i class="fa fa-lock"></i> Logout</a>
                                 </li>
                             </ul>
+                        </div> -->
+                        <div class="shop-menu pull-right">
+                            <div class="mainmenu pull-left">
+                                <div class="shop-menu pull-right">
+                                    <ul class="nav navbar-nav">
+                                        <li class="dropdown"><a href="#">My Account<i class="fa fa-angle-down"></i></a>
+                                            <ul role="menu" class="sub-menu">
+                                                <li class="dropdown"><a href="{% url 'G_shopper:my_account' %}"><i
+                                                            class="fa fa-user"></i> My Account</a>
+                                                </li>
+                                                <li><a href="{% url 'G_shopper:my_order' %}"><i class="fa fa-user"></i>
+                                                        My
+                                                        Order</a>
+                                                </li>
+                                                <li><a href="{% url 'G_shopper:my_wishlist' %}"><i
+                                                            class="fa fa-star"></i>
+                                                        Wishlist</a>
+                                                </li>
+                                                <li><a href="{% url 'G_shopper:order_track' %}"><i
+                                                            class="fa fa-crosshairs"></i> track
+                                                        Order</a></li>
+                                                <li><a href="{% url 'G_shopper:password' %}">Change Password </a></li>
+                                            </ul>
+                                        </li>
+                                        <!-- <li class="dropdown"><a href="#">Blog<i class="fa fa-angle-down"></i></a>
+                                        <ul role="menu" class="sub-menu">
+                                            <li><a href="blog.html">Blog List</a></li>
+                                            <li><a href="blog-single.html">Blog Single</a></li>
+                                        </ul>
+                                    </li> -->
+                                        <li><a href="{% url 'G_shopper:addcart' %}"><i class="fa fa-shopping-cart"></i>
+                                                Cart(<span
+                                                    class="cart-list">{{request.session.cartdata|length}}</span>)</a>
+                                        </li>
+                                        <li><a href="{% url 'G_shopper:loggedout' %}"><i class="fa fa-lock"></i>
+                                                Logout</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
         <!--/header-middle-->
 
@@ -153,9 +192,9 @@
                                         <li><a href="blog-single.html">Blog Single</a></li>
                                     </ul> -->
                                 </li>
-                                <li><a href="{% url 'G_shopper:password' %}">Change Password </a></li>
+
                                 <li><a href="{% url 'G_shopper:contact' %}">Contact</a></li>
-                                <li><a href="{% url 'G_shopper:about_us' %}">About Us</a></li>
+
                             </ul>
                         </div>
                     </div>
@@ -186,7 +225,7 @@
                         </ol>
 
                         <div class="carousel-inner">
-                            <div class="item active"  data-interval="1000">
+                            <div class="item active" data-interval="1000">
                                 <div class="col-sm-6">
                                     <h1><span>E</span>-SHOPPER</h1>
                                     <h2>Free E-Commerce Template</h2>
@@ -487,9 +526,10 @@
                                 </div>
                             </div>
                         </div>{% endfor %}
-                        
+
                     </div>
-                    <p class="my-4 text-center"><button id="loadMore" data-total="{{total_data}}" data-limit="3" class="btn btn-dark btn-sm">Load More <i class="fa fa-sync load-more-icon"></i></button></p>
+                    <p class="my-4 text-center"><button id="loadMore" data-total="{{total_data}}" data-limit="3"
+                            class="btn btn-dark btn-sm">Load More <i class="fa fa-sync load-more-icon"></i></button></p>
                 </div>
             </div>
         </div>
@@ -507,7 +547,7 @@
                     <div class="col-sm-2">
                         <div class="companyinfo">
                             <h2><span>e</span>-shopper</h2>
-                            
+
                         </div>
                     </div>
                     <div class="col-sm-7">
@@ -586,30 +626,30 @@
                 <div class="row">
                     <div class="col-sm-2">
                         <div class="single-widget">
-                            <h2>Service</h2>
+                            <h2>About</h2>
                             <ul class="nav nav-pills nav-stacked">
-                                <li><a href="#">Online Help</a></li>
-                                <li><a href="#">Contact Us</a></li>
+                                <li><a href="{% url 'G_shopper:about_us' %}">About Us</a></li>
+                                <!-- <li><a href="#">Contact Us</a></li>
                                 <li><a href="#">Order Status</a></li>
                                 <li><a href="#">Change Location</a></li>
-                                <li><a href="#">FAQ’s</a></li>
+                                <li><a href="#">FAQ’s</a></li> -->
                             </ul>
                         </div>
                     </div>
                     <div class="col-sm-2">
                         <div class="single-widget">
-                            <h2>Quock Shop</h2>
+                            <h2>Privacy Policy</h2>
                             <ul class="nav nav-pills nav-stacked">
-                                <li><a href="#">T-Shirt</a></li>
-                                <li><a href="#">Mens</a></li>
+                                <li><a href="{% url 'G_shopper:privacy_policy' %}">Privacy Policy</a></li>
+                                <!-- <li><a href="#">Mens</a></li>
                                 <li><a href="#">Womens</a></li>
                                 <li><a href="#">Gift Cards</a></li>
-                                <li><a href="#">Shoes</a></li>
+                                <li><a href="#">Shoes</a></li> -->
                             </ul>
                         </div>
                     </div>
                     <div class="col-sm-2">
-                        <div class="single-widget">
+                        <!-- <div class="single-widget">
                             <h2>Policies</h2>
                             <ul class="nav nav-pills nav-stacked">
                                 <li><a href="#">Terms of Use</a></li>
@@ -618,10 +658,10 @@
                                 <li><a href="#">Billing System</a></li>
                                 <li><a href="#">Ticket System</a></li>
                             </ul>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="col-sm-2">
-                        <div class="single-widget">
+                        <!-- <div class="single-widget">
                             <h2>About Shopper</h2>
                             <ul class="nav nav-pills nav-stacked">
                                 <li><a href="#">Company Information</a></li>
@@ -630,7 +670,7 @@
                                 <li><a href="#">Affillate Program</a></li>
                                 <li><a href="#">Copyright</a></li>
                             </ul>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="col-sm-3 col-sm-offset-1">
                         <!-- <div class="single-widget">

@@ -198,8 +198,8 @@ a#scrollUp i{
 
 
 .shop-menu ul li a {
-  background: #FFFFFF;
-  color: #696763;
+  /* background: #FFFFFF; */
+  color: black;
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
   font-weight: 300;
@@ -216,7 +216,6 @@ a#scrollUp i{
 
 .shop-menu ul li a:hover {
 	color:#fe980f;
-	background:#fff;
 }
 
 
@@ -271,10 +270,10 @@ a#scrollUp i{
 
 /*  Dropdown menu*/
 
-.navbar-header 
+/* .navbar-header 
 .navbar-toggle .icon-bar {
     background-color: #fff;
-}
+} */
 
 
 .nav.navbar-nav > li:hover > ul.sub-menu{
@@ -302,7 +301,7 @@ ul.sub-menu {
 }
 
 .dropdown ul.sub-menu li .active{
-  color: #FDB45E;
+  color: black;
   padding-left: 0;
 }
 
@@ -318,6 +317,8 @@ ul.sub-menu {
 .navbar-nav li ul.sub-menu li a{
   color: #fff;
 }
+
+
 
 .navbar-nav li ul.sub-menu li a:hover{
     color: #FDB45E;

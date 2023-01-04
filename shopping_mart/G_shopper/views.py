@@ -69,18 +69,19 @@ def home_page(request):
 
 
 def cms_content(request):
-    cms = Cms.objects.all()
-    context = {'cms': cms}
+    cms = Cms.objects.filter(title='About Us').first()
+    cms_title = cms.title
+    cms_content = cms.content
+    context = {'cms': cms_content,'cms_title':cms_title}
     return render(request, 'about_us.html', context)
 
-# def load_more_data(request):
-#         offset=int(request.GET['offset'])
-#         limit=int(request.GET['limit'])
 
-#         data=Product.objects.all().order_by('-id')[offset:offset+limit]
-#         t=render_to_string('register/products_list.html',{'data':data})
-#         return JsonResponse({'data':t}
-# )
+def privacy_policy(request):
+    cms = Cms.objects.filter(title='Privacy Policy').first()
+    cms_content = cms.content
+    context = {'cms': cms_content}
+    return render(request, 'privacy_policy.html', context)
+
 
 
 def logoutuser(request):
@@ -566,7 +567,6 @@ def check_order(request):
 
 
 @csrf_exempt
-@login_required(redirect_field_name='login', login_url='/login')
 def contact_us(request):
     if request.method == "GET":
         form = ContactForm()
@@ -579,10 +579,13 @@ def contact_us(request):
             form.save()
             try:
                 send_mail('Feedback', message, email, [
-                          "abhisheksapkal1316@gmail.com"], fail_silently=False)
+                          "abhisapkal3013.com"], fail_silently=False)
             except BadHeaderError:
                 return HttpResponse(" found.")
-        return redirect('G_shopper:contact')
+            return redirect('G_shopper:contact')
+        else:
+            print(form.errors)
+            return render(request,'contact_us.html',{'form':form})
     return render(request, "contact_us.html", {})
 
 
@@ -653,5 +656,4 @@ def load_more_data(request):
     limit = int(request.GET['limit'])
     data = Product.objects.all().order_by('id')[offset:offset+limit]
     t = render_to_string('register/products_list.html', {'data': data})
-    return JsonResponse({'data': t}
-                        )
+    return JsonResponse({'data': t})

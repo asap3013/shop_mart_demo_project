@@ -116,9 +116,9 @@ class Address_form(forms.ModelForm):
     #     return userAddress
 
 class ContactForm(forms.ModelForm):
-    name = forms.CharField(label='Name')
-    email = forms.EmailField(label='Email Address')
-    message = forms.CharField(label='Message',min_length=5, max_length=150)
+    name = forms.CharField(label='Name' ,required=True)
+    email = forms.EmailField(label='Email Address' ,required=True)
+    message = forms.CharField(label='Message',min_length=5, max_length=150 ,required=True)
 
 
     class Meta:
