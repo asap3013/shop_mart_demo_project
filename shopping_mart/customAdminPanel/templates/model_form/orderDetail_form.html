@@ -1,6 +1,12 @@
 {% extends 'starter.html' %}
 
 {% block content %}
+<style>
+  .required::before {
+    content:" *";
+    color: red;
+  }
+</style>
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <section class="content-header">
@@ -58,6 +64,7 @@
 
               <div class="card-footer">
                 <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{% url 'customAdminPanel:orderDetail' %}"><button type="button" class="btn btn-primary">Cancel</button></a>
               </div>
             </form>
           </div>

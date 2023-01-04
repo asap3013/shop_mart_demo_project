@@ -1,6 +1,12 @@
 {% extends 'starter.html' %}
 
 {% block content %}
+<style>
+  .required::before {
+    content:" *";
+    color: red;
+  }
+</style>
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <section class="content-header">
@@ -31,22 +37,15 @@
             <form action="{% url 'customAdminPanel:banner_form' %}" method="post" enctype="multipart/form-data">
               {% csrf_token %}
               <div class="card-body">
-                <div class="form-group">
+                <div class="required">
                   <label for="banner_name">Banner name</label>
                   {{ form.banner_name }}
-                </div>
-                {% if messages %}
-                {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
-                  {{ message }}
-                </div>
-                {% endfor %}
-                {% endif %}
-                <div class="form-group">
+                  {{form.errors.banner_name}}
+                </div><br>
+                <div class="required">
                   <label for="banner_path">Banner Path</label>
                   {{ form.banner_path }}
-                </div>
-                
+                </div><br>
                 <div class="form-check">
                   <label class="form-check-label" for="status">Check me out</label>
                   {{ form.status }}
@@ -56,6 +55,7 @@
 
               <div class="card-footer">
                 <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{% url 'customAdminPanel:banner' %}"><button type="button" class="btn btn-primary">Cancel</button></a>
               </div>
             </form>
           </div>

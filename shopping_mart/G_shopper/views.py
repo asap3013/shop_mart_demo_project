@@ -62,9 +62,13 @@ def home_page(request):
     products = Product.objects.all().order_by('id')[:3]
     category = Category.objects.all()
     prodcat = ProductCategories.objects.all()
+    userWishlist = UserWishList.objects.all()
+    userwishlistprod = []
+    for i in userWishlist:
+        userwishlistprod.append(i.product_id_id)
     # cms = Cms.objects.all()
     context = {'form': banners, 'obj': products,
-               'total_data': total_data, 'cat': category, 'prodcat': prodcat}
+               'total_data': total_data, 'cat': category, 'prodcat': prodcat,'wishlist':userwishlistprod}
     return render(request, 'register/home.html', context)
 
 

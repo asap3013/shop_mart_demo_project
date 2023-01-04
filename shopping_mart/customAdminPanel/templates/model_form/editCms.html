@@ -2,7 +2,12 @@
 
 {% block content %}
 {% load static %}
-
+<style>
+    .required::before {
+      content:" *";
+      color: red;
+    }
+  </style>
 <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
 <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
 <div align="center">
@@ -41,23 +46,23 @@
                                 <!-- form start -->
 
                                 <div class="card-body">
-                                    <div class="form-group">
+                                    <div class="required">
                                         <label for="banner_name">Title</label>
                                         {{ form.title }}
                                       </div>
-                                      <div class="form-group">
+                                      <div class="required">
                                         <label for="Content" >content</label><br>
                                         {{ form.content }}
                                       </div>
-                                      <div class="form-group">
+                                      <div class="required">
                                         <label  for="meta_title">Meta title</label><br>
                                         {{ form.meta_title }}
                                       </div>
-                                      <div class="form-group">
+                                      <div class="required">
                                         <label for="meta_description">Meta Description</label><br>
                                         {{ form.meta_description }}
                                       </div>
-                                      <div class="form-group">
+                                      <div class="required">
                                         <label for="meta_keywords">Meta Keywords</label><br>
                                         {{ form.meta_keywords }}
                                       </div>
@@ -66,6 +71,7 @@
 
                                 <div class="card-footer">
                                     <button type="submit" class="btn btn-primary">Submit</button>
+                                    <a href="{% url 'customAdminPanel:cms' %}"><button type="button" class="btn btn-primary">Cancel</button></a>
                                 </div>
                             </div>
                         </div>

@@ -1,6 +1,12 @@
 {% extends 'starter.html' %}
 
 {% block content %}
+<style>
+  .required::before {
+    content:" *";
+    color: red;
+  }
+</style>
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <section class="content-header">
@@ -35,15 +41,15 @@
             <form action="{% url 'customAdminPanel:productAttributesAssoc_form' %}" method="post" enctype="multipart/form-data">
               {% csrf_token %}
               <div class="card-body">
-                <div class="form-group">
+                <div class="form-group required">
                   <label for="product id">product id</label>
                   {{ form.product_id }}
                 </div>
-                <div class="form-group">
+                <div class="form-group required">
                   <label for="product_attribute_id">Attribute id</label>
                   {{ form.product_attribute_id }}
                 </div>
-                <div class="form-check">
+                <div class="form-check required">
                   <label class="form-check-label" for="product_attribute_value">Attribute value</label>
                   {{ form.product_attribute_value }}
                 </div>
@@ -52,6 +58,7 @@
 
               <div class="card-footer">
                 <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{% url 'customAdminPanel:productAttributesAssoc' %}"><button type="button" class="btn btn-primary">Cancel</button></a>
               </div>
             </form>
           </div>

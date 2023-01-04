@@ -1,6 +1,12 @@
 {% extends 'starter.html' %}
 
 {% block content %}
+<style>
+    .required::before {
+      content:" *";
+      color: red;
+    }
+  </style>
 <div align="center">
     <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
@@ -37,11 +43,11 @@
                                 <!-- form start -->
 
                                 <div class="card-body">
-                                    <div class="form-group">
+                                    <div class="required">
                                         <label for="banner_name">Banner name</label>
                                         {{ form.banner_name }}
                                     </div>
-                                    <div class="form-group">
+                                    <div class="required">
                                         <label for="banner_path">Banner Path</label>
                                         {{ form.banner_path }}
                                         <!-- <div class="input-group">
@@ -60,6 +66,8 @@
 
                                 <div class="card-footer">
                                     <button type="submit" class="btn btn-primary">Submit</button>
+                                    <a href="{% url 'customAdminPanel:banner' %}"><button type="button"
+                                            class="btn btn-primary">Cancel</button></a>
                                 </div>
                             </div>
                         </div>

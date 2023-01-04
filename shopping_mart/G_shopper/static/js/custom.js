@@ -135,6 +135,8 @@ $(document).on("click", ".add-wishlist", function () {
     success: function (res) {
       if (res.bool == true) {
         _vm.addClass("disabled").removeClass("add-wishlist");
+        // $(".add-wishlist").css("display", "block");
+
       }
     },
   });

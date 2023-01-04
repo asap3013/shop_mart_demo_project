@@ -516,11 +516,17 @@
                                 <div class="choose">
                                     {% if user.is_authenticated %}
                                     <ul class="nav nav-pills nav-justified">
-                                        <li><button class="btn btn-default add-wishlist" data-product="{{prod.id}}">
-                                                Add to wishlist</button></li>
+                                        {% if prod.id in wishlist %}
+                                        <li><button class="btn btn-default disabled wishlistbtn" data-product="{{prod.id}}">
+                                            Add to wishlist</button></li>
+                                       
                                         {% else %}
-                                        <li><button class="btn btn-default disabled" data-product="{{prod.id}}">
-                                                Add to wishlist</button></li>
+                                        <li><button class="btn btn-default add-wishlist  wishlistbtn" data-product="{{prod.id}}">
+                                            Add to wishlist</button></li>
+                                        {% endif %}
+                                    {% else %}
+                                    <li><button class="btn btn-default disabled wishlistbtn" data-product="{{prod.id}}">
+                                        Add to wishlist</button></li>
                                     </ul>
                                     {% endif %}
                                 </div>

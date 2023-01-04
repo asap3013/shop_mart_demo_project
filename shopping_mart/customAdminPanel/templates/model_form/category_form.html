@@ -1,6 +1,12 @@
 {% extends 'starter.html' %}
 
 {% block content %}
+<style>
+  .required::before {
+    content:" *";
+    color: red;
+  }
+</style>
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <section class="content-header">
@@ -31,14 +37,14 @@
             <form action="{% url 'customAdminPanel:category_form' %}" method="post" enctype="multipart/form-data">
               {% csrf_token %}
               <div class="card-body">
-                <div class="form-group">
+                <div class="required">
                   <label for="name">category name</label>
                   {{ form.name }}
-                </div>
-                <div class="form-group">
+                </div><br>
+                <div class="required">
                   <label for="parent_id">Parent Id</label>
                   {{ form.parent_id }}
-                </div>
+                </div><br>
                 <!-- <div class="form-group">
                     <label for="parent_id">created by</label>
                     {{ form.created_by }}
@@ -56,6 +62,7 @@
 
               <div class="card-footer">
                 <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{% url 'customAdminPanel:category' %}"><button type="button" class="btn btn-primary">Cancel</button></a>
               </div>
             </form>
           </div>

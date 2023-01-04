@@ -1,6 +1,12 @@
 {% extends 'starter.html' %}
 
 {% block content %}
+<style>
+    .required::before {
+      content:" *";
+      color: red;
+    }
+  </style>
 <div align="center">
     <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
@@ -37,11 +43,11 @@
                                 <!-- form start -->
 
                                 <div class="card-body">
-                                    <div class="form-group">
+                                    <div class="form-group required">
                                         <label for="code">code</label>
                                         {{ form.code }}
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group required ">
                                         <label for="percent_off">Percent off</label>
                                         {{ form.percent_off }}
                                         <!-- <div class="input-group">
@@ -51,7 +57,7 @@
                               </div>
                             </div> -->
                                     </div>
-                                    <div class="form-check">
+                                    <div class="form-check required">
                                         <label  for="no_of_user">No of user</label>
                                         {{ form.no_of_user }}
                                     </div>
@@ -60,6 +66,7 @@
 
                                 <div class="card-footer">
                                     <button type="submit" class="btn btn-primary">Submit</button>
+                                    <a href="{% url 'customAdminPanel:coupon' %}"><button type="button" class="btn btn-primary">Cancel</button></a>
                                 </div>
                             </div>
                         </div>

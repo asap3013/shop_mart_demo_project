@@ -1,6 +1,12 @@
 {% extends 'starter.html' %}
 
 {% block content %}
+<style>
+  .required::before {
+    content:" *";
+    color: red;
+  }
+</style>
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <section class="content-header">
@@ -35,23 +41,23 @@
             <form action="" method="post" enctype="multipart/form-data">
               {% csrf_token %}
               <div class="card-body">
-                <div class="form-group">
+                <div class="form-group required">
                   <label for="name">Name</label>
                   {{ form.name }}
                 </div>
-                <div class="form-group">
+                <div class="form-group required">
                   <label for="sku">Sku</label>
                   {{ form.sku }}
                 </div>
-                <div class="form-check">
+                <div class="form-check required">
                   <label class="form-check-label" for="short_description">Short description</label>
                   {{ form.short_description }}
                 </div>
-                <div class="form-check">
+                <div class="form-check required">
                   <label class="form-check-label" for="long_description">Long description</label>
                   {{ form.long_description }}
                 </div>
-                <div class="form-group">
+                <div class="form-group required">
                   <label for="price">Price</label>
                   {{ form.price }}
                 </div>
@@ -59,19 +65,19 @@
                   <label for="status">Status</label>
                   {{ form.status }}
                 </div>
-                <div class="form-group">
+                <div class="form-group required">
                   <label for="quantity">Quantity</label>
                   {{ form.quantity }}
                 </div>
-                <div class="form-group">
+                <div class="form-group required">
                   <label for="meta_title">Meta title</label>
                   {{ form.meta_title }}
                 </div>
-                <div class="form-group">
+                <div class="form-group required">
                   <label for="meta_description">Meta description</label>
                   {{ form.meta_description }}
                 </div>
-                <div class="form-group">
+                <div class="form-group required">
                   <label for="meta_keywords">Meta keywords</label>
                   {{ form.meta_keywords }}
                 </div>
@@ -79,22 +85,23 @@
                   <label for="is_featured">Is featured</label>
                   {{ form.is_featured }}
                 </div>
-                <div class="form-group prod_img">
+                <div class="form-group prod_img required">
                   <label for="image_path">image</label>
-                  <button type="button" class="fa fa-trash" id="deleteImage"></button>
+                  <button type="button" class="fa fa-trash required" id="deleteImage"></button>
                   {{ form1.image_path }}
-                  <button type="button" class="fa fa-plus" id="addMoreImage">Add image</button>
+                  <button type="button" class="fa fa-plus required" id="addMoreImage">Add image</button>
                 </div>
-                <div class="form-group">
+                <div class="form-group required">
                   <label for="product_attribute_id">Attribute id</label>
                   {{ form2.product_attribute_id }}
                 </div>
-                <div class="form-group">
+                <div class="form-group required">
                   <label for="product_attribute_value">Attribute value</label>
                   {{ form2.product_attribute_value }}
                 </div>
               <div class="card-footer">
                 <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{% url 'customAdminPanel:product' %}"><button type="button" class="btn btn-primary">Cancel</button></a>
               </div>
             </form>
           </div>

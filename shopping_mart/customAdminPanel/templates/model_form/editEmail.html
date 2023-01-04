@@ -2,7 +2,12 @@
 
 {% block content %}
 {% load static %}
-
+<style>
+    .required::before {
+      content:" *";
+      color: red;
+    }
+  </style>
 <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
 <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
 <div align="center">
@@ -64,6 +69,7 @@
 
                                 <div class="card-footer">
                                     <button type="submit" class="btn btn-primary">Submit</button>
+                                    <a href="{% url 'customAdminPanel:EditEmail' %}"><button type="button" class="btn btn-primary">Cancel</button></a>
                                 </div>
                             </div>
                         </div>

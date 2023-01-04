@@ -1,6 +1,12 @@
 {% extends 'starter.html' %}
 
 {% block content %}
+<style>
+  .required::before {
+    content:" *";
+    color: red;
+  }
+</style>
 <form action="" method="post" enctype="multipart/form-data">
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
@@ -58,6 +64,7 @@
 
               <div class="card-footer">
                 <button type="submit" class="btn btn-primary">Submit</button>
+                
               </div>
             </form>
           </div>

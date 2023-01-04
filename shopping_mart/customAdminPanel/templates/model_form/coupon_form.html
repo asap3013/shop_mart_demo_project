@@ -1,6 +1,12 @@
 {% extends 'starter.html' %}
 
 {% block content %}
+<style>
+  .required::before {
+    content:" *";
+    color: red;
+  }
+</style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
@@ -32,15 +38,15 @@
             <form action="{% url 'customAdminPanel:coupon_form' %}" method="post" enctype="multipart/form-data">
               {% csrf_token %}
               <div class="card-body">
-                <div class="form-group">
+                <div class="required">
                   <label for="code">code</label>
                   {{ form.code }}
                 </div>
-                <div class="form-group">
+                <div class="required">
                   <label for="percent_off">Percent Off</label>
                   {{ form.percent_off }}
                 </div>
-                <div class="form-check">
+                <div class="required">
                   <label class="form-check-label" for="no_of_user">No of user</label>
                   {{ form.no_of_user }}
                 </div>
@@ -49,6 +55,7 @@
 
               <div class="card-footer">
                 <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{% url 'customAdminPanel:coupon' %}"><button type="button" class="btn btn-primary">Cancel</button></a>
               </div>
             </form>
           </div>
