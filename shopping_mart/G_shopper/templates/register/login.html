@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'based.html' %}
 
 {% block content %}
 
@@ -14,10 +14,10 @@
                     {% endfor %}
                     <form action="{%url 'G_shopper:login' %}" method="post" name="Login" ,value="Login">
                         {% csrf_token %}
-                        <label for="usernameLogin" name="Login" ,value="Login" id="username">username</label>
+                        <label for="usernameLogin" name="Login" ,value="Login" id="username">Email</label>
                         {{ form.username }}
                         {{ form.errors.username }}
-                        <label for="passwordlogin" name="Login" ,value="Login" id="password1">password</label>
+                        <label for="passwordlogin" name="Login" ,value="Login" id="password1">Password</label>
                         {{ form.password1 }}
                         {{ form.errors.password1 }}
                         <button type="submit" class="btn btn-default" name="Login" ,value="Login">Login</button>

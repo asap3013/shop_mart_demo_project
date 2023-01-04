@@ -84,14 +84,14 @@
                             </div>
 
                             <div class="btn-group">
-                                <button type="button" class="btn btn-default dropdown-toggle india"
+                                <!-- <button type="button" class="btn btn-default dropdown-toggle india"
                                     data-toggle="dropdown">
                                     Rupees
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li><a href="#">Rupees</a></li>
-                                </ul>
+                                </ul> -->
                             </div>
                         </div>
                     </div>
@@ -423,8 +423,8 @@
                             <h2>Price Range</h2>
                             <div class="well text-center" id="price_range">
                                 <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="1000"
-                                    data-slider-step="5" data-slider-value="[0,1000]" id="sl2"><br />
-                                <b class="pull-left">$ 0</b> <b class="pull-right">$ 1000</b> <br>
+                                    data-slider-step="5" data-slider-value="[0,5000]" id="sl2"><br />
+                                <b class="pull-left">$ 0</b> <b class="pull-right">$ 5000</b> <br>
 
                             </div>
                         </div>
@@ -518,7 +518,7 @@
                                     <ul class="nav nav-pills nav-justified">
                                         {% if prod.id in wishlist %}
                                         <li><button class="btn btn-default disabled wishlistbtn" data-product="{{prod.id}}">
-                                            Add to wishlist</button></li>
+                                            Added to wishlist</button></li>
                                        
                                         {% else %}
                                         <li><button class="btn btn-default add-wishlist  wishlistbtn" data-product="{{prod.id}}">

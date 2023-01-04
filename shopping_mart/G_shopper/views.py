@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
 from django.contrib import messages
 from .form import *
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from customAdminPanel.models import *
 from django.http import HttpResponse, JsonResponse
@@ -24,7 +25,7 @@ import stripe
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 
-User = settings.AUTH_USER_MODEL
+# User = settings.AUTH_USER_MODEL
 
 # Create your views here.
 # def login(request):
@@ -35,11 +36,13 @@ def userLogin(request):
     # if request.user.is_authenticated:
     #     return redirect('/')
     if request.method == 'POST':
-        username = request.POST.get('username')
+        email = request.POST.get('username')
         password = request.POST.get('password1')
-        if username and password:
-            user = authenticate(request, username=username, password=password)
-
+        # usersobj = User.objects.filter(email=username).first()
+        # emails = usersobj.email
+        if email and password:
+            breakpoint()
+            user = authenticate(username=User.objects.get(email=email).username,password=password)
             if user is not None:
                 login(request, user)
                 return redirect('G_shopper:home')
@@ -54,8 +57,8 @@ def userLogin(request):
 #     return render(request, 'base.html', {})
 
 
-@csrf_exempt
-@login_required(redirect_field_name='login', login_url='/login')
+# @csrf_exempt
+# @login_required(redirect_field_name='login', login_url='/login')
 def home_page(request):
     banners = Banners.objects.all()
     total_data = Product.objects.count()
@@ -553,13 +556,9 @@ def tracking_order(request):
 
 def check_order(request):
 
-    # email_id = request.POST.get('email')
     order_id = request.POST.get('order_id')
     print(order_id)
-    # order = int(order_id)
-    # user_email = request.user.email
-    user_order = UserOrder.objects.filter(
-        id=order_id).values('id', 'status').first()
+    user_order = UserOrder.objects.filter(id=order_id).values('id', 'status').first()
     if user_order:
         # if int(order_id) == user_order['id']:
         status = user_order['status']

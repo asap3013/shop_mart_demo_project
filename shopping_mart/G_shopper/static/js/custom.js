@@ -168,7 +168,7 @@ $(document).on("click", ".apply", function () {
       var final_amt = Math.round(final_amt).toFixed(2);
       document.getElementById("ftotal").innerHTML = final_amt;
       document.getElementById("msg").innerHTML =
-        data["percent_off"] + "% applied";
+        'Rs'+ dist_amt + " Saved   ";
     },
   });
 });
@@ -307,6 +307,7 @@ $(document).on("click", ".categorie", function () {
     },
   });
 });
+
 
 $(document).on("click", ".slider-track", function () {
   // var category = document.getElementsByClassName('categories_')
