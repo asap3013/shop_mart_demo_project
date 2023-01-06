@@ -72,7 +72,7 @@
                         </div>
                         <div class="btn-group pull-right">
                             <div class="btn-group">
-                                <button type="button" class="btn btn-default dropdown-toggle india"
+                                <!-- <button type="button" class="btn btn-default dropdown-toggle india"
                                     data-toggle="dropdown">
                                     INDIA
                                     <span class="caret"></span>
@@ -80,7 +80,7 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="#">Mumbai</a></li>
                                     <li><a href="#">Delhi</a></li>
-                                </ul>
+                                </ul> -->
                             </div>
 
                             <div class="btn-group">
@@ -146,9 +146,13 @@
                                                 Cart(<span
                                                     class="cart-list">{{request.session.cartdata|length}}</span>)</a>
                                         </li>
+                                        {% if user.is_authenticated %}
                                         <li><a href="{% url 'G_shopper:loggedout' %}"><i class="fa fa-lock"></i>
-                                                Logout</a>
-                                        </li>
+                                                Logout</a></li>
+                                        {% else %}
+                                        <li><a href="{% url 'G_shopper:login' %}"><i class="fa fa-lock"></i>
+                                            Log In</a></li>
+                                        {% endif %}
                                     </ul>
                                 </div>
                             </div>
@@ -423,8 +427,8 @@
                             <h2>Price Range</h2>
                             <div class="well text-center" id="price_range">
                                 <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="1000"
-                                    data-slider-step="5" data-slider-value="[0,5000]" id="sl2"><br />
-                                <b class="pull-left">$ 0</b> <b class="pull-right">$ 5000</b> <br>
+                                    data-slider-step="5" data-slider-value="[0,1000]" id="sl2"><br />
+                                <b class="pull-left" id="min_slide">$ 0</b> <b class="pull-right" id="max_slide">$ 1000</b> <br>
 
                             </div>
                         </div>

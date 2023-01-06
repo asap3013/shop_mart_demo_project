@@ -5,7 +5,9 @@
 <script src="/static/js/custom.js"></script>
 <main class="container my-4">
     <!-- Featured Products -->
+    {% if count > 0 %}
     <h3 class="my-4 border-bottom pb-1">Wishlist</h3>
+    
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -17,6 +19,9 @@
             </tr>
         </thead>
         <tbody>
+          <!-- {{count}} -->
+         
+
             {% for wl in wlist %}
             <!-- {{wl.product_id.id}} -->
             <tr>
@@ -94,10 +99,15 @@
                         </form>
                     </td>
                 
-            </tr>
+            </tr> 
             {% endfor %}
+                  
+            
         </tbody>
     </table>
+    {% else %}    
+            <h2>Your Wishlist Is Empty</h2> 
+            {% endif %}
 </main>
 
 {% endblock %}

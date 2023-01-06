@@ -38,10 +38,7 @@ def userLogin(request):
     if request.method == 'POST':
         email = request.POST.get('username')
         password = request.POST.get('password1')
-        # usersobj = User.objects.filter(email=username).first()
-        # emails = usersobj.email
         if email and password:
-            breakpoint()
             user = authenticate(username=User.objects.get(email=email).username,password=password)
             if user is not None:
                 login(request, user)
@@ -97,31 +94,76 @@ def logoutuser(request):
     return render(request, 'register/login.html', {'form': obj})
 
 
+# @csrf_exempt
+# @login_required(redirect_field_name='login', login_url='/login')
+# def category_filter(request):
+#     breakpoint()
+#     category_id = request.GET.get('category_id')
+#     request.session['category'] = category_id
+#     product_id = ProductCategories.objects.filter(
+#         category_id=category_id).values('product_id')
+#     product = Product.objects.filter(
+#         pk=product_id[0]['product_id']).values('name', 'price')
+#     product_img = ProductImages.objects.filter(
+#         product_id=product_id[0]['product_id']).values('image_path')
+
+#     return JsonResponse({'product': list(product), 'product_img': list(product_img)})
+
+
+# @csrf_exempt
+# @login_required(redirect_field_name='login', login_url='/login')
+# def price_filter(request):
+#     min_value = request.GET.get('min_price')
+#     max_value = request.GET.get('max_price')
+#     min_price = int(min_value)
+#     max_price = int(max_value)
+#     product = Product.objects.filter(price__gte=min_price, price__lte=max_price).values(
+#         'id', 'name', 'price', 'productimages')
+#     product_img = ProductImages.objects.filter().values('product_id_id', 'image_path')
+#     nme = []
+#     price = []
+#     image = []
+#     prodid = []
+#     for i in product:
+#         for j in product_img:
+#             if int(i['id']) == int(j['product_id_id']):
+#                 if j['product_id_id'] not in prodid:
+#                     prodid.append(j['product_id_id'])
+#                     image.append(j['image_path'])
+#                     continue
+#     for i in product:
+#         if i['name'] not in nme:
+#             nme.append(i['name'])
+#             continue
+#     for i in product:
+#         if i['price'] not in price:
+#             price.append(i['price'])
+#             continue
+#     prods = [nme, price, image]
+#     return JsonResponse({'product': list(prods)})
+
+
 @csrf_exempt
 @login_required(redirect_field_name='login', login_url='/login')
-def category_filter(request):
+def filter(request):
+    breakpoint()
     category_id = request.GET.get('category_id')
     request.session['category'] = category_id
     product_id = ProductCategories.objects.filter(
         category_id=category_id).values('product_id')
-    product = Product.objects.filter(
-        pk=product_id[0]['product_id']).values('name', 'price')
-    product_img = ProductImages.objects.filter(
-        product_id=product_id[0]['product_id']).values('image_path')
-
-    return JsonResponse({'product': list(product), 'product_img': list(product_img)})
-
-
-@csrf_exempt
-@login_required(redirect_field_name='login', login_url='/login')
-def price_filter(request):
+    # product = Product.objects.filter(
+    #     pk=product_id[0]['product_id']).values('name', 'price')   
     min_value = request.GET.get('min_price')
     max_value = request.GET.get('max_price')
     min_price = int(min_value)
     max_price = int(max_value)
+    product_img = ProductImages.objects.filter(
+        product_id=product_id[0]['product_id']).values('product_id_id','image_path')
     product = Product.objects.filter(price__gte=min_price, price__lte=max_price).values(
         'id', 'name', 'price', 'productimages')
-    product_img = ProductImages.objects.filter().values('product_id_id', 'image_path')
+    # product_imgs = ProductImages.objects.filter().values('product_id_id', 'image_path')
+
+    
     nme = []
     price = []
     image = []
@@ -142,8 +184,7 @@ def price_filter(request):
             price.append(i['price'])
             continue
     prods = [nme, price, image]
-    return JsonResponse({'product': list(prods)})
-
+    return JsonResponse({'product': list(product), 'product_img': list(product_img),'prods':prods})
 
 class UserRegister(View):
     def get(self, request):
@@ -281,6 +322,7 @@ def add_wishlist(request):
     data = {}
     checkw = UserWishList.objects.filter(
         product_id=product, user_id=request.user).count()
+    
     if checkw > 0:
         data = {
             'bool': False
@@ -288,8 +330,7 @@ def add_wishlist(request):
     else:
         wishlist = UserWishList.objects.create(
             product_id=product,
-            user_id=request.user
-        )
+            user_id=request.user)
 
         data = {
             'bool': True,
@@ -311,7 +352,9 @@ class DeleteWishlist(View):
 @login_required(redirect_field_name='login', login_url='/login')
 def my_wishlist(request):
     wlist = UserWishList.objects.filter(user_id=request.user.id).order_by('id')
-    return render(request, 'wishlist.html', {'wlist': wlist})
+    count = wlist.count()
+    context = {'wlist': wlist,'count':count}
+    return render(request, 'wishlist.html', context)
 
 # def deletewishlist(request, id):
 #     user=request.user.id
@@ -555,7 +598,6 @@ def tracking_order(request):
 
 
 def check_order(request):
-
     order_id = request.POST.get('order_id')
     print(order_id)
     user_order = UserOrder.objects.filter(id=order_id).values('id', 'status').first()
@@ -612,6 +654,30 @@ def my_order(request):
     context = {'order_data': c}
     return render(request, 'my_order.html', context)
 
+# def detailed_order(request,id):
+    
+    # return render(request, 'order_detailed_page.html', context)
+
+class detailed_order(View):
+    """_summary_
+
+    Args:
+        View (_type_): _description_
+    """
+
+    def get(self, request, order_id):
+        order_data = OrderDetails.objects.filter(order_id=order_id).first()
+        user_order = UserOrder.objects.filter(id=order_id).first()
+        image = ProductImages.objects.filter(product_id=order_data.product_id_id)
+        # context = {'form': order_data,'image':image}
+        return render(request, "order_detailed_page.html", {'form': order_data,'image':image,'order':user_order})
+
+    def post(self, request, order_id):
+        order_data = OrderDetails.objects.filter(order_id=order_id).first()
+        image = ProductImages.objects.filter(product_id=order_data.product_id_id)
+        return redirect(request,'G_shopper:detailed_order')
+
+
 
 @csrf_exempt
 @login_required(redirect_field_name='login', login_url='/login')
@@ -660,3 +726,6 @@ def load_more_data(request):
     data = Product.objects.all().order_by('id')[offset:offset+limit]
     t = render_to_string('register/products_list.html', {'data': data})
     return JsonResponse({'data': t})
+
+
+

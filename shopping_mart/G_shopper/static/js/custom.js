@@ -205,23 +205,23 @@ function handleSubmit() {
 }
 
 $(document).on("click", ".categorie", function () {
+  debugger;
   var _vm = $(this);
   var _index = _vm.attr("id");
-  let option = document.getElementById("sl2").value;
-  let value = option.split(",");
-  let min_price = value[0];
-  let max_price = value[1];
+  var min = $('#sl2').data('slider-min');
+  var max = $('#sl2').data('slider-max');
+  let min_price = min;
+  let max_price = max;
   console.log(min_price);
   console.log(max_price);
   console.log(_index);
-  // var category = document.getElementsByClassName('categories_'+ _index);
-  // console.log(category)
   $.ajax({
     method: "GET",
-    url: "/category",
+    url: "/filter",
     data: { category_id: _index, min_price: min_price, max_price: max_price },
     dataType: "json",
     success: function (data) {
+      debugger;
       var image = data.product_img[0].image_path;
       var url = "/media/".concat(image);
       console.log(data.product.length);
@@ -312,6 +312,7 @@ $(document).on("click", ".categorie", function () {
 $(document).on("click", ".slider-track", function () {
   // var category = document.getElementsByClassName('categories_')
   // console.log(category)
+  debugger;
   let option = document.getElementById("sl2").value;
   let value = option.split(",");
   let min_price = value[0];
@@ -320,7 +321,7 @@ $(document).on("click", ".slider-track", function () {
   console.log(max_price);
   $.ajax({
     method: "GET",
-    url: "/price",
+    url: "/filter",
     data: {
       min_price: min_price,
       max_price: max_price,

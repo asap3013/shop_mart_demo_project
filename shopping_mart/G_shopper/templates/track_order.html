@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<h1 style="text-align:center;">Track Your Order</h1> <br>
 <div class="content-wrapper">
     <section class="content">
         <div class="container-fluid">
@@ -16,6 +16,8 @@
                             <h4>Order Id</h4>
                             <input type="number" name="order_id" class="order_id" placeholder="Enter Order Id"> <br><br>
                             <button type="submit" class="btn btn-primary" id="order_trace">Submit</button>
+                            <a href="{% url 'G_shopper:home' %}"><button type="button" class="btn btn-primary">Cancel</button></a>
+
                             <!-- {% for message in messages  %}
 								<b>{{message}}</b>
 							{% endfor %} -->

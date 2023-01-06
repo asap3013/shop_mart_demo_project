@@ -21,31 +21,25 @@
                               <thead>
                                 <tr>
                                   <!-- <th>id</th> -->
-                                  <th>order_id</th>
-                                  <!-- <th>Image</th> -->
+                                  <th>Order id</th>
+                                  <th>Image</th>
                                   <th>Product Name</th>
-                                  <!-- <th>Product Price</th> -->
-                                  <!-- <th>Quantity</th> -->
-                                  <th>Details</th>
-
+                                  <th>Final Price</th>
+                                  <th>Quantity</th>
                                   <!-- <th scope="col" colspan="2">Action</th> -->
                                 </tr>
                               </thead>
                               <tbody>
-                                {% for i in order_data %}
                                 <tr>
                                   <!-- <td>{{i.id}}</td> -->
-                                  <td>{{i.order_id}}</td>
+                                  <td>{{form.order_id}}</td>
+                                  {% for i in image|slice:":1" %}
+                                  <td><img src="{{ i.image_path.url }}" style="height: 30px" width="30px" alt=""></td>
+                                  {% endfor %}
+                                  <td>{{form.product_id}}</td> 
+                                  <td>{{order.grand_total}}</td>
+                                  <td>{{form.quantity}}</td>
                                   
-                                  <!-- <td><img src="{{ i.image_path.url }}" style="height: 30px" width="30px" alt=""></td> -->
-                                  
-                                  <td>{{i.product_id}}</td> 
-                                  <!-- <td>{{i.amount}}</td> -->
-                                  <!-- <td>{{i.quantity}}</td> -->
-                                  <td>
-                                    <a href="{% url 'G_shopper:detailed_order' i.order_id%}"><button
-                                            class="btn btn-primary btn-sm">View Details</button></a>
-                                </td>
                                   
 
                                   <!-- <td>
@@ -78,9 +72,14 @@
                                     </form>
                                   </td>                     -->
                                 </tr>
-                                {% endfor %}
                               </tbody>
                             </table>
+                            <h3>Billing Address</h3>
+                            <div>{{order.billing_address_1}} {{order.billing_address_2}} {{order.billing_city}} {{order.billing_state}} {{order.billing_zipcode}}</div>
+                            <h3>Shipping Address</h3>
+                            <div>{{order.shipping_address_1}} {{order.shipping_address_2}} {{order.shipping_city}} {{order.shipping_state}} {{order.shipping_zipcode}}</div>
+                            <h4>Status</h4>
+                            <div>{{order.status}}</div>
                           </div>
                     </div>
                 </div>
