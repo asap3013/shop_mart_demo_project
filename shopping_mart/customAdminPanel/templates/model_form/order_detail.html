@@ -1,7 +1,7 @@
 {% extends 'starter.html' %}
 
 {% block content %}
-
+<h1 style="text-align:center;">My Order's</h1> <br>
 <div class="content-wrapper">
     <section class="content">
         <div class="container-fluid">
@@ -9,45 +9,40 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="col-sm-12">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">orderDetail</li>
-                            </ol>
+                          
                         </div>
-                        <!-- <form action="{% url 'customAdminPanel:orderDetail_form' %}">
-                             <button  type="submit" class="btn btn-primary btn-block">Sign Out</button> 
+                        <!-- <form action="{% url 'customAdminPanel:userOrder_form' %}">
+                            <button  type="submit" class="btn btn-primary btn-block">Sign Out</button>
                             <button style="float: right; width: 150px; height: 40px;" type="submit"
-                                class="btn btn-block btn-primary">Add Email</button>
+                                class="btn btn-block btn-primary">Add</button>
                         </form> -->
                         <div class="card-body">
                             <table id="example2" class="table table-bordered table-hover">
                               <thead>
                                 <tr>
+                                  <!-- <th>id</th> -->
                                   <th>Order id</th>
+                                  <th>Image</th>
                                   <th>Product Name</th>
-                                  <!-- <th>Quantity</th>
-                                  <th>Amount</th> -->
-                                  <th>View Detail</th>
+                                  <th>Final Price</th>
+                                  <th>Quantity</th>
+                                  <!-- <th scope="col" colspan="2">Action</th> -->
                                 </tr>
                               </thead>
                               <tbody>
-                                {% for i in order_data %}
                                 <tr>
-                                  <!-- <td>{{ban.id}}</td> -->
-                                  <td>{{i.order_id}}</td>
-                                  <td>{{i.product_id}}</td>
-                                  <!-- <td><img src="{{ i.image_path.url }}" style="height: 30px" width="30px" alt=""></td>
-                                  <td>{{i.quantity}}</td>
-                                  <td>{{i.amount}}</td>  -->
-                                  <td>
-                                    <a href="{% url 'customAdminPanel:detail_order' i.order_id %}"><button class="btn btn-default btn-sm">Details</button></a>
-                                  </td>
-                                  <!-- <td>{{i.coupon_id}}</td>  -->
-                                  <!-- <td>
-                                    
-                                  </td>
+                                  <!-- <td>{{i.id}}</td> -->
+                                  <td>{{form.order_id}}</td>
+                                  {% for i in image|slice:":1" %}
+                                  <td><img src="{{ i.image_path.url }}" style="height: 30px" width="30px" alt=""></td>
+                                  {% endfor %}
+                                  <td>{{form.product_id}}</td> 
+                                  <td>{{order.grand_total}}</td>
+                                  <td>{{form.quantity}}</td>
+                                  
+                                  
 
-                                  <td>
+                                  <!-- <td>
                                     <button type="submit" value="Delete" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deletemodal">
                                       Delete
                                     </button>
@@ -77,9 +72,14 @@
                                     </form>
                                   </td>                     -->
                                 </tr>
-                                {% endfor %}
                               </tbody>
                             </table>
+                            <h3>Billing Address</h3>
+                            <div>{{order.billing_address_1}} {{order.billing_address_2}} {{order.billing_city}} {{order.billing_state}} {{order.billing_zipcode}}</div>
+                            <h3>Shipping Address</h3>
+                            <div>{{order.shipping_address_1}} {{order.shipping_address_2}} {{order.shipping_city}} {{order.shipping_state}} {{order.shipping_zipcode}}</div>
+                            <h4>Status</h4>
+                            <div>{{order.status}}</div>
                           </div>
                     </div>
                 </div>
@@ -88,28 +88,4 @@
     </section>
 </div>
 
-
-<!-- <script type="text/javascript">
-  $(document).ready(function () {
-    $("ul li a").click(function(){  
-      // $('a.active').each(function(){
-      $('li a').find(".active").removeClass('active');
-      $(this).parent().addClass('active');
-    });
-  });
-</script> -->
-{% endblock %}
-
-{% block script %}
-<script>
-    $(document).ready(function () {
-        setNavBar()
-    });
-
-    // set navebar
-    function setNavBar() {
-        $(".nav-link").removeClass("active")
-        $(".orderDetail-menu").addClass("active")
-    }
-</script>
 {% endblock %}

@@ -493,6 +493,25 @@ def orderDetail_check(request):
     return render(request, "orderDetail.html", context)
 
 
+class detail_order(View):
+    """_summary_
+
+    Args:
+        View (_type_): _description_
+    """
+
+    def get(self, request, order_id):
+        order_data = OrderDetails.objects.filter(order_id=order_id).first()
+        user_order = UserOrder.objects.filter(id=order_id).first()
+        image = ProductImages.objects.filter(product_id=order_data.product_id_id)
+        # context = {'form': order_data,'image':image}
+        return render(request, "model_form/order_detail.html", {'form': order_data,'image':image,'order':user_order})
+
+    def post(self, request, order_id):
+        order_data = OrderDetails.objects.filter(order_id=order_id).first()
+        image = ProductImages.objects.filter(product_id=order_data.product_id_id)
+        return redirect(request,'G_shopper:detail_order')
+
 class PaymentGatewayField(LoginRequiredMixin, View):
     """_summary_
 

@@ -38,6 +38,7 @@ urlpatterns = [
     path("editEmail/<int:id>" ,views.EditEmail.as_view(),name="EditEmail"),
     path('orderDetail/',views.orderDetail_check, name='orderDetail'),
     path('orderDetail_form/',views.OrderDetailField.as_view(),name='orderDetail_form'),
+    path('detail_order/<int:order_id>',views.detail_order.as_view(),name='detail_order'),
     path('paymentGateway/',views.paymentGateway_check, name='paymentGateway'),
     path('paymentGateway_form/',views.PaymentGatewayField.as_view(),name='paymentGateway_form'),
     path('product/',views.product_check, name='product'),
