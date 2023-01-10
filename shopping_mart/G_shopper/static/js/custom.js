@@ -15,6 +15,20 @@ $(document).ready(function () {
   // });
 });
 
+$(document).ready(function() {
+setTimeout(function() {
+  $('#success-alert').fadeOut('fast');
+}, 1000);
+});
+
+$(document).ready(function() {
+setTimeout(function() {
+  $('#error-alert').fadeOut('fast');
+}, 1000);
+});
+
+
+
 //add to cart increment and decrement
 function incrementValue(product_id) {
   debugger;
@@ -204,28 +218,48 @@ function handleSubmit() {
   return;
 }
 
-$(document).on("click", ".categorie", function () {
-  debugger;
+$('.categorie').on("click",function(){
+  $(this).addClass("active");
+  $(".active").attr('id')   
   var _vm = $(this);
   var _index = _vm.attr("id");
-  var min = $('#sl2').data('slider-min');
-  var max = $('#sl2').data('slider-max');
-  let min_price = min;
-  let max_price = max;
+  $('#catagory_id').val(_index)
+})
+
+$('.slider-track').on("change",function(){
+  
+})
+
+
+$('.categorie').add('.slider-track').on("click", function () {
+  $(this).addClass("active");
+  $(".active").attr('id')   
+  var _vm = $(this);
+  var _index = _vm.attr("id");
+  console.log(_index)
+  if(_index == undefined){
+    _index = $('#catagory_id').val()
+  }
+  var option = document.getElementById("sl2").value;
+  var value = option.split(",");
+  var min_price = value[0];
+  var max_price = value[1];
+  console.log(min_price);
+  console.log(max_price);
   console.log(min_price);
   console.log(max_price);
   console.log(_index);
   $.ajax({
     method: "GET",
-    url: "/filter",
+    url: "/price",
     data: { category_id: _index, min_price: min_price, max_price: max_price },
     dataType: "json",
     success: function (data) {
-      debugger;
-      var image = data.product_img[0].image_path;
-      var url = "/media/".concat(image);
+      $(this).addClass("active");
       console.log(data.product.length);
       if (data.product.length > 0) {
+        var image = data.product_img[0].image_path;
+        var url = "/media/".concat(image);
         $.each(data, function () {
           $("#cart_data").html(
             ` <div class="col-sm-4" >
@@ -266,7 +300,28 @@ $(document).on("click", ".categorie", function () {
                         </div> `
           );
         });
-      } else {
+      }
+      
+      else if (data.product.length.length > 3) {
+        debugger;
+                $("#cart_data").empty();
+                for (let i = 0; i < data.product[0].length; i++) {
+                  var image = data.product[2][i];
+                  var url = "/media/".concat(image);
+                  {
+                    let item_content =
+                      '<div class="col-sm-4" ><div class="product-image-wrapper"> <div class="single-products"><div class="productinfo text-center"><img src="' +
+                      url +
+                      '" alt="" /><p>' +
+                      data.product[0][i] +
+                      '</p><input type="hidden" class="product-image-{{prod.id}}"value="{{prod.productimages_set.first.image_path.url}"/><th>$ <span class="product-price-{{prod.id}}">' +
+                      data.product[1][i] +
+                      '</span></th><input type="hidden" class="product_id-{{prod.id}}" value="{{prod.id}}"><input type="hidden" class="meta_title-{{prod.id}}" value="{{prod.meta_title}}"><br><button class="btn btn-default add-to-cart" id="{{prod.id}}"><i class="fa fa-shopping-cart addcart"></i>Add to cart</button><div class="cart_quantity_button submitWidget submitWidget-{{prod.id}}"><input type="button" onclick="decrementValue(" value=" - " /><input type="text" id="product-qty-{{prod.id}}" name="quantity" value="1"maxlength="2" max="10" size="1" readonly /><input type="button" onclick="incrementValue()" value="+" /></div> <br><div class="choose"><ul class="nav nav-pills nav-justified"><li><a href="{% url  prod.id %}" value=""><i class="fa fa-plus-square"></i>view product</a></li></ul></div></div></div></div></div>';
+                    $("#cart_data").append(item_content);
+                  }
+                }
+              } 
+      else {
         $.each(data, function () {
           $("#cart_data").html(
             ` <div class="col-sm-4" >
@@ -309,59 +364,61 @@ $(document).on("click", ".categorie", function () {
 });
 
 
-$(document).on("click", ".slider-track", function () {
-  // var category = document.getElementsByClassName('categories_')
-  // console.log(category)
-  debugger;
-  let option = document.getElementById("sl2").value;
-  let value = option.split(",");
-  let min_price = value[0];
-  let max_price = value[1];
-  console.log(min_price);
-  console.log(max_price);
-  $.ajax({
-    method: "GET",
-    url: "/filter",
-    data: {
-      min_price: min_price,
-      max_price: max_price,
-    },
-    dataType: "json",
-    success: function (data) {
-      console.log(data);
-      debugger;
-      // console.log(data.product[0][1])
-      // console.log(data.product[1][0])
-      // console.log(data.product[2][0])
-    //   if (data.product.length.length > 3) {
-        $("#cart_data").empty();
-        for (let i = 0; i < data.product[0].length; i++) {
-          var image = data.product[2][i];
-          var url = "/media/".concat(image);
-          {
-            let item_content =
-              '<div class="col-sm-4" ><div class="product-image-wrapper"> <div class="single-products"><div class="productinfo text-center"><img src="' +
-              url +
-              '" alt="" /><p>' +
-              data.product[0][i] +
-              '</p><input type="hidden" class="product-image-{{prod.id}}"value="{{prod.productimages_set.first.image_path.url}"/><th>$ <span class="product-price-{{prod.id}}">' +
-              data.product[1][i] +
-              '</span></th><input type="hidden" class="product_id-{{prod.id}}" value="{{prod.id}}"><input type="hidden" class="meta_title-{{prod.id}}" value="{{prod.meta_title}}"><br><button class="btn btn-default add-to-cart" id="{{prod.id}}"><i class="fa fa-shopping-cart addcart"></i>Add to cart</button><div class="cart_quantity_button submitWidget submitWidget-{{prod.id}}"><input type="button" onclick="decrementValue(" value=" - " /><input type="text" id="product-qty-{{prod.id}}" name="quantity" value="1"maxlength="2" max="10" size="1" readonly /><input type="button" onclick="incrementValue()" value="+" /></div> <br><div class="choose"><ul class="nav nav-pills nav-justified"><li><a href="{% url  prod.id %}" value=""><i class="fa fa-plus-square"></i>view product</a></li></ul></div></div></div></div></div>';
-            $("#cart_data").append(item_content);
-          }
-        }
-    //   } 
-    //   else {
-    //     $("#cart_data").empty();
-    //     {
-    //       let item_content =
-    //         '<div class="col-sm-4" ><div class="product-image-wrapper"> <div class="single-products"><div class="productinfo text-center"><img src="" alt="" /><p>`<b>Product Not Found</b>`</p></div></div></div></div></div>';
-    //       $("#cart_data").append(item_content);
-    //     }
-    //   }
-    },
-  });
-});
+// $(document).on("click", ".slider-track", function () {
+//   // var category = document.getElementsByClassName('categories_')
+//   // console.log(category)
+//   debugger;
+//   let option = document.getElementById("sl2").value;
+//   let value = option.split(",");
+//   let category = sessionStorage.getItem("category");
+//   let min_price = value[0];
+//   let max_price = value[1];
+//   console.log(min_price);
+//   console.log(max_price);
+//   $.ajax({
+//     method: "GET",
+//     url: "/price",
+//     data: {
+//       category: category,
+//       min_price: min_price,
+//       max_price: max_price,
+//     },
+//     dataType: "json",
+//     success: function (data) {
+//       console.log(data);
+//       debugger;
+//       // console.log(data.product[0][1])
+//       // console.log(data.product[1][0])
+//       // console.log(data.product[2][0])
+//     //   if (data.product.length.length > 3) {
+//         $("#cart_data").empty();
+//         for (let i = 0; i < data.product[0].length; i++) {
+//           var image = data.product[2][i];
+//           var url = "/media/".concat(image);
+//           {
+//             let item_content =
+//               '<div class="col-sm-4" ><div class="product-image-wrapper"> <div class="single-products"><div class="productinfo text-center"><img src="' +
+//               url +
+//               '" alt="" /><p>' +
+//               data.product[0][i] +
+//               '</p><input type="hidden" class="product-image-{{prod.id}}"value="{{prod.productimages_set.first.image_path.url}"/><th>$ <span class="product-price-{{prod.id}}">' +
+//               data.product[1][i] +
+//               '</span></th><input type="hidden" class="product_id-{{prod.id}}" value="{{prod.id}}"><input type="hidden" class="meta_title-{{prod.id}}" value="{{prod.meta_title}}"><br><button class="btn btn-default add-to-cart" id="{{prod.id}}"><i class="fa fa-shopping-cart addcart"></i>Add to cart</button><div class="cart_quantity_button submitWidget submitWidget-{{prod.id}}"><input type="button" onclick="decrementValue(" value=" - " /><input type="text" id="product-qty-{{prod.id}}" name="quantity" value="1"maxlength="2" max="10" size="1" readonly /><input type="button" onclick="incrementValue()" value="+" /></div> <br><div class="choose"><ul class="nav nav-pills nav-justified"><li><a href="{% url  prod.id %}" value=""><i class="fa fa-plus-square"></i>view product</a></li></ul></div></div></div></div></div>';
+//             $("#cart_data").append(item_content);
+//           }
+//         }
+//     //   } 
+//     //   else {
+//     //     $("#cart_data").empty();
+//     //     {
+//     //       let item_content =
+//     //         '<div class="col-sm-4" ><div class="product-image-wrapper"> <div class="single-products"><div class="productinfo text-center"><img src="" alt="" /><p>`<b>Product Not Found</b>`</p></div></div></div></div></div>';
+//     //       $("#cart_data").append(item_content);
+//     //     }
+//     //   }
+//     },
+//   });
+// });
 
 
 

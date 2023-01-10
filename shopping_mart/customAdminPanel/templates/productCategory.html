@@ -19,6 +19,17 @@
                             <button style="float: right; width: 150px; height: 40px;" type="submit"
                                 class="btn btn-block btn-primary">Add</button>
                         </form>
+                        {% for msg in messages %}
+                        {% if msg.tags == 'error' %}
+                        <div class="alert alert-danger" id="error-alert" role="alert">
+                            {{msg}}
+                        </div>
+                        {% else %}
+                        <div class="alert alert-success" id="success-alert" role="alert">
+                            {{msg}}
+                        </div>
+                        {% endif %}
+                        {% endfor %}
                         <div class="card-body" style="width:100%; overflow: scroll;">
                             <table id="example2" class="table table-bordered table-hover">
                                 <thead>
@@ -107,4 +118,18 @@
         $(".productCategory-menu").addClass("active")
     }
 </script>
+<script>
+    $(document).ready(function() {
+    setTimeout(function() {
+      $('#success-alert').fadeOut('fast');
+  }, 1000);
+      });
+  </script>
+  <script>
+    $(document).ready(function() {
+    setTimeout(function() {
+      $('#error-alert').fadeOut('fast');
+  }, 1000);
+      });
+  </script>
 {% endblock %}

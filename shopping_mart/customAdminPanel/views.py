@@ -80,6 +80,7 @@ class BannerField(LoginRequiredMixin, View):
         obj = BannersForm(request.POST, request.FILES)
         if obj.is_valid():
             obj.save()
+            messages.success(request,'Banner Added Succesfully')
             return redirect('customAdminPanel:banner')
         else:
             messages.error(request,'Invalid format Uploads')
@@ -99,6 +100,7 @@ class DeleteBanner(View):
         id = data.get('id')
         fm = Banners.objects.get(id=id)
         fm.delete()
+        messages.error(request,'Banner Deleted Succesfully')
         return redirect('customAdminPanel:banner')
 
 
@@ -119,8 +121,7 @@ class EditBanner(View):
         fm = BannersForm(request.POST, request.FILES, instance=ban)
         if fm.is_valid():
             fm.save()
-        # else:
-        #     messages.error(request,'Invalid format Uploads')
+            messages.success(request,'Banner Updated Successfully')
             return redirect('customAdminPanel:banner')
 
 
@@ -136,6 +137,8 @@ class CategoryField(View):
             instance.created_by = request.user
             instance.modify_by = request.user
             instance.save()
+            messages.success(request,'Category Added Succesfully')
+
             return redirect('customAdminPanel:category')
         else:
             return render(request, "model_form/category_form.html", {'form': obj})
@@ -154,6 +157,7 @@ class DeleteCategory(View):
         id = data.get('id')
         fm = Category.objects.get(id=id)
         fm.delete()
+        messages.error(request,'Category Deleted Succesfully')
         return redirect('customAdminPanel:category')
 
 
@@ -174,6 +178,8 @@ class EditCategory(View):
         fm = CategoryForm(request.POST, instance=cat)
         if fm.is_valid():
             fm.save()
+            messages.success(request,'Category Updated Succesfully')
+
             return redirect('customAdminPanel:category')
 
 
@@ -202,6 +208,7 @@ class CmsField(LoginRequiredMixin, View):
             instance.created_by = request.user
             instance.modify_by = request.user
             instance.save()
+            messages.success(request,'CMS Added Succesfully')
             return redirect('customAdminPanel:cms')
         else:
             return render(request, "model_form/cms_form.html", {'form': obj})
@@ -219,6 +226,7 @@ class DeleteCms(View):
         id = data.get('id')
         fm = Cms.objects.get(id=id)
         fm.delete()
+        messages.error(request,'CMS Deleted Succesfully')
         return redirect('customAdminPanel:cms')
 
 
@@ -239,8 +247,7 @@ class EditCms(View):
         fm = CmsForm(request.POST, request.FILES, instance=ban)
         if fm.is_valid():
             fm.save()
-        # else:
-        #     messages.error(request,'Invalid format Uploads')
+            messages.success(request,'CMS Updated Succesfully')
             return redirect('customAdminPanel:cms')
 
 
@@ -306,6 +313,7 @@ class CouponField(LoginRequiredMixin, View):
             instance.created_by = request.user
             instance.modify_by = request.user
             instance.save()
+            messages.success(request,'Coupon Added Succesfully')
             return redirect('customAdminPanel:coupon')
         else:
             return render(request, "coupon.html", {'form': obj})
@@ -323,6 +331,7 @@ class DeleteCoupon(View):
         id = data.get('id')
         fm = Coupon.objects.get(id=id)
         fm.delete()
+        messages.error(request,'Coupon Deleted Succesfully')
         return redirect('customAdminPanel:coupon')
 
 
@@ -335,6 +344,7 @@ class EditCoupon(View):
     """
 
     def get(self, request, id):
+        breakpoint()
         obj = Coupon.objects.get(id=id)
         fm = CouponForm(instance=obj)
         return render(request, "model_form/editCoupon.html", {'form': fm})
@@ -344,6 +354,7 @@ class EditCoupon(View):
         fm = CouponForm(request.POST, instance=cat)
         if fm.is_valid():
             fm.save()
+            messages.success(request,'Coupon Updated Succesfully')
             return redirect('customAdminPanel:coupon')
 
 class ConfigurationField(LoginRequiredMixin, View):
@@ -368,7 +379,6 @@ class ConfigurationField(LoginRequiredMixin, View):
         obj = ConfigurationForm(request.POST, request.FILES)
         if obj.is_valid():
             instance = obj.save()
-            print(instance.banner_path.path)
             return redirect('customAdminPanel:configuration')
         else:
             return render(request, "model_form/configuration_form.html", {'form': obj})
@@ -406,6 +416,7 @@ class EmailField(LoginRequiredMixin, View):
             instance.created_by = request.user
             instance.modify_by = request.user
             instance.save()
+            messages.success(request,'Email Template Added Succesfully')
             return redirect('customAdminPanel:email')
         else:
             return render(request, "model_form/email_form.html", {'form': obj})
@@ -424,6 +435,7 @@ class DeleteEmail(View):
         id = data.get('id')
         fm = EmailTemplate.objects.get(id=id)
         fm.delete()
+        messages.error(request,'Email Template Deleted Succesfully')
         return redirect('customAdminPanel:email')
 
 
@@ -435,15 +447,18 @@ class EditEmail(View):
     """
 
     def get(self, request, id):
+        breakpoint()
         obj = EmailTemplate.objects.get(id=id)
         fm = EmailTemplateForm(instance=obj)
-        return render(request, "model_form/editEmail.html", {'form': fm})
+        context={'form': fm}
+        return render(request, "model_form/editEmail.html", context)
 
     def post(self, request, id):
         cat = EmailTemplate.objects.get(id=id)
         fm = EmailTemplateForm(request.POST, instance=cat)
         if fm.is_valid():
             fm.save()
+            messages.success(request,'Email Template Updated Succesfully')
             return redirect('customAdminPanel:email')
 
 
@@ -594,6 +609,7 @@ class ProductField(LoginRequiredMixin, View):
                                                         product_attribute_id=prod_attr,
                                                         product_attribute_value=val)
                     attr_assoc.save()
+                messages.success(request,'Product Added Succesfully')
                 return redirect('customAdminPanel:product')
 
             else:
@@ -621,6 +637,7 @@ class DeleteProduct(View):
         id = data.get('id')
         fm = Product.objects.get(id=id)
         fm.delete()
+        messages.error(request,'Product Deleted Succesfully')
         return redirect('customAdminPanel:product')
 
 
@@ -653,6 +670,7 @@ class EditProduct(View):
             # fo.save()
         fz = Product.objects.all()
         context = {'obj': fz}
+        messages.success(request,'Product Updated Succesfully')
         return render(request, "product.html",context)
     
 
@@ -682,6 +700,7 @@ class ProductAttributesField(LoginRequiredMixin, View):
             instance.created_by = request.user
             instance.modify_by = request.user
             instance.save()
+            messages.success(request,'Product Attributes Added Succesfully')
             return redirect('customAdminPanel:productAttributes')
         else:
             return render(request, "model_form/productAttributes_form.html", {'form': obj})
@@ -699,6 +718,7 @@ class DeleteProductAttributes(View):
         id = data.get('id')
         fm = ProductAttributes.objects.get(id=id)
         fm.delete()
+        messages.error(request,'Product Attribute Deleted Succesfully')
         return redirect('customAdminPanel:productAttributes')
 
 class EditProductAttributes(View):
@@ -718,6 +738,7 @@ class EditProductAttributes(View):
         fm = ProductAttributesForm(request.POST, request.FILES, instance=cat)
         if fm.is_valid():
             fm.save()
+            messages.success(request,'Product Attribute Updated Succesfully')
             return redirect('customAdminPanel:productAttributes')
 
 
@@ -744,6 +765,7 @@ class ProductAttributesAssocField(LoginRequiredMixin, View):
         if obj.is_valid():
             instance = obj.save()
             instance.save()
+            messages.success(request,'Product Attribute Assoc Added Succesfully')
             return redirect('customAdminPanel:productAttributesAssoc')
         else:
             return render(request, "model_form/productAttributesAssoc_form.html", {'form': obj})
@@ -787,6 +809,7 @@ class ProductAttributesValuesField(LoginRequiredMixin, View):
             instance.created_by = request.user
             instance.modify_by = request.user
             instance.save()
+            messages.success(request,'Product Attribute Values Added Succesfully')
             return redirect('customAdminPanel:productAttributesValues')
         else:
             return render(request, "model_form/productAttributesValues_form.html", {'form': obj})
@@ -822,6 +845,7 @@ class ProductCategoryField(LoginRequiredMixin, View):
         obj = ProductCategoryForm(request.POST, request.FILES)
         if obj.is_valid():
             obj.save()
+            messages.success(request,'Product Category Added Succesfully')
             return redirect('customAdminPanel:productCategory')
         else:
             return render(request, "model_form/productCategory_form.html", {'form': obj})
@@ -840,6 +864,7 @@ class DeleteProductCategory(View):
         id = data.get('id')
         fm = ProductCategories.objects.get(id=id)
         fm.delete()
+        messages.error(request,'Product Category Deleted Succesfully')
         return redirect('customAdminPanel:productCategory')
 
 
@@ -860,6 +885,7 @@ class EditProductCategory(View):
         fm = ProductCategoryForm(request.POST, instance=cat)
         if fm.is_valid():
             fm.save()
+            messages.success(request,'Product Category Updated Succesfully')
             return redirect('customAdminPanel:productCategory')
             
 
@@ -1073,6 +1099,7 @@ class DeleteUserOrder(View):
         id = data.get('id')
         fm = UserOrder.objects.get(id=id)
         fm.delete()
+        messages.error(request,'Order Deleted Succesfully')
         return redirect('customAdminPanel:userOrder')
 
 

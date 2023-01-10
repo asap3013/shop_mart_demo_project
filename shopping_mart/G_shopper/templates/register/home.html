@@ -28,6 +28,21 @@
     <link rel="/static/apple-touch-icon-precomposed" sizes="72x72"
         href="/static/images/ico/apple-touch-icon-72-precomposed.png">
     <link rel="/static/apple-touch-icon-precomposed" href="/static/images/ico/apple-touch-icon-57-precomposed.png">
+    <script src="/static/js/jquery.js"></script>    
+    <script>
+        $(document).ready(function() {
+        setTimeout(function() {
+          $('#success-alert').fadeOut('fast');
+      }, 1000);
+          });
+      </script>
+      <script>
+        $(document).ready(function() {
+        setTimeout(function() {
+          $('#error-alert').fadeOut('fast');
+      }, 1000);
+          });
+      </script>
 </head>
 <!--/head-->
 
@@ -151,7 +166,7 @@
                                                 Logout</a></li>
                                         {% else %}
                                         <li><a href="{% url 'G_shopper:login' %}"><i class="fa fa-lock"></i>
-                                            Log In</a></li>
+                                                Log In</a></li>
                                         {% endif %}
                                     </ul>
                                 </div>
@@ -213,9 +228,22 @@
         <!--/header-bottom-->
     </header>
     <!--/header-->
-    {% if msg %}
-    <div class="text-success">{{msg}}</div>
+    {% for msg in messages %}
+    {% if msg.tags == 'error' %}
+    <div class="alert alert-danger" id="error-alert" role="alert" style="text-align: center;">
+        {{msg}}
+    </div>
+    {% else %}
+    <div class="alert alert-success" id="success-alert" style="text-align: center;" role="alert">
+        {{msg}}
+    </div>
     {% endif %}
+    {% endfor %}
+
+
+    <!-- {% if msg %}
+    <div class="text-success">{{msg}}</div>
+    {% endif %} -->
     <section id="slider">
         <!--slider-->
         <div class="container">
@@ -289,7 +317,7 @@
                                 <!-- {{category.id}} -->
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
-                                        <input type="hidden" class="categories_{{category.id}}" value="{{category.id}}">
+                                        <input type="hidden" class="categories_{{category.id}}" value="" id="catagory_id">
 
                                         <a data-toggle="collapse" class="categorie" data-parent="#accordian" href=""
                                             id="{{category.id}}">
@@ -428,7 +456,8 @@
                             <div class="well text-center" id="price_range">
                                 <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="1000"
                                     data-slider-step="5" data-slider-value="[0,1000]" id="sl2"><br />
-                                <b class="pull-left" id="min_slide">$ 0</b> <b class="pull-right" id="max_slide">$ 1000</b> <br>
+                                <b class="pull-left" id="min_slide">$ 0</b> <b class="pull-right" id="max_slide">$
+                                    1000</b> <br>
 
                             </div>
                         </div>
@@ -521,16 +550,19 @@
                                     {% if user.is_authenticated %}
                                     <ul class="nav nav-pills nav-justified">
                                         {% if prod.id in wishlist %}
-                                        <li><button class="btn btn-default disabled wishlistbtn" data-product="{{prod.id}}">
-                                            Added to wishlist</button></li>
-                                       
+                                        <li><button class="btn btn-default disabled wishlistbtn"
+                                                data-product="{{prod.id}}">
+                                                Added to wishlist</button></li>
+
                                         {% else %}
-                                        <li><button class="btn btn-default add-wishlist  wishlistbtn" data-product="{{prod.id}}">
-                                            Add to wishlist</button></li>
+                                        <li><button class="btn btn-default add-wishlist  wishlistbtn"
+                                                data-product="{{prod.id}}">
+                                                Add to wishlist</button></li>
                                         {% endif %}
-                                    {% else %}
-                                    <li><button class="btn btn-default disabled wishlistbtn" data-product="{{prod.id}}">
-                                        Add to wishlist</button></li>
+                                        {% else %}
+                                        <li><button class="btn btn-default disabled wishlistbtn"
+                                                data-product="{{prod.id}}">
+                                                Add to wishlist</button></li>
                                     </ul>
                                     {% endif %}
                                 </div>
@@ -714,7 +746,7 @@
             console.log("welcome")
         }
     </script>
-    <script src="/static/js/jquery.js"></script>
+    
     <script src="/static/js/bootstrap.min.js"></script>
     <script src="/static/js/jquery.scrollUp.min.js"></script>
     <script src="/static/js/price-range.js"></script>

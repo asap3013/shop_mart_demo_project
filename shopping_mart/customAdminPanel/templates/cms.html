@@ -18,76 +18,87 @@
                             <!-- <button  type="submit" class="btn btn-primary btn-block">Sign Out</button> -->
                             <button style="float: right; width: 150px; height: 40px;" type="submit"
                                 class="btn btn-block btn-primary">Add</button>
-                        </form>
+                        </form> <br>
+                        {% for msg in messages %}
+                        {% if msg.tags == 'error' %}
+                        <div class="alert alert-danger" id="error-alert" role="alert">
+                            {{msg}}
+                        </div>
+                        {% else %}
+                        <div class="alert alert-success" id="success-alert" role="alert">
+                            {{msg}}
+                        </div>
+                        {% endif %}
+                        {% endfor %}
                         <div class="card-body" style="width:100%; overflow: scroll;">
                             <table id="example2" class="table table-bordered table-hover" style="width:2000px;">
                                 <thead>
                                     <tr>
                                         <th>Title</th>
-                                            <th>Content</th>
-                                            <th>Meta title</th>
-                                            <th>Meta description</th>
-                                            <th>Meta keywords</th>
-                                            <th>Created by</th>
-                                            <th>Created date</th>
-                                            <th>modify by</th>
-                                            <th>modify date</th>
-                                            <th scope="col" colspan="2">Action</th>
+                                        <th>Content</th>
+                                        <th>Meta title</th>
+                                        <th>Meta description</th>
+                                        <th>Meta keywords</th>
+                                        <th>Created by</th>
+                                        <th>Created date</th>
+                                        <th>modify by</th>
+                                        <th>modify date</th>
+                                        <th scope="col" colspan="2">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for i in form %}
-                                        <tr>
-                                            <!-- <td>{{ban.id}}</td> -->
-                                            <td>{{i.title}}</td>
-                                            <!-- <td>{{ban.banner_path}}</td> -->
-                                            <td>{{i.content}}</td>
-                                            <td>{{i.meta_title}}</td>
-                                            <td>{{i.meta_description}}</td>
-                                            <td>{{i.meta_keywords}}</td>
-                                            <td>{{i.created_by}}</td>
-                                            <td>{{i.created_date}}</td>
-                                            <td>{{i.modify_by}}</td>
-                                            <td>{{i.modify_date}}</td>
-                                            <td>
-                                                <a href="{% url 'customAdminPanel:EditCms' i.id %}"><button
-                                                        class="btn btn-default btn-sm"><i
-                                                            class="fas fa-edit"></i></button></a>
-                                            </td>
-                                            <td>
-                                                <form action="{% url 'customAdminPanel:Delete_cms' %}" method="POST">
-                                                    {% csrf_token %}
-                                                    <button type="button" value="Delete" class="btn btn-danger btn-sm"
-                                                        data-toggle="modal" data-target="#deletemodal-{{i.id}}">
-                                                        Delete
-                                                    </button>
-                                                    <input type="hidden" name="id" value={{i.id}}>
-                                                    <div class="modal fade" id="deletemodal-{{i.id}}">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h4 class="modal-title">Delete</h4>
-                                                                    <button type="button" class="close"
-                                                                        data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal6-body">
-                                                                    <h4>Do you want to delete this data??</h4>
-                                                                </div>
-                                                                <div class="modal-footer justify-content-between">
-                                                                    <button type="button" class="btn btn-default"
-                                                                        data-dismiss="modal">Close</button>
-                                                                    <button type="submit" class="btn btn-danger">Ok
-                                                                    </button>
-                                                                </div>
+                                    <tr>
+                                        <!-- <td>{{ban.id}}</td> -->
+                                        <td>{{i.title}}</td>
+                                        <!-- <td>{{ban.banner_path}}</td> -->
+                                        <td>{{i.content}}</td>
+                                        <td>{{i.meta_title}}</td>
+                                        <td>{{i.meta_description}}</td>
+                                        <td>{{i.meta_keywords}}</td>
+                                        <td>{{i.created_by}}</td>
+                                        <td>{{i.created_date}}</td>
+                                        <td>{{i.modify_by}}</td>
+                                        <td>{{i.modify_date}}</td>
+                                        <td>
+                                            <a href="{% url 'customAdminPanel:EditCms' i.id %}"><button
+                                                    class="btn btn-default btn-sm"><i
+                                                        class="fas fa-edit"></i></button></a>
+                                        </td>
+                                        <td>
+                                            <form action="{% url 'customAdminPanel:Delete_cms' %}" method="POST">
+                                                {% csrf_token %}
+                                                <button type="button" value="Delete" class="btn btn-danger btn-sm"
+                                                    data-toggle="modal" data-target="#deletemodal-{{i.id}}">
+                                                    Delete
+                                                </button>
+                                                <input type="hidden" name="id" value={{i.id}}>
+                                                <div class="modal fade" id="deletemodal-{{i.id}}">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h4 class="modal-title">Delete</h4>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal6-body">
+                                                                <h4>Do you want to delete this data??</h4>
+                                                            </div>
+                                                            <div class="modal-footer justify-content-between">
+                                                                <button type="button" class="btn btn-default"
+                                                                    data-dismiss="modal">Close</button>
+                                                                <button type="submit" class="btn btn-danger">Ok
+                                                                </button>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                        {% endfor %}
+                                                </div>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div>
@@ -122,4 +133,18 @@
         $(".cms-menu").addClass("active")
     }
 </script>
+<script>
+    $(document).ready(function() {
+    setTimeout(function() {
+      $('#success-alert').fadeOut('fast');
+  }, 1000);
+      });
+  </script>
+  <script>
+    $(document).ready(function() {
+    setTimeout(function() {
+      $('#error-alert').fadeOut('fast');
+  }, 1000);
+      });
+  </script>
 {% endblock %}
