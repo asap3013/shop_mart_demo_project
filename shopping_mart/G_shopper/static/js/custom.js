@@ -232,6 +232,7 @@ $('.slider-track').on("change",function(){
 
 
 $('.categorie').add('.slider-track').on("click", function () {
+  debugger;
   $(this).addClass("active");
   $(".active").attr('id')   
   var _vm = $(this);
@@ -255,12 +256,13 @@ $('.categorie').add('.slider-track').on("click", function () {
     data: { category_id: _index, min_price: min_price, max_price: max_price },
     dataType: "json",
     success: function (data) {
+      debugger;
       $(this).addClass("active");
       console.log(data.product.length);
-      if (data.product.length > 0) {
+      if (data.cat ==  0) {
+        $.each(data, function () {
         var image = data.product_img[0].image_path;
         var url = "/media/".concat(image);
-        $.each(data, function () {
           $("#cart_data").html(
             ` <div class="col-sm-4" >
                             <div class="product-image-wrapper">
@@ -301,8 +303,7 @@ $('.categorie').add('.slider-track').on("click", function () {
           );
         });
       }
-      
-      else if (data.product.length.length > 3) {
+      else if (data.cat == 1) {
         debugger;
                 $("#cart_data").empty();
                 for (let i = 0; i < data.product[0].length; i++) {

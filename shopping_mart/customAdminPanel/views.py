@@ -344,7 +344,6 @@ class EditCoupon(View):
     """
 
     def get(self, request, id):
-        breakpoint()
         obj = Coupon.objects.get(id=id)
         fm = CouponForm(instance=obj)
         return render(request, "model_form/editCoupon.html", {'form': fm})
@@ -447,7 +446,6 @@ class EditEmail(View):
     """
 
     def get(self, request, id):
-        breakpoint()
         obj = EmailTemplate.objects.get(id=id)
         fm = EmailTemplateForm(instance=obj)
         context={'form': fm}
@@ -1117,7 +1115,6 @@ class EditUserOrder(View):
         return render(request, "model_form/editUserOrder.html", {'form': fm})
 
     def post(self, request, id):
-        breakpoint()
         cat = UserOrder.objects.get(id=id)
         fm = UserOrderForm(request.POST, instance=cat)
         if fm.is_valid():

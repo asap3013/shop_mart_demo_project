@@ -38,7 +38,7 @@ def userLogin(request):
     if request.method == 'POST':
         email = request.POST.get('username')
         password = request.POST.get('password1')
-        if email and password:
+        if len(email)>=13 and password:
             user = authenticate(username=User.objects.get(email=email).username,password=password)
             if user is not None:
                 login(request, user)
@@ -98,7 +98,6 @@ def logoutuser(request):
 # @csrf_exempt
 # @login_required(redirect_field_name='login', login_url='/login')
 # def category_filter(request):
-#     breakpoint()
 #     category_id = request.GET.get('category_id')
 #     request.session['category'] = category_id
 #     product_id = ProductCategories.objects.filter(
@@ -121,14 +120,15 @@ def price_filter(request):
         min_price = int(min_value)
         max_price = int(max_value)
     
-    if category_id is not None:
+    if category_id != '' and category_id is not None:
         category_id = request.GET.get('category_id')
         product_id = ProductCategories.objects.filter(category_id=category_id).values('product_id')
         product = Product.objects.filter(pk=product_id[0]['product_id']).values('name', 'price')
         product_img = ProductImages.objects.filter(
             product_id=product_id[0]['product_id']).values('image_path')
-        return JsonResponse({'product': list(product), 'product_img': list(product_img)})
-    elif category_id is None and min_price<=0 and max_price >=1000:
+        cat = 0
+        return JsonResponse({'product': list(product), 'product_img': list(product_img),'cat':cat})
+    elif min_price>=0 and max_price <=1000:
         product = Product.objects.filter(price__gte=min_price, price__lte=max_price).values(
         'id', 'name', 'price', 'productimages')
         product_img = ProductImages.objects.filter().values('product_id_id', 'image_path')
@@ -152,8 +152,10 @@ def price_filter(request):
                 price.append(i['price'])
                 continue
         prods = [nme, price, image]
-        return JsonResponse({'product': list(prods)})
+        cat = 1
+        return JsonResponse({'product': list(prods),'cat':cat})
     else:
+       
         category_id = request.GET.get('category_id')
         min_value = request.GET.get('min_price')
         max_value = request.GET.get('max_price')
@@ -161,7 +163,7 @@ def price_filter(request):
         max_price = int(max_value)
         product = Product.objects.filter(price__gte=min_price, price__lte=max_price).values(
         'id', 'name', 'price', 'productimages')
-        product_category = ProductCategories.objects.filter(category_id=category_id).values()
+        product_category = ProductCategories.objects.filter(category_id=category_id).values('product_id')
         product_img = ProductImages.objects.filter().values('product_id_id', 'image_path')
         return JsonResponse({'product':list(product),'product_cat': list(product_category),'product_img': list(product_img)})
         
@@ -172,7 +174,6 @@ def price_filter(request):
 # @csrf_exempt
 # @login_required(redirect_field_name='login', login_url='/login')
 # def price_filter(request):
-#     breakpoint()
 #     category = request.session['category']
 #     min_value = request.GET.get('min_price')
 #     max_value = request.GET.get('max_price')
